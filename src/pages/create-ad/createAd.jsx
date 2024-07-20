@@ -170,7 +170,10 @@ export default function CreateAd()
 
   const tellData = (x) => 
   {
-      const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => item.make_id === Number(x))
+    //   alert(x)
+      const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
+      console.log(allRequiredData?.model)
+      console.log(filteredModel)
       setSelectedModel(filteredModel)
       advertState.setTheMakerModels(filteredModel)
       console.log(filteredModel)
@@ -256,7 +259,8 @@ export default function CreateAd()
           setModelErrorMsg("")
           submitForm = true;
       }
-      if(theProductionYear === "" || theProductionYear === -1)
+    //   alert(typeof theProductionYear)
+      if(theProductionYear === "" || theProductionYear === -1 || theProductionYear === undefined)
       { 
          setProductionYearErrorMsg("Kindly Select Production Year"); submitForm = false; 
       } else {
@@ -286,6 +290,12 @@ export default function CreateAd()
       } else {
         setTrimErrorMsg(""); submitForm = true;
       }
+      if(value === "" || value === null || value === undefined)
+      {
+          setDescriptionErrorMsg("Kindly give description")
+          submitForm = false
+      }
+
         //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
         if(previewUrls.length === 0)
@@ -312,6 +322,8 @@ export default function CreateAd()
         manufacturerName: theManufacturerName, modelName: theModelName, avatar: imagesToSave, mainImage: mainImagePosition, draft: x
         }  
         console.log(advertDetail)
+
+        // return
 
       if(submitForm === true)
       {
@@ -695,6 +707,7 @@ export default function CreateAd()
                                                                                 advertState.setModel(-1)
                                                                                 setTheModel(-1)
                                                                                 advertState.setTheMakerModels([])
+                                                                                setTheSelectManufacturer(false)
 
                                                                                 setMakerErrorMsg("Kindly Select Manufacturer")
                                                                                 setNoMakerOption(true)
@@ -709,7 +722,7 @@ export default function CreateAd()
                                                                                 setCarSelectedModelGroupOption(false)
                                                                                 setTheManufacturerName("")
                                                                                 setTheModelName("")
-                                                                                tellData(Number(e.target.value)) 
+                                                                                tellData(e.target.value) 
                                                                                 setNoMakerOption(false)
                                                                                 submitForm = true
                                                                             }
@@ -742,12 +755,12 @@ export default function CreateAd()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                    { (theOthers != "others") && <span className="w-full font-bold text-sm">Model</span>}
+                                                                    { (theOthers != "others") && <span className="w-full font-bold text-sm">Model - {selectManufacturer} {typeof selectManufacturer}</span>}
                                                                     {   !selectManufacturer && (theOthers != "others") && 
                                                                         <select onChange={(e) => {  }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             {/* { (theManufacturer === "" || theManufacturer === -1) && <option key={-1} value={-1}> - Select Manufacturer First - </option> } */}
-                                                                            { (Number(theManufacturer) === -1) && <option key={-1} value={-1}> - Select Manufacturer First - </option> }
+                                                                            { (theManufacturer === -1) && <option key={-1} value={-1}> - Select Manufacturer - </option> }
                                                                         </select>
                                                                     }
                                                                     {   !selectedCarModelOption && selectManufacturer && (selectedModel.length === 0 || selectedModel.length > 0) && (theManufacturer === -1) &&
@@ -791,7 +804,7 @@ export default function CreateAd()
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             {/* { (theManufacturer != "") && tellData(theManufacturer) } */}
-                                                                            <option key={-1} value={-1}> - Select Model First - </option>
+                                                                            {/* <option key={-1} value={-1}> - Select Manufacturer First + - </option> */}
                                                                             {            
                                                                                 selectedModel.map((model) => (
                                                                                     <option key={model.code} value={model.id} selected={Number(model.id) === (Number(theModel)) ? (Number(theModel)) : ""}>
@@ -860,7 +873,7 @@ export default function CreateAd()
                                                                 </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-red-500 font-bold text-sm">{ (theProductionYear === -1) ?  productionYearErrorMsg : "" }</div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theProductionYear === -1  || theProductionYear === "") ?  productionYearErrorMsg : "" }</div>
                                                         </div>
                                                     </div>
                                                     
@@ -1030,12 +1043,17 @@ export default function CreateAd()
                                                     <div className="flex flex-wrap -m-2 mt-5 md:mb-10 mb-20 p-2">
                                                         <span className="w-full font-bold text-sm">Description</span>
                                                         <ReactQuill theme="snow" defaultValue={value} onChange={setValue} className="w-full h-[150px]" modules={modules} />
+                                                        
                                                         {/* <textarea onChange={(e) => { 
                                                                 advertState.setDescription(e.target.value)
                                                                 setTheDescription(e.target.value)
                                                             } 
-                                                        } defaultValue={theDescription} className="shadow form-textarea mb-2 block w-full border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2" placeholder="Enter Description"></textarea> */}
+                                                        } defaultValue={theDescription} 
+                                                         className="shadow form-textarea mb-2 block w-full border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                                         rows="2" 
+                                                         placeholder="Enter Description"></textarea> */}
                                                     </div>
+                                                    <div className="text-red-500 font-bold text-sm">{ (value === "") ?  descriptionErrorMsg : "" }</div>
 
                                                     <div className="flex flex-wrap -m-2 mt-2 mb-5">
                                                         <div className="p-2 md:w-1/2 w-full">

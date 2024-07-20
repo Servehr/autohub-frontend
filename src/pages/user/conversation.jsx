@@ -34,6 +34,10 @@ export default function Conversation({ theUserId, advertiserProductId })
     const paragraphRef = useRef(null);    
     const [messageToSend, setMessageTosend] = useState('')  
     const [emptyMessage, setEmptyMessage] = useState('')
+    const [authId, setAuthId] = useState(localStorage.getItem("authenticatedId"))
+
+    const isAuthenticaded = (authId === ""  || authId === null  || authId === undefined) ? false : true
+    // alert(isAuthenticaded)
 
     useEffect(() => {
         setEmptyMessage('')
@@ -93,12 +97,49 @@ export default function Conversation({ theUserId, advertiserProductId })
               }
 
               {
-                 !isLoading && (data?.length === 0)  && <div className="flex w-full h-[150px] justify-center items-center">
-                      <div className="d-flex justify-items items-center">
-                          <div className="ml-20 mb-5 mt-20">                              
-                            <Icons iconName={'comment'} height={20} width={20} color="gray" />
-                          </div>
-                          <p>Leave your message here</p>
+                 !isLoading && isAuthenticaded && (data?.length === 0)  && <div className="flex w-full h-[150px] justify-center items-center">
+                      <div className="d-flex justify-items items-center">      
+                  
+                            {
+                               isAuthenticaded && <>
+                                <div className="ml-0 mb-5 mt-20 flex justify-center items-center">                              
+                                    <Icons iconName={'comment'} height={20} width={20} color="gray" />
+                                </div>
+                                <div className="px-6 my-6 flex justify-center text-center gap-2">
+                                    <p className="font-bold">
+                                      Leave a message
+                                    </p>
+                                </div>
+                               </>
+                            }
+                      </div>
+                 </div>
+              }
+
+              {
+                 !isLoading && !isAuthenticaded && (data?.length === 0)  && <div className="flex w-full h-[150px] justify-center items-center">
+                      <div className="d-flex justify-items items-center">      
+                  
+                            {
+                               !isAuthenticaded && <>
+                                <div className="ml-20 mb-5 mt-20 flex justify-center items-center">                              
+                                    <Icons iconName={'comment'} height={20} width={20} color="gray" />
+                                </div>
+                                <div className="px-6 my-6 flex justify-center text-center gap-2">
+                                    <p>
+                                      You have to{" "}
+                                      <span className="font-medium text-brandGreen">
+                                        <Link to="/register">Register</Link>
+                                      </span>{" "}
+                                      or{" "}
+                                      <span className="font-medium text-brandGreen">
+                                        <Link to="/login">Login</Link>
+                                      </span>{" "}
+                                      to leave a message
+                                    </p>
+                                </div>
+                               </>
+                            }
                       </div>
                  </div>
               }
@@ -152,9 +193,10 @@ export default function Conversation({ theUserId, advertiserProductId })
                             onSubmit={handleSubmit(onSubmit)}
                             className="px-6 my-4 flex gap-2"
                           >
-                            <div className="flex flex-col w-full">
+                          <div className="flex flex-col w-full">
                               <input
                                 defaultValue={emptyMessage}
+                                disabled={!isAuthenticaded}
                                 type="text"
                                 id="conversation"
                                 name="conversation"
@@ -165,7 +207,8 @@ export default function Conversation({ theUserId, advertiserProductId })
                             </div>
 
                             <div className="flex justify-end">
-                              <button type="submit" className="px-4 bg-green-600 text-white font-semibold text-sm rounded-xl w-max">
+                              {/* {authId} */}
+                              <button type="submit" disabled={!isAuthenticaded} className="px-4 bg-green-600 text-white font-semibold text-sm rounded-xl w-max">
                                 {loading ? (
                                   <BeatLoader size={3} color="#fff" />
                                 ) : (
