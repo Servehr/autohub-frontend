@@ -1,0 +1,3 @@
+.step-item {
+    @apply relative flex flex-col justify-center items-center w-36
+}

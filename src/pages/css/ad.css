@@ -1,0 +1,11 @@
+.bg-primary{
+    background: #0346f2;
+  }
+  .text-primary{
+   color:#0346F2; 
+  }
+  nav a.active {
+    background-color: brown;
+    color: #fff;
+    padding: 5px;
+  }
