@@ -512,7 +512,6 @@ function RegisterView()
                       // multiple
                       value={image}
                       onChange={onChange}
-                      maxFileSize={maxFileSize}
                       dataURLKey="data_url"
                       acceptType={["jpg", "png"]}
                     >
