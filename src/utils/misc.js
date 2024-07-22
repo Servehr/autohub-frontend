@@ -10,7 +10,7 @@ export function getYearsArray() {
     years.push(year);
   }
 
-  return years;
+  return years.toReversed();
 }
 
 export function getColor(id) {

@@ -86,6 +86,17 @@ const createAdvertSlice  = (set, get) => (
             return get().advertTitle
         },
         
+        country: -1,
+        setCountry(country)
+        {
+            console.log(country)
+            set((state) => ({country: country}))
+        },
+        getCountry()
+        {
+            return get().country
+        },
+        
         states: -1,
         setStates(states)
         {
@@ -165,6 +176,26 @@ const createAdvertSlice  = (set, get) => (
         getCondition()
         {
             return get().condition
+        },
+                               
+        fuelType: -1,
+        setFuelType(fuelType)
+        {
+            set((state) => ({fuelType: fuelType}))
+        },
+        getFuelType()
+        {
+            return get().fuelType
+        },
+                               
+        mileAge: "",
+        setMileAge(mileAge)
+        {
+            set((state) => ({mileAge: mileAge}))
+        },
+        getMileAge()
+        {
+            return get().mileAge
         },
                 
         chasis_number: "",
@@ -258,6 +289,28 @@ const createAdvertSlice  = (set, get) => (
         getTheMakerModels()
         {
             return get().makerModels
+        },  
+
+        modelTrim: [],
+        setTheModelTrim(modelTrim)
+        {
+            console.log(modelTrim)
+            set((state) => ({modelTrim: modelTrim}))
+        },
+        getTheModelTrim()
+        {
+            return get().modelTrim
+        }, 
+
+        statesModels: [],
+        setTheMakerModels(statesModels)
+        {
+            console.log(statesModels)
+            set((state) => ({statesModels: statesModels}))
+        },
+        getTheMakerModels()
+        {
+            return get().statesModels
         },  
 
         imageOnEdit: "",

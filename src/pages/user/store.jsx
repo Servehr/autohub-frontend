@@ -143,6 +143,7 @@ if(!isLoading)
   
 const populateProductStore = (item) => 
 {      
+        advertState.setCountry(item?.country_id)
         advertState.setStates(item?.state_id)
         advertState.setCateg(item?.category_id)
         advertState.setMaker(item?.make_id)
@@ -162,6 +163,8 @@ const populateProductStore = (item) =>
         console.log("=======================")
         console.log(advertState.getStates())
         console.log("=======================")
+        advertState.setMileAge(item?.mileage)
+        advertState.setFuelType(item?.fuel)
   }
 
   return (

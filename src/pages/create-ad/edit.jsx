@@ -46,6 +46,7 @@ export default function EditProduct()
   const [ deleteUrl, setDeleteUrl] = useState("") 
   const [ productToDeleteMessage, setProductToDeleteMessage] = useState("")
 
+  const [ theCountry, setTheCountry] = useState(advertState.getCountry())
   const [ theState, setTheState] = useState(advertState.getStates())
   const [ theCategory, setTheCategory] = useState(advertState.getCateg())
   const [ theManufacturer, setTheManufacturer] = useState(advertState.getMaker())
@@ -58,6 +59,9 @@ export default function EditProduct()
   const [ theDescription, setTheDescription] = useState(advertState.getDescription())
   const [ theChasisNo, setTheChasisNo] = useState(advertState.getChasisNumber())
   const [ thePrice, setThePrice] = useState(advertState.getPrice())
+  const [ theFuel, setTheFuel] = useState(advertState.getFuelType())
+  const [ theMileAge, setTheMileAge] = useState(advertState.getMileAge())
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setIsSuccess] = useState("");
@@ -86,7 +90,7 @@ export default function EditProduct()
       const advertDetail = { 
                                 state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
                                 colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, 
-                                chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id
+                                chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: theFuel, country: theCountry
                             }   
     console.log(advertDetail)
     updateAds(advertDetail)
@@ -116,15 +120,16 @@ export default function EditProduct()
       toolbar: [
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
           [{ font: [] }],
-          [{ size: [] }],
-          [ "bold", "italic", "underline", "strike", "blockquote" ],
-          [ 
-              { list: "ordered" },
-              { list: "bullet" },
-              { list: "-1" },
-              { list: "+1" },
-          ],
+          [{ size: [] }],          
+          [ "bold", "italic", "underline" ],
           [ "link"]
+        //   [ 
+        //       { list: "ordered" },
+        //       { list: "bullet" },
+        //       { list: "-1" },
+        //       { list: "+1" },
+        //   ],
+        //   [ "link"]
       ],
   }
 
@@ -135,44 +140,54 @@ export default function EditProduct()
 
   const populateProductStore = (item) => 
   {      
-      advertState.setStates(item.state_id)
-      advertState.setCateg(item.category_id)
-      advertState.setMaker(item.make_id)
-      advertState.setModel(item.model_id)
-      advertState.setColour(item.colour)
-      advertState.setYearOfPoduction(item.year_of_production)
-      advertState.setTransmission(item.transmission_id_)
-      advertState.setCondition(item.condition)
-      advertState.setChasisNumber(item.chasis_no)
-      advertState.setTrim(item.trim)
-      advertState.setDescription(item.description)
-      advertState.setPrice(item.price)
-      advertState.setPlan_id(item.plan_id)
-      advertState.setOthers(item.others)
-      advertState.setAvatar(item.avatar)
+        advertState.setCountry(item?.country_id)
+        advertState.setStates(item?.state_id)
+        advertState.setCateg(item?.category_id)
+        advertState.setMaker(item?.make_id)
+        advertState.setModel(item?.model_id)
+        advertState.setColour(item?.colour)
+        advertState.setYearOfPoduction(item?.year_of_production)
+        advertState.setTransmission(item?.transmission_id)
+        advertState.setCondition(item?.condition_id)
+        advertState.setChasisNumber(item?.chasis_no)
+        advertState.setTrim(item?.trim)
+        advertState.setDescription(item?.description)
+        advertState.setPrice(item?.price)
+        advertState.setPlan_id(item?.plan_id)
+        advertState.setOthers(item?.others)
+        advertState.setAvatar(item?.avatar)
+        advertState.setOnEdit('yes')
+        console.log("=======================")
+        console.log(advertState.getStates())
+        console.log("=======================")
+        advertState.setMileAge(item?.mileage)
+    advertState.setFuelType(item?.fuel)
   }
 
   const clearProductStore = () => 
-    {      
-        advertState.setStates(-1)
-        advertState.setCateg(-1)
-        advertState.setMaker(-1)
-        advertState.setModel(-1)
-        advertState.setColour(-1)
-        advertState.setYearOfPoduction("")
-        advertState.setTransmission(-1)
-        advertState.setCondition(-1)
-        advertState.setChasisNumber("")
-        advertState.setTrim(-1)
-        advertState.setDescription("")
-        advertState.setPrice("")
-        advertState.setPlan_id(0)
-        advertState.setOthers("")
-        advertState.setAvatar([])
-        advertState.setOnEdit('no')
-        advertState.setTheModelName("")
-        advertState.setTheManufacturerName("")
-    }
+  {      
+     advertState.setStates(-1)
+     advertState.setCateg(-1)
+     advertState.setMaker(-1)
+     advertState.setModel(-1)
+     advertState.setColour(-1)
+     advertState.setYearOfPoduction("")
+     advertState.setTransmission(-1)
+     advertState.setCondition(-1)
+     advertState.setChasisNumber("")
+     advertState.setTrim(-1)
+     advertState.setDescription("")
+     advertState.setPrice("")
+     advertState.setPlan_id(0)
+     advertState.setOthers("")
+     advertState.setAvatar([])
+     advertState.setOnEdit('no')
+     advertState.setTheModelName("")
+     advertState.setTheManufacturerName("")
+     advertState.setCountry(-1)
+     advertState.setMileAge("")
+     advertState.setFuelType("")
+   }
 
 
     return (
@@ -180,10 +195,10 @@ export default function EditProduct()
             
 
             {
-                            isRequiredDataLoading && <div className="h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
-                                <BeatLoader color="#1c9236" />
-                            </div>
-                        }
+                isRequiredDataLoading && <div className="h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                    <BeatLoader color="#1c9236" />
+                </div>
+            }
             
             { !isRequiredDataLoading && (
                 
@@ -205,30 +220,58 @@ export default function EditProduct()
                                                 
                                                 <div className="md:col-span-12 col-span-12 bg-white p-3 order-2 md:order-1">
 
-                                                    <div className="mb-4">
-                                                        {/* <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                                                            Categories
-                                                        </label> */}
-                                                        <div className="relative">
-                                                            <span className="w-full font-bold text-sm">State</span>
-                                                            <select onChange={
-                                                                (e) => {
-                                                                    advertState.setStates(e.target.value)
-                                                                    setTheState(Number(e.target.value))
-                                                                }
-                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                {   
-                                                                    allRequiredData?.state &&
-                                                                    allRequiredData?.state?.length !== 0 &&
-                                                                    allRequiredData?.state.map((state) => (
-                                                                        <option key={state.id} value={state.id} selected={(state.id === advertState.getStates())}>
-                                                                            {state.name}
-                                                                        </option>
-                                                                    ))
-                                                                }
-                                                            </select>
-                                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                    
+                                                    <div className="flex flex-wrap -m-2 mt-2">
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-4">
+                                                                <div className="relative">
+                                                                    <span className="w-full font-bold text-sm">Country</span>
+                                                                    <select onChange={
+                                                                        (e) => {
+                                                                            advertState.setCountry(e.target.value)
+                                                                            setTheCountry(Number(e.target.value))
+                                                                        }
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        {   
+                                                                            allRequiredData?.countries &&
+                                                                            allRequiredData?.countries?.length !== 0 &&
+                                                                            allRequiredData?.countries.map((country) => (
+                                                                                <option key={country.id} value={country.id} selected={(country.id === advertState.getCountry())}>
+                                                                                    {country.name}
+                                                                                </option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-4">
+                                                                <div className="relative">
+                                                                    <span className="w-full font-bold text-sm">State</span>
+                                                                    <select onChange={
+                                                                        (e) => {
+                                                                            advertState.setStates(e.target.value)
+                                                                            setTheState(Number(e.target.value))
+                                                                        }
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        {   
+                                                                            allRequiredData?.state &&
+                                                                            allRequiredData?.state?.length !== 0 &&
+                                                                            allRequiredData?.state.map((state) => (
+                                                                                <option key={state.id} value={state.id} selected={(state.id === advertState.getStates())}>
+                                                                                    {state.name}
+                                                                                </option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -307,6 +350,79 @@ export default function EditProduct()
                                                                             allRequiredData?.model.map((model) => (
                                                                                 <option key={model.code} value={model.id} selected={model.id === advertState.getModel()}>
                                                                                     {model.title}
+                                                                                </option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                }
+                                                                { selectedCarModelOption &&    
+                                                                    <select onChange={(e) =>{ 
+                                                                            advertState.setModel(e.target.value)
+                                                                            setTheModel(Number(e.target.value))
+                                                                        }
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        {
+                                                                            
+                                                                            selectedModel &&
+                                                                            selectedModel?.length != 0 &&
+                                                                            selectedModel.map((model) => (
+                                                                                <option key={model.code} value={model.id} selected={model.id === advertState.getModel()}>
+                                                                                    {model.title}
+                                                                                </option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                }
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-4">
+                                                                <div className="relative">
+                                                                <span className="w-full font-bold text-sm">Trim</span>
+                                                                <select onChange={(e) => { 
+                                                                    advertState.setTrim(e.target.value)
+                                                                    setTheTrim(e.target.value) } 
+                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                {
+                                                                    allRequiredData?.trim &&
+                                                                    allRequiredData?.trim?.length !== 0 &&
+                                                                    allRequiredData?.trim.map((trim) => (
+                                                                        <option key={trim.id} value={trim.id} selected={trim.id === advertState.getTrim()}>
+                                                                            {trim.name}
+                                                                        </option>
+                                                                    ))
+                                                                }
+                                                                </select>
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className="flex flex-wrap -m-2 mt-2">
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-4">
+                                                                <div className="relative">
+                                                                <span className="w-full font-bold text-sm">Fuel Type</span>
+                                                                { !selectedCarModelOption &&                                                                    
+                                                                    <select onChange={(e) =>{ 
+                                                                            advertState.setModel(e.target.value)
+                                                                            setTheModel(Number(e.target.value))
+                                                                        }
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        {
+                                                                            
+                                                                            allRequiredData?.fuel &&
+                                                                            allRequiredData?.fuel?.length != 0 &&
+                                                                            allRequiredData?.fuel.map((fuelType) => (
+                                                                                <option key={fuelType.code} value={fuelType.id} selected={fuelType.id === advertState.getFuelType()}>
+                                                                                    {fuelType.name}
                                                                                 </option>
                                                                             ))
                                                                         }
@@ -444,25 +560,12 @@ export default function EditProduct()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-4">
                                                                 <div className="relative">
-                                                                <span className="w-full font-bold text-sm">Trim</span>
-                                                                <select onChange={(e) => { 
-                                                                    advertState.setTrim(e.target.value)
-                                                                    setTheTrim(e.target.value) } 
-                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                {
-                                                                    allRequiredData?.trim &&
-                                                                    allRequiredData?.trim?.length !== 0 &&
-                                                                    allRequiredData?.trim.map((trim) => (
-                                                                        <option key={trim.id} value={trim.id} selected={trim.id === advertState.getTrim()}>
-                                                                            {trim.name}
-                                                                        </option>
-                                                                    ))
-                                                                }
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                                </div>
-                                                                </div>
+                                                                <span className="w-full font-bold text-sm">MileAge</span>
+                                                                <input onBlur={(e) => {
+                                                                    advertState.setMileAge(e.target.value)
+                                                                    setTheMileAge(e.target.value)
+                                                                }} type="text" id="vin" defaultValue={advertState.getMileAge()}  name="vin" placeholder="VIN chasis number (Optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>

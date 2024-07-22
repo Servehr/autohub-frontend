@@ -22,6 +22,8 @@ import EditProductImage from "@/components/EditProductImage";
 import { SuccessModal } from "@/components/SuccessModal";
 import ReactQuill from 'react-quill'
 import Header from "@/layouts/header";
+import axios from "axios";
+import { BASE_URL } from "@/lib/axios";
 
 export default function CreateAd() 
 {
@@ -32,7 +34,9 @@ export default function CreateAd()
   const years = getYearsArray()
 
   const [selectedMaker, setSelectedMaker] = useState(0);
-  const [selectedModel, setSelectedModel] = useState(advertState.getTheMakerModels);
+  const [selectedModel, setSelectedModel] = useState(advertState.getTheMakerModels());
+  const [selectedStates, setSelectedStates] = useState(advertState.getTheMakerModels());
+  const [selectedTrim, setSelectedTrim] = useState([advertState.getTheModelTrim()]);
   const [noMakerOption, setNoMakerOption] = useState(false);
   const [msg, setMsg] = useState("")
   
@@ -43,12 +47,15 @@ export default function CreateAd()
   const [ mainImagePosition, setMainImagePosition] = useState(-1)
   const [ saveDraft, setSaveDraft] = useState(false)
 
+  const [theCountry, setTheCountry] = useState(advertState.getCountry())
   const [theState, setTheState] = useState(advertState.getStates())
   const [theCategory, setTheCategory] = useState(advertState.getCateg())
   const [theManufacturer, setTheManufacturer] = useState(advertState.getMaker())
   const [theModel, setTheModel] = useState(advertState.getModel())
   const [theProductionYear, setTheProductionYear] = useState(advertState.getYearOfPoduction())
   const [theColour, setTheColour] = useState(advertState.getColour())
+  const [theFuelType, setFuelType] = useState(advertState.getFuelType())
+  const [theMileAge, setTheMileAge] = useState(advertState.getMileAge())
   const [theTransmission, setTheTransmission] = useState(advertState.getTransmission())
   const [theCondition, setTheCondition] = useState(advertState.getCondition())
   const [theTrim, setTheTrim] = useState(advertState.getTrim())
@@ -67,12 +74,15 @@ export default function CreateAd()
   console.log({ theManufacturer, theModel, theTrim: advertState.getTrim(), theOthers, theCategory, theState })  
 //   advertState.setTrim(-1)
 
+  const [countryErrorMsg, setCountryErrorMsg] = useState("")
   const [stateErrorMsg, setStateErrorMsg] = useState("")
   const [categoryErrorMsg, setCategoryErrorMsg] = useState("")
   const [makerErrorMsg, setMakerErrorMsg] = useState("")
   const [modelErrorMsg, setModelErrorMsg] = useState("")
   const [productionYearErrorMsg, setProductionYearErrorMsg] = useState("")
   const [colorErrorMsg, setColorErrorMsg] = useState("")
+  const [fuelTypeErrorMsg, setFuelTypeErrorMsg] = useState("")
+  const [mileAgeError, setTheMileAgeError] = useState("")
   const [transmissionErrorMsg, setTransmissionErrorMsg] = useState("")
   const [conditionErrorMsg, setConditionErrorMsg] = useState("")
   const [trimErrorMsg, setTrimErrorMsg] = useState("")
@@ -99,6 +109,7 @@ export default function CreateAd()
 
   let submitForm = true
   let processData = false
+  let isDraft = ""
 
   useEffect(() => {
     // alert("Trying to implement change")
@@ -106,7 +117,7 @@ export default function CreateAd()
     //  alert(theManufacturer)
     advertState.setProcessAdvertAsDraft(false)
     advertState.setProcessAdvert(false)
-    console.log(selectedModel)
+    // console.log(selectedModel)
     const onEdit = advertState.getOnEdit()
     if(onEdit === "yes")
     {
@@ -124,16 +135,17 @@ export default function CreateAd()
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
           [{ font: [] }],
           [{ size: [] }],
-          [ "bold", "italic", "underline", "strike", "blockquote" ],
-          [ 
-              { list: "ordered" },
-              { list: "bullet" },
-              { list: "-1" },
-              { list: "+1" },
-          ],
+          [ "bold", "italic", "underline" ],
           [ "link"]
+        //   [ 
+        //       { list: "ordered" },
+        //       { list: "bullet" },
+        //       { list: "-1" },
+        //       { list: "+1" },
+        //   ],
       ],
   }
+    //   [ "bold", "italic", "underline", "strike", "blockquote" ],
 
   useEffect(() => {
         setTheDescription(value)   
@@ -145,6 +157,11 @@ export default function CreateAd()
   }, [processAdvert])
 
   useEffect(() => {
+    setProcessAdvert(false)
+    setProcessAdvertAsDraft(false)
+  }, [])
+
+  useEffect(() => {
 
   }, [theManufacturer, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers])
 
@@ -154,12 +171,20 @@ export default function CreateAd()
 
     useEffect(() => {
         
-    }, [saveDraft])
+    }, [saveDraft])    
+
+    useEffect(() => {
+        // setTimeout(() => 
+        // {
+        //     setMainImageErrorMsg("")
+        // }, 200)
+        // setProcessAdvert(false)
+    }, [mainImageErrorMsg])
 
     useEffect(() => {
         setTimeout(() => {
             setFillForm("")
-        }, 15000)
+        }, 5000)
     }, [fillForm])
 
     useEffect(() => {
@@ -168,6 +193,22 @@ export default function CreateAd()
     }, [selectedOptionOne, selectedOptionTwo])
 
 
+  const callTellData = (x) => 
+  {
+        const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
+        console.log(filteredTrim)
+        setSelectedTrim(filteredTrim)
+  }
+
+  const callData = (x) => 
+  {
+      const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
+      console.log(allRequiredData?.state)
+      console.log(filteredModel)
+      setSelectedStates(filteredModel)
+  }
+
+  
   const tellData = (x) => 
   {
     //   alert(x)
@@ -180,21 +221,14 @@ export default function CreateAd()
       console.log(advertState.getTheMakerModels())
       console.log(selectedModel)
   }
-  
-//   useEffect(() => {
 
-//   }, [previewUrls])
-
-  const [selectedCarModel, setCarSelectedModelGroup] = useState("");
-
-//   const userSelectedModel = localStorage.getItem("modelId")
-//   console.log(allRequiredData)
-//   setCarSelectedModelGroup(allRequiredData?.model)
+  const [selectedCarModel, setCarSelectedModelGroup] = useState("")
 
     const savePost = (x) => 
     {
-            // advertState.getLoggedInUser()
-            saveAdvertDetail(x)
+        // advertState.getLoggedInUser()
+        isDraft = x
+        saveAdvertDetail(x)
     }
 
     const savePostAsDraft = (x) => 
@@ -202,105 +236,119 @@ export default function CreateAd()
         saveAdvertDetail(x)
     }
 
-    const saveAdvertDetail = (x) => 
-  {
-      submitForm = true
-      let imagesToSave = []
-      for (let index = 0; index < previewUrls.length; index++) 
-      {
-         const y = previewUrls[index].split(",")[1]
-         imagesToSave.push(y)
-      }
-      //   setLoading(true)
-
-    //   const advertDetail = { 
-    //                             state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-    //                             colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, 
-    //                             chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1,
-    //                             manufacturerName: theManufacturerName, modelName: theModelName, avatar: imagesToSave, mainImage: mainImagePosition, draft: x
-    //                         }  
-    //   console.log(advertDetail)
-
-    //   return
-      
-      if(theState === "" || theState === -1)
-      { 
-          setStateErrorMsg("Kindly Select State"); submitForm = false; 
-      } else {
-          setStateErrorMsg(""); submitForm = true; 
-      }
-      if(theCategory === "" || theCategory === -1)
-      { 
-         setCategoryErrorMsg("Kindly Select Category");  submitForm = false; 
-      } else {
-         setCategoryErrorMsg(""); submitForm = true; 
-      }
-      if(theManufacturer === -1)
-      { 
-          setMakerErrorMsg("Kindly Select Manufacturer");  submitForm = false; 
-      } else {
-          setMakerErrorMsg(""); submitForm = true; 
-      }
-      if(theOthers === "others")
-      {
-          if(theManufacturerName === "" || theModelName === "")
-          {
-             setEntryErrorMsg("Kindly enter manufacturer name and model name")
-             submitForm = false
-          } else {
-             setEntryErrorMsg("")
-            //  submitForm = true
-          }
-      } else if(theModel === -1){ 
-          setModelErrorMsg("Kindly Select Model")
-          console.log("Model");
-          submitForm = false
-      } else {
-          setModelErrorMsg("")
-          submitForm = true;
-      }
-    //   alert(typeof theProductionYear)
-      if(theProductionYear === "" || theProductionYear === -1 || theProductionYear === undefined)
-      { 
-         setProductionYearErrorMsg("Kindly Select Production Year"); submitForm = false; 
-      } else {
-         setProductionYearErrorMsg(""); submitForm = true; 
-      }
-      if(theColour === "" || theColour === -1)  
-      { 
-          setColorErrorMsg("Kindly Select Color"); submitForm = false; 
-      } else {
-          setColorErrorMsg(""); submitForm = true; 
-      }
-      if(theTransmission === "" || theTransmission === -1)
-      { 
-            setTransmissionErrorMsg("Kindly Select Transmission"); submitForm = false; 
-      } else {
-            setTransmissionErrorMsg(""); submitForm = true; 
-      }
-      if(theCondition === "" || theCondition === -1)
-      { 
-            setConditionErrorMsg("Kindly Select Condition"); submitForm = false; 
-      } else {
-            setConditionErrorMsg(""); submitForm = true; 
-      }
-      if(theTrim === -1 || theTrim === "")
-      { 
-         setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
-      } else {
-        setTrimErrorMsg(""); submitForm = true;
-      }
-      if(value === "" || value === null || value === undefined)
-      {
-          setDescriptionErrorMsg("Kindly give description")
-          submitForm = false
-      }
+    const saveAdvertDetail = async (x) => 
+    {
+        submitForm = true
+        let imagesToSave = []
+        for (let index = 0; index < previewUrls.length; index++) 
+        {
+            const y = previewUrls[index].split(",")[1]
+            imagesToSave.push(y)
+        }
+        
+        
+        if(theCountry === "" || theCountry === -1)
+        { 
+            setCountryErrorMsg("Kindly Select Country"); submitForm = false; 
+        } else {
+            setCountryErrorMsg(""); submitForm = true; 
+        }
+        if(theState === "" || theState === -1)
+        { 
+            setStateErrorMsg("Kindly Select State"); submitForm = false; 
+        } else {
+            setStateErrorMsg(""); submitForm = true; 
+        }
+        if(theCategory === "" || theCategory === -1)
+        { 
+            setCategoryErrorMsg("Kindly Select Category");  submitForm = false; 
+        } else {
+            setCategoryErrorMsg(""); submitForm = true; 
+        }
+        if(theManufacturer === -1)
+        { 
+            setMakerErrorMsg("Kindly Select Manufacturer");  submitForm = false; 
+        } else {
+            setMakerErrorMsg(""); submitForm = true; 
+        }
+        if(theOthers === "others")
+        {
+            if(theManufacturerName === "" || theModelName === "")
+            {
+                setEntryErrorMsg("Kindly enter manufacturer name and model name")
+                submitForm = false
+            } else {
+                setEntryErrorMsg("")
+                //  submitForm = true
+            }
+        } else if(theModel === -1){ 
+            setModelErrorMsg("Kindly Select Model")
+            console.log("Model");
+            submitForm = false
+        } else {
+            setModelErrorMsg("")
+            submitForm = true;
+        }
+        //   alert(typeof theProductionYear)
+        if(theProductionYear === "" || theProductionYear === -1 || theProductionYear === undefined)
+        { 
+            setProductionYearErrorMsg("Kindly Select Production Year"); submitForm = false; 
+        } else {
+            setProductionYearErrorMsg(""); submitForm = true; 
+        }
+        if(theColour === "" || theColour === -1)  
+        { 
+            setColorErrorMsg("Kindly Select Color"); submitForm = false; 
+        } else {
+            setColorErrorMsg(""); submitForm = true; 
+        }
+        if(theTransmission === "" || theTransmission === -1)
+        { 
+                setTransmissionErrorMsg("Kindly Select Transmission"); submitForm = false; 
+        } else {
+                setTransmissionErrorMsg(""); submitForm = true; 
+        }
+        if(theCondition === "" || theCondition === -1)
+        { 
+                setConditionErrorMsg("Kindly Select Condition"); submitForm = false; 
+        } else {
+                setConditionErrorMsg(""); submitForm = true; 
+        }
+        if(theTrim === -1 || theTrim === "")
+        { 
+            setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
+        } else {
+            setTrimErrorMsg(""); submitForm = true;
+        }
+        if(value === "" || value === null || value === undefined)
+        {
+            setDescriptionErrorMsg("Kindly give description")
+            submitForm = false
+        } else {
+            setDescriptionErrorMsg("")
+            submitForm = true
+        }
+        if(theFuelType === -1 || theFuelType === "" || theFuelType === null || theFuelType === undefined)
+        {
+            setFuelTypeErrorMsg("Kindly Select Fuel Type")
+            submitForm = false
+        } else {
+            setFuelTypeErrorMsg("")
+            submitForm = true
+        }
+        if(theMileAge === -1 || theMileAge === "" || theMileAge === null || theMileAge === undefined)
+        {
+            setTheMileAgeError("Kindly Provide your mileage")
+            submitForm = false
+        } else {
+            setTheMileAgeError("")
+            submitForm = true
+        }
 
         //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
         if(previewUrls.length === 0)
         {
-        submitForm = false; 
             setMainImageErrorMsg("Kindly select picture(s) to upload");  
             submitForm = false
         } else
@@ -308,91 +356,172 @@ export default function CreateAd()
         {
             setMainImageErrorMsg("Minimum Upload is 5 Pictures");  
             submitForm = false 
+        } else if(previewUrls.length > 15) 
+        {
+            setMainImageErrorMsg("Maximum Upload is 15 Pictures"); 
+            submitForm = false
         } else
         if(mainImagePosition === -1)
         { 
             setMainImageErrorMsg("Make one of the uploaded image 'COVER IMAGE' by click on (MAKE AS MAIN IMAGE)"); 
             submitForm = false
         }
-        
-        const advertDetail = { 
-        state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-        colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, 
-        chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1,
-        manufacturerName: theManufacturerName, modelName: theModelName, avatar: imagesToSave, mainImage: mainImagePosition, draft: x
-        }  
-        console.log(advertDetail)
 
-        // return
-
-      if(submitForm === true)
-      {
-        //  alert("All forms valid")
-         processData = true 
-        //  if(x === "no"){  advertState.setProcessAdvert(true)  }
-        //  if(x === "yes"){  advertState.setProcessAdvertAsDraft(true)  }
-
-         if(x === "no"){  
+        if(submitForm === false)
+        {
+            setFillForm("Attend to all fields above") 
             setProcessAdvert(false)
-            advertState.setProcessAdvert(false)  
-        }
-        if(x === "yes"){  
-            setProcessAdvertAsDraft(false)
-            advertState.setProcessAdvertAsDraft(false)  
-        }
-         
-      } else {
-        //  alert("Attend to all forms")
-            setTimeout(() => {
-                // advertState.setProcessAdvert(true)
-                if(x === "no"){  
+            if(x === 'no') 
+            { 
+                // setProcessAdvert(false)                
+                setProcessAdvert(true)
+                setTimeout(() => 
+                {
                     setProcessAdvert(false)
-                    advertState.setProcessAdvert(false)  
+                }, 2000)
+            } else
+            if(x === 'yes') 
+            { 
+                // setProcessAdvertAsDraft(false) 
+                setProcessAdvertAsDraft(true) 
+                setTimeout(() => 
+                {
+                    setProcessAdvertAsDraft(false) 
+                }, 2000)
+            } else {
+                processData = true
+            }
+        } else {
+            // return       , mainImage: mainImagePosition       avatar: imagesToSave,      , draft: x
+            const flash = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+            let chunckOne = []
+            let chunckTwo = []
+            let chunckThree = []
+            let newProductId = -1
+            let adProcessing = "processing"
+    
+            if(imagesToSave.length > 0)
+            {
+                for (let index = 0; index <= imagesToSave.length; index++) 
+                {
+                    if(index < 5)
+                    {
+                        if(imagesToSave[index])
+                        {
+                            chunckOne.push({image: imagesToSave[index], position: Number(index), faceImage: Number(mainImagePosition)})
+                        }
+                    }
                 }
-                if(x === "yes"){  
-                    setProcessAdvertAsDraft(false)
-                    advertState.setProcessAdvertAsDraft(false)  
+                // send to server
+                const firstPayLoad = 
+                { 
+                    state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
+                    colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, trim: theTrim,
+                    chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
+                    manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: theCountry
                 }
-            }, 1000)
-            setFillForm("Attend to all fields above")
-      }
-      
-      console.log(advertDetail)
-      console.log(formValid)
-
-      if(processData)
-      {  
-          submitForm = true
-          setProcessAdvert(true)
-        //   return
-          saveAdvert(advertDetail)
-            .then((res) => {
-                setError(false)
-                setLoading(false);
-                console.log(res)
-                populateProductStore()
-                setIsSuccess(res.message)
-                if(res === "yes")
+                console.log(firstPayLoad)
+                // return false
+                await axios.post(`${BASE_URL}ad/create-ad`, firstPayLoad, {
+                        headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token")}` : "",
+                        }
+                }).then((response) => 
+                {  
+                        // setIsLoading(false)
+                        // setUrl("")
+                        newProductId = response.data.data
+                        adProcessing = response.data.status
+                        // onClick(true)
+                }).catch((error) => { 
+                        console.log(error)                      
+                        return false
+                })
+            }
+    
+            if(imagesToSave.length > 5)
+            {
+                for (let index = 5; index <= imagesToSave.length; index++) 
+                {
+                    if(index < 10)
+                    {
+                        if(imagesToSave[index])
+                        {
+                            chunckTwo.push({image: imagesToSave[index], position: index, faceImage: mainImagePosition})
+                        }
+                    }
+                }
+                // send to server
+                const secondPayLoad = { images: chunckTwo, imagePosition: mainImagePosition, product_id: newProductId, nos: 2 }
+                console.log(secondPayLoad)
+                await axios.post(`${BASE_URL}ad/processing-create-ad`, secondPayLoad, {
+                        headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token")}` : "",
+                        }
+                }).then((response) => 
+                {  
+                    adProcessing = response.data.status
+                    // return
+                }).catch((error) => { 
+                        console.log(error)                      
+                        return false
+                })
+            }
+            
+            if(imagesToSave.length > 10)
+            {
+                for (let index = 10; index <= imagesToSave.length; index++) 
+                {
+                    if(index < 15)
+                    {
+                        if(imagesToSave[index])
+                        {
+                            chunckThree.push({image: imagesToSave[index], position: index, faceImage: mainImagePosition})
+                        }
+                    }
+                }
+                // send to server
+                const thirdPayLoad = { images: chunckThree, imagePosition: mainImagePosition, product_id: newProductId, nos: 3 }
+                console.log(thirdPayLoad)
+                await axios.post(`${BASE_URL}ad/complete-create-ad`, thirdPayLoad, {
+                        headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token")}` : "",
+                        }
+                }).then((response) => 
+                {  
+                    adProcessing = response.data.status
+                }).catch((error) => { 
+                })
+            }        
+            
+            if(adProcessing === "successful")
+            {
+                // populateProductStore()
+    
+                if(isDraft === "yes")
                 {
                     setMsg('Advert Successfully Drafted to unposted advert section')
                 } else {
                     setMsg('Advert Successfully Published')
-                }
+                } 
+    
                 setPreviewUrls([])
                 setSuccessModal(true)
                 setTimeout(() => {
                     setSuccessModal(false)
                     navigate('/dashboard/store')
                 }, 2000)
-            })
-            .catch((err) => {
-                setIsSuccess("")
-                console.log(err)
-                setLoading(false);
-                setError(`${err}`);
+            } else {
+                setMsg('Posting Failed')
+                setSuccessModal(true)
+                setTimeout(() => {
+                    setSuccessModal(false)
+                }, 2000)           
             }
-          )
-      }
+        }
     }
     
     // const fileInputRef = useRef(null)
@@ -437,43 +566,36 @@ export default function CreateAd()
         {
             setMainImagePosition(mainImagePosition - 1)
         }
-
-    };
-
-    const userOption = (option) => 
-    {
-        // alert(option)
     }
+    // console.log(images)
+    // console.log(previewUrls)
 
-    console.log(images)
-    console.log(previewUrls)
-
-    console.log(theUserState)
+    // console.log(theUserState)
     const selectFiles = () => 
     {
         // fileInputRef.current.click()
     }
 
     const clearProductStore = () => 
-        {      
-            advertState.setStates(-1)
-            advertState.setCateg(-1)
-            advertState.setMaker(-1)
-            advertState.setModel(-1)
-            advertState.setColour(-1)
-            advertState.setYearOfPoduction("")
-            advertState.setTransmission(-1)
-            advertState.setCondition(-1)
-            advertState.setChasisNumber("")
-            advertState.setTrim(-1)
-            advertState.setDescription("")
-            advertState.setPrice("")
-            advertState.setPlan_id(0)
-            advertState.setOthers("")
-            advertState.setAvatar([])
-            advertState.setOnEdit('no')
-            advertState.setTheModelName("")
-            advertState.setTheManufacturerName("")
+    {      
+        advertState.setStates(-1)
+        advertState.setCateg(-1)
+        advertState.setMaker(-1)
+        advertState.setModel(-1)
+        advertState.setColour(-1)
+        advertState.setYearOfPoduction("")
+        advertState.setTransmission(-1)
+        advertState.setCondition(-1)
+        advertState.setChasisNumber("")
+        advertState.setTrim(-1)
+        advertState.setDescription("")
+        advertState.setPrice("")
+        advertState.setPlan_id(0)
+        advertState.setOthers("")
+        advertState.setAvatar([])
+        advertState.setOnEdit('no')
+        advertState.setTheModelName("")
+        advertState.setTheManufacturerName("")
     }
 
     const selectMultipleFiles = (event) => 
@@ -564,6 +686,11 @@ export default function CreateAd()
         advertState.setPlan_id(0)
         advertState.setOthers("")
         advertState.setAvatar([])
+        advertState.setTheModelName("")
+        advertState.setTheManufacturerName("")
+        advertState.setCountry(-1)
+        advertState.setMileAge("")
+        advertState.setFuelType("")
         console.log("=======================")
         console.log(advertState.getStates())
         console.log("=======================")
@@ -574,15 +701,15 @@ export default function CreateAd()
         <>
 
             {
-                            isRequiredDataLoading && <div className="h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
-                                <BeatLoader color="#1c9236" />
-                            </div>
-                        }
+                isRequiredDataLoading && <div className="h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                    <BeatLoader color="#1c9236" />
+                </div>
+            }
             
             { !isRequiredDataLoading && (
                     <>
 
-                    { (theManufacturer === "") && tellData(theManufacturer) }
+                    {/* { (theManufacturer === "") && tellData(theManufacturer) } */}
                     {/* <Header /> */}
 
                     <main className="mb-30 mt-24 md:-mt-5">
@@ -598,46 +725,88 @@ export default function CreateAd()
                                                         <span className="font-bold text-blue-600">CREATE ADS</span>
                                                     </div>
 
-                                                    <div className="mb-0">
-                                                        {/* <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                                                            Categories
-                                                        </label> */}
-                                                        <div className="relative">
-                                                            <span className="w-full font-bold text-sm">State</span>
-                                                            <select onChange={
-                                                                    (e) => {
-                                                                        if(Number(e.target.value) === -1)
-                                                                        {
-                                                                            setTheState(-1)
-                                                                            advertState.setStates(-1)
-                                                                            submitForm = false
-                                                                            setStateErrorMsg("Kindly Select State")
-                                                                        } else {
-                                                                            console.log(e.target.value)
-                                                                            advertState.setStates(e.target.value)
-                                                                            console.log(advertState.getStates())
-                                                                            setTheState(e.target.value)
-                                                                            submitForm = true
-                                                                            setStateErrorMsg("")
-                                                                        }
+                                                    <div className="flex flex-wrap -m-2 mt-2">
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-0">
+                                                                <div className="relative">
+                                                                <span className="w-full font-bold text-sm">Country</span>
+                                                                <select onChange={(e) => { 
+                                                                    // alert(e.target.value)
+                                                                    if(Number(e.target.value) === -1)
+                                                                    {
+                                                                        setTheCountry(advertState.setCountry(-1))
+                                                                        setTheCountry(-1)
+                                                                        submitForm = false
+                                                                        setCountryErrorMsg("Kindly Select Country")
+                                                                    } else {
+                                                                        advertState.setCountry(Number(e.target.value))
+                                                                        setTheCountry(Number(e.target.value))
+                                                                        callData(e.target.value)
+                                                                        submitForm = true
+                                                                        setCountryErrorMsg("")
                                                                     }
+                                                                    // setTheTrim(e.target.value)
+                                                                } 
                                                                 } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select States -  </option> }
-                                                                {   
-                                                                    allRequiredData?.state &&
-                                                                    allRequiredData?.state?.length !== 0 &&
-                                                                    allRequiredData?.state.map((state) => (
-                                                                        <option key={state.id} value={state.id} selected={state.id === Number(theState) ? Number(theState) : ""}>
-                                                                            {state.name}
+                                                                { <option value={-1}> - Select Country -  </option> }
+                                                                {
+                                                                    allRequiredData?.countries &&
+                                                                    allRequiredData?.countries?.length !== 0 &&
+                                                                    allRequiredData?.countries.map((country) => (
+                                                                        <option key={country.id} value={country.id} selected={country.id === Number(theCountry) ? Number(theCountry) : ""}>
+                                                                            {country.name}
                                                                         </option>
                                                                     ))
                                                                 }
-                                                            </select>
-                                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </select>
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </div>
+                                                                </div>
                                                             </div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theCountry === -1) ?  countryErrorMsg : "" }</div>
                                                         </div>
-                                                        <div className="text-red-500 font-bold text-sm">{ (theState === -1) ?  stateErrorMsg : "" }</div>
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-0">
+                                                                <div className="relative">
+                                                                    <span className="w-full font-bold text-sm">Select State</span>
+                                                                    <select onChange={
+                                                                            (e) => {
+                                                                                if(Number(e.target.value) === -1)
+                                                                                {
+                                                                                    setTheState(-1)
+                                                                                    advertState.setStates(-1)
+                                                                                    submitForm = false
+                                                                                    setStateErrorMsg("Kindly Select State")
+                                                                                } else {
+                                                                                    console.log(e.target.value)
+                                                                                    advertState.setStates(Number(e.target.value))
+                                                                                    console.log(advertState.getStates())
+                                                                                    setTheState(Number(e.target.value))
+                                                                                    submitForm = true
+                                                                                    setStateErrorMsg("")
+                                                                                }
+                                                                            }
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        {  (theCountry === -1) && <option value={-1}> - First Select Country -  </option> }
+                                                                        {  (theCountry != -1) && <option value={-1}> - Select State -  </option> }
+                                                                        {   
+                                                                            selectedStates &&
+                                                                            selectedStates?.length !== 0 &&
+                                                                            selectedStates.map((state) => (
+                                                                                <option key={state.id} value={state.id} selected={state.country_id === Number(theState) ? Number(theState) : ""}>
+                                                                                    {state.name}
+                                                                                </option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theState === -1) ?  stateErrorMsg : "" }</div>
+                                                        </div>
                                                     </div>
                                                     
                                                     <div className="flex flex-wrap -m-2 mt-2">
@@ -755,7 +924,7 @@ export default function CreateAd()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                    { (theOthers != "others") && <span className="w-full font-bold text-sm">Model - {selectManufacturer} {typeof selectManufacturer}</span>}
+                                                                    { (theOthers != "others") && <span className="w-full font-bold text-sm">Model</span>}
                                                                     {   !selectManufacturer && (theOthers != "others") && 
                                                                         <select onChange={(e) => {  }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
@@ -799,12 +968,13 @@ export default function CreateAd()
                                                                         (theOthers != "others") &&   
                                                                         <select onChange={(e) =>{ 
                                                                                 advertState.setModel(Number(e.target.value))
+                                                                                callTellData(e.target.value)
                                                                                 setTheModel(Number(e.target.value))
                                                                                 console.log(Number(e.target.value))
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             {/* { (theManufacturer != "") && tellData(theManufacturer) } */}
-                                                                            {/* <option key={-1} value={-1}> - Select Manufacturer First + - </option> */}
+                                                                            <option key={-1} value={-1}> - Select Model - </option>
                                                                             {            
                                                                                 selectedModel.map((model) => (
                                                                                     <option key={model.code} value={model.id} selected={Number(model.id) === (Number(theModel)) ? (Number(theModel)) : ""}>
@@ -835,6 +1005,90 @@ export default function CreateAd()
                                                                 { (theOthers != "others") &&  <div className="text-red-500 font-bold text-sm">{ (theModel === "" || theModel === -1) ?  modelErrorMsg : "" }</div> }
                                                                 { (theOthers === "others") && <div className="text-red-500 font-bold text-sm">{ ((theManufacturerName === "") || (theModelName === "")) ?  entryErrorMsg : "" }</div> }
                                                             </div>
+                                                        </div>
+                                                        {/* Trim  */}
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-0">
+                                                                <div className="relative">
+                                                                <span className="w-full font-bold text-sm">Trim</span>
+                                                                <select onChange={(e) => { 
+                                                                        if(Number(e.target.value) === -1)
+                                                                        {
+                                                                            advertState.setTheModelTrim(-1)
+                                                                            setTheTrim(-1)
+                                                                            submitForm = false
+                                                                            setTrimErrorMsg("Kindly Select Trim")
+                                                                        } else {
+                                                                            // alert(e.target.value)
+                                                                            advertState.setTheModelTrim(Number(e.target.value))
+                                                                            setTheTrim(Number(e.target.value))
+                                                                            submitForm = true
+                                                                            setTrimErrorMsg("")
+                                                                        }
+                                                                } 
+                                                                    } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                { (theModel === -1) && <option value={-1}> - First Select Model -  </option> }
+                                                                { (theModel != -1) && selectedTrim?.length != 0 && <option value={-1}> - Select Trim -  </option> }
+                                                                { (theModel != -1) && selectedTrim?.length === 0 && <option value={-1}> - No trim for this model -  </option> }
+                                                                {
+                                                                    selectedTrim &&
+                                                                    selectedTrim?.length !== 0 &&
+                                                                    selectedTrim?.map((trim, index) => (
+                                                                        <option key={index} value={trim.id} selected={Number(trim.id)  === Number(theTrim) ? Number(theTrim) : ""}>
+                                                                          {trim.name}
+                                                                        </option>
+                                                                    ))
+                                                                }
+                                                                </select>
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theTrim === -1  || theTrim === "") ?  trimErrorMsg : "" }</div>
+                                                        </div>
+                                                    </div>
+                                                    {/* Fuel Type  */}
+                                                    <div className="flex flex-wrap -m-2 mt-2">
+                                                        <div className="p-2 md:w-1/2 w-full">
+                                                            <div className="mb-0">
+                                                                <div className="relative">
+                                                                <span className="w-full font-bold text-sm">Fuel Type</span>
+                                                                <select onChange={(e) => 
+                                                                    {                                                                         
+                                                                        // advertState.setColour(e.target.value)
+                                                                        // setTheColour(e.target.value)
+                                                                        if(Number(e.target.value) === -1)
+                                                                        {
+                                                                            advertState.setFuelType(-1)
+                                                                            setFuelType(-1)
+                                                                            submitForm = false
+                                                                            setFuelTypeErrorMsg("Kindly Select Fuel Type")
+                                                                        } else {
+                                                                            advertState.setFuelType(Number(e.target.value))
+                                                                            setFuelType(Number(e.target.value))
+                                                                            setFuelTypeErrorMsg("")
+                                                                            submitForm = true
+                                                                        }
+                                                                    } 
+                                                                    } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                { <option value={-1}> - Select Fuel -  </option> }
+                                                                {
+                                                                    allRequiredData?.fuel &&
+                                                                    allRequiredData?.fuel?.length !== 0 &&
+                                                                    allRequiredData?.fuel.map((fuel) => (
+                                                                        <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
+                                                                            {fuel.name}
+                                                                        </option>
+                                                                    ))
+                                                                }
+                                                                </select>
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theFuelType === -1) ?  fuelTypeErrorMsg : "" }</div>
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
@@ -1000,43 +1254,12 @@ export default function CreateAd()
                                                             <div className="text-red-500 font-bold text-sm">{ (theCondition === -1) ?  conditionErrorMsg : "" }</div>
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
-                                                            <div className="mb-0">
-                                                                <div className="relative">
-                                                                <span className="w-full font-bold text-sm">Trim</span>
-                                                                <select onChange={(e) => { 
-                                                                    // alert(e.target.value)
-                                                                    if(Number(e.target.value) === -1)
-                                                                    {
-                                                                        setTheTrim(advertState.setTrim(-1))
-                                                                        setTheTrim(-1)
-                                                                        submitForm = false
-                                                                        setTrimErrorMsg("Kindly Select Trim")
-                                                                    } else {
-                                                                        advertState.setTrim(Number(e.target.value))
-                                                                        setTheTrim(Number(e.target.value))
-                                                                        submitForm = true
-                                                                        setTrimErrorMsg("")
-                                                                    }
-                                                                    // setTheTrim(e.target.value)
-                                                                } 
-                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Trim -  </option> }
-                                                                {
-                                                                    allRequiredData?.trim &&
-                                                                    allRequiredData?.trim?.length !== 0 &&
-                                                                    allRequiredData?.trim.map((trim) => (
-                                                                        <option key={trim.id} value={trim.id} selected={trim.id === Number(theTrim) ? Number(theTrim) : ""}>
-                                                                            {trim.name}
-                                                                        </option>
-                                                                    ))
-                                                                }
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="text-red-500 font-bold text-sm">{ (theTrim === -1) ?  trimErrorMsg : "" }</div>
+                                                            <span className="w-full font-bold text-sm">MileAge</span>
+                                                            <input onKeyUp={(e) => {    
+                                                                advertState.getMileAge(e.target.value)
+                                                                setTheMileAge(e.target.value)} 
+                                                            } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
+                                                            <div className="text-red-500 font-bold text-sm">{ (theMileAge === "") ?  mileAgeError : "" }</div>
                                                         </div>
                                                     </div>
 

@@ -79,7 +79,7 @@ export default function ProductDetailsPage()
 
   // prettier-ignore
   const { data, isLoading, error, isError, refetch, isFetching } = useQuery([`product-details`, slug], () => fetchProductWithSlug(slug));
-  const telePhoneNumber = "+2349133333357"
+  const telePhoneNumber = "tel:+2349133333357"
   const {
     register,
     handleSubmit,
@@ -290,7 +290,7 @@ export default function ProductDetailsPage()
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>
-                                <a href={telePhoneNumber} className="bg-brandGreen rounded-br-md rounded-tr-md w-full px-3 py-2 text-xs justify-center font-bold text-white col-span-6">
+                                <a href={`tel:${data?.product.detail.user.phoneno}`} className="bg-brandGreen rounded-br-md rounded-tr-md w-full px-3 py-2 text-xs justify-center font-bold text-white col-span-6">
                                     <span className="text-sm w-full flex justify-center text-center">For Complaint</span>
                                     {/* <span className="text-md w-full flex justify-center text-center">{data?.product.detail.user.phoneno}</span> */}
                                 </a>
