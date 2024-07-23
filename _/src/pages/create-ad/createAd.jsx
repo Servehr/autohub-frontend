@@ -443,25 +443,28 @@ export default function CreateAd()
     }
 
     const clearProductStore = () => 
-        {      
-            advertState.setStates(-1)
-            advertState.setCateg(-1)
-            advertState.setMaker(-1)
-            advertState.setModel(-1)
-            advertState.setColour(-1)
-            advertState.setYearOfPoduction("")
-            advertState.setTransmission(-1)
-            advertState.setCondition(-1)
-            advertState.setChasisNumber("")
-            advertState.setTrim(-1)
-            advertState.setDescription("")
-            advertState.setPrice("")
-            advertState.setPlan_id(0)
-            advertState.setOthers("")
-            advertState.setAvatar([])
-            advertState.setOnEdit('no')
-            advertState.setTheModelName("")
-            advertState.setTheManufacturerName("")
+    {      
+        advertState.setCountry(-1)
+        advertState.setStates(-1)
+        advertState.setCateg(-1)
+        advertState.setMaker(-1)
+        advertState.setModel(-1)
+        advertState.setColour(-1)
+        advertState.setYearOfPoduction("")
+        advertState.setTransmission(-1)
+        advertState.setCondition(-1)
+        advertState.setChasisNumber("")
+        advertState.setTrim(-1)
+        advertState.setDescription("")
+        advertState.setPrice("")
+        advertState.setPlan_id(0)
+        advertState.setOthers("")
+        advertState.setAvatar([])
+        advertState.setOnEdit('no')
+        advertState.setTheModelName("")
+        advertState.setTheManufacturerName("")
+        advertState.setMileAge("")
+        advertState.setFuelType(-1)
     }
 
     const selectMultipleFiles = (event) => 
@@ -583,7 +586,7 @@ export default function CreateAd()
                                                 <div className="md:col-span-12 col-span-12 bg-white p-3 rounded-lg order-2 md:order-1">
 
                                                     <div className="mt-3 mb-5">
-                                                        <span className="font-bold text-blue-600">CREATE ADS</span>
+                                                        <span className="font-bold text-blue-600">CREATE PRODUCT ADVERT</span>
                                                     </div>
 
                                                     <div className="mb-0">

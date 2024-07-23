@@ -303,12 +303,12 @@ const createAdvertSlice  = (set, get) => (
         }, 
 
         statesModels: [],
-        setTheMakerModels(statesModels)
+        setStateModel(statesModels)
         {
             console.log(statesModels)
             set((state) => ({statesModels: statesModels}))
         },
-        getTheMakerModels()
+        getStateModel()
         {
             return get().statesModels
         },  

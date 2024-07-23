@@ -41,9 +41,15 @@ function RegisterView()
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [allow, setIsAllow] = useState("");
+  const [imageSize, setImageSize] = useState(0);
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const { data: user } = useUser();
   const [successful, setSuccessful] = useState(false)
+
+  useEffect(() => {
+      console.log(imageSize)
+  }, [imageSize])
 
 
   const { step, userType, decrement, setType, increment } = useContext(RegisterContext);
@@ -52,21 +58,46 @@ function RegisterView()
   const [image, setImage] = useState([]);
   const maxFileSize = 3000000;
 
-  const onChange = (imageList) => {
-    setImage(imageList);
-    console.log(imageList)
-    let data = "";
-    let x = ''
-    imageList.map((image) => {
-      // let data = image.data_url;
-      let base64 = image.data_url.split(",")[1];
-      x = base64
-      data += `${data && "<=>"}${base64}`;
-    });
-    console.log(data)
-    console.log(typeof x)
-    console.log(typeof data)
-    setFromattedImage(x);
+  function fixBinary (bin) {
+    var length = bin.length;
+    var buf = new ArrayBuffer(length);
+    var arr = new Uint8Array(buf);
+    for (var i = 0; i < length; i++) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return buf;
+  }
+
+  const onChange = (imageList) => 
+  {
+      setImage(imageList);
+      console.log(imageList)
+      let data = "";
+      let x = ''
+      imageList.map((image) => {
+        // let data = image.data_url;
+        let base64 = image.data_url.split(",")[1];
+        x = base64
+        data += `${data && "<=>"}${base64}`;
+      });
+
+      var binary = fixBinary(atob(x));
+      var blob = new Blob([binary], {type: 'image/jpeg'});
+      var url = URL.createObjectURL(blob);
+      console.log('Created a png blob of size: ' + blob.size);
+      if(blob.size > 1000000)
+      {
+          setError("Image must not be more than 1 MB")
+          setIsAllow(false)
+          binary = ''
+      } else {
+          console.log(data)
+          console.log(typeof x)
+          console.log(typeof data)
+          setFromattedImage(x);
+          setError("")
+          setIsAllow(true)
+      }
   };
 
   const handleFormSubmit = (e) => {
@@ -496,6 +527,12 @@ function RegisterView()
                     Upload Passport!
                   </h1>
 
+                  { 
+                    error && <>
+                        <h1 className="text-red-600"></h1>
+                    </> 
+                  } 
+
                   { successful && <>
                         <h1 className="text-center text-green-600">Your account was created successfully</h1>
                         <h1 className="text-center text-green-600">You will be redirected to login with your email and password</h1>
@@ -591,7 +628,7 @@ function RegisterView()
                        !successful && 
                        <button
                          type="submit"
-                         disabled={formattedImage ? false : true}
+                         disabled={allow ? false : true}
                          className="h-[50px] bg-brandGreen text-white px-4 rounded-lg font-semibold disabled:bg-brandDarkGray disabled:cursor-not-allowed"
                        >
                          {loading ? <BeatLoader size={10} color="#fff" /> : "Done"}

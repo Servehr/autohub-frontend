@@ -165,9 +165,9 @@ function LoginContainer() {
               </Link>
             </div> 
             <div className="col">
-              <Link to="/forgot">
+              <Link to="/forgot"> 
                   I can remember my password again<br />
-                  Reset It Here<br />
+                  <span className="text-[#1DF65A] font-semibold">Reset It Here</span>
               </Link>
             </div>
         </div>        

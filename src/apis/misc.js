@@ -62,12 +62,58 @@ export async function fetchAllRequiredData(id)
       axios_instance
         .get(`/ad/advert-api/${id}`)
         .then((res) => {
-          if (res.data.success === 0) {
-            reject(res.data.message);
-          } else {
-            console.log(res.data.data)
-            resolve(res.data.data);
-          }
+          if (res.data.success === 0) 
+            {
+              reject(res.data.message);
+            } else {
+              console.log(res.data.data)
+              // pass data into local storage
+                // localStorage.setItem("country", Number(res.data.data.country_id))
+                // localStorage.setItem("state", Number(res.data.data.state_id))
+                // localStorage.setItem("category", Number(res.data.data.category_id))
+                // localStorage.setItem("maker", Number(res.data.data.make_id))
+                // localStorage.setItem("model", Number(res.data.data.model_id))
+                // localStorage.setItem("trim", Number(res.data.data.trim))
+                // localStorage.setItem("fuelType", res.data.data.fuel_type)
+                // localStorage.setItem("productionYear", res.data.data.year_of_production)
+                // localStorage.setItem("colour", res.data.data.colour)
+                // localStorage.setItem("transmission", Number(res.data.data.transmission_id))
+                // localStorage.setItem("condition", res.data.data.condition_id)
+                // localStorage.setItem("description", res.data.data.description)
+                // localStorage.setItem("chasisNo", res.data.data.chasis_no)
+                // localStorage.setItem("price", res.data.data.price)
+                // localStorage.setItem("mileage", res.data.data.mileage)
+              // data passed to storage
+              resolve(res.data.data);
+            }
+        })
+        .catch(() => {
+          let message = "Something went wrong!";
+          reject(new Error(message));
+        });
+    });
+}
+
+export async function fetchAllRequiredDataForEdit(id, stateId, modelId, trimId)
+{
+    const theId = Number(id)
+    const theStateId = Number(stateId)
+    const theModelId = Number(modelId)
+    const theTrimId  = Number(trimId)
+
+    console.log({ theId, theStateId, theModelId, theTrimId })
+
+    return new Promise((resolve, reject) => {
+      axios_instance
+        .get(`/ad/advert-api/${theId}/${theStateId}/${theModelId}/${theTrimId}`)
+        .then((res) => {
+          if (res.data.success === 0) 
+            {
+              reject(res.data.message);
+            } else {
+              console.log(res.data.data)
+              resolve(res.data.data);
+            }
         })
         .catch(() => {
           let message = "Something went wrong!";

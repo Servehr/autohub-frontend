@@ -221,7 +221,7 @@ export default function App()
               <Route path="/dashboard/create-advert" element={<CreateAd />} />
               <Route path="/dashboard/change-email" element={<ChangeEmail />} />
               <Route path="/dashboard/change-phone-number" element={<ChangePhoneNumber />} />
-              <Route path="/dashboard/store/:id/edit" element={<EditProduct />} />
+              <Route path="/dashboard/store/:id/edit/:country_id/:make_id/:model_id" element={<EditProduct />} />
               <Route path="/dashboard/chat" element={<Chat />} />
               <Route path="/dashboard/summary" element={<DashboardSummary />} />
               <Route path="/dashboard/courses" element={<Courses />} />

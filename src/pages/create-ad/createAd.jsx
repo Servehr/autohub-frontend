@@ -35,10 +35,13 @@ export default function CreateAd()
 
   const [selectedMaker, setSelectedMaker] = useState(0);
   const [selectedModel, setSelectedModel] = useState(advertState.getTheMakerModels());
-  const [selectedStates, setSelectedStates] = useState(advertState.getTheMakerModels());
-  const [selectedTrim, setSelectedTrim] = useState([advertState.getTheModelTrim()]);
+  const [selectedStates, setSelectedStates] = useState(advertState.getStateModel());
+  const [selectedTrim, setSelectedTrim] = useState(advertState.getTheModelTrim());
   const [noMakerOption, setNoMakerOption] = useState(false);
   const [msg, setMsg] = useState("")
+
+  console.log(selectedModel)
+  console.log(advertState.getTheMakerModels())
   
   const [deleteOpenModal, setDeleteModal] = useState(false)
   const [ deleteUrl, setDeleteUrl] = useState("") 
@@ -68,8 +71,10 @@ export default function CreateAd()
   const [theOthers, setTheOthers] = useState(advertState.getOthers())
   const [theManufacturerName, setTheManufacturerName] = useState(advertState.getTheManufacturerName())
   const [theModelName, setTheModelName] = useState(advertState.getTheModelName())
-  const [selectManufacturer, setTheSelectManufacturer] = useState(true)
+  const [selectManufacturer, setTheSelectManufacturer] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
+
+  console.log(advertState.getStateModel())
 
   console.log({ theManufacturer, theModel, theTrim: advertState.getTrim(), theOthers, theCategory, theState })  
 //   advertState.setTrim(-1)
@@ -106,6 +111,11 @@ export default function CreateAd()
   const [selectedCarModelOption, setCarSelectedModelGroupOption] = useState(false)
   
   const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data", id], () => fetchAllRequiredData(id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
+
+  if(!allRequiredData)
+  {
+     console.log(allRequiredData)
+  }
 
   let submitForm = true
   let processData = false
@@ -163,7 +173,14 @@ export default function CreateAd()
 
   useEffect(() => {
 
-  }, [theManufacturer, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers])
+  }, [theCountry, theFuelType, theMileAge, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers])
+
+  
+  useEffect(() => {
+        advertState.setTheModelTrim([])
+  }, [theManufacturer])
+
+  console.log(selectedTrim)
 
   useEffect(() => {
     // alert("Trying to implement change")
@@ -192,32 +209,39 @@ export default function CreateAd()
         console.log(advertState.getStates())
     }, [selectedOptionOne, selectedOptionTwo])
 
-
+    // model
   const callTellData = (x) => 
   {
         const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
         console.log(filteredTrim)
-        setSelectedTrim(filteredTrim)
+        advertState.setTheModelTrim(filteredTrim)
+        console.log(advertState.getTheModelTrim())
   }
-
+  // country
   const callData = (x) => 
   {
       const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
+      // sorting
+      let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
       console.log(allRequiredData?.state)
       console.log(filteredModel)
-      setSelectedStates(filteredModel)
+      setSelectedStates(sortedProducts)
+      advertState.setStateModel(sortedProducts)
+      setSelectedTrim([])
   }
 
-  
+  // manufacturer
   const tellData = (x) => 
   {
     //   alert(x)
       const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
+      // sorting
+      let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
       console.log(allRequiredData?.model)
-      console.log(filteredModel)
-      setSelectedModel(filteredModel)
-      advertState.setTheMakerModels(filteredModel)
-      console.log(filteredModel)
+      console.log(sortedProducts)
+      setSelectedModel(sortedProducts)
+      advertState.setTheMakerModels(sortedProducts)
+      console.log(sortedProducts)
       console.log(advertState.getTheMakerModels())
       console.log(selectedModel)
   }
@@ -249,7 +273,9 @@ export default function CreateAd()
         
         if(theCountry === "" || theCountry === -1)
         { 
-            setCountryErrorMsg("Kindly Select Country"); submitForm = false; 
+            setCountryErrorMsg("Kindly Select Country"); 
+            submitForm = false; 
+            console.log(theCountry)
         } else {
             setCountryErrorMsg(""); submitForm = true; 
         }
@@ -336,14 +362,6 @@ export default function CreateAd()
             setFuelTypeErrorMsg("")
             submitForm = true
         }
-        if(theMileAge === -1 || theMileAge === "" || theMileAge === null || theMileAge === undefined)
-        {
-            setTheMileAgeError("Kindly Provide your mileage")
-            submitForm = false
-        } else {
-            setTheMileAgeError("")
-            submitForm = true
-        }
 
         //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
@@ -367,6 +385,22 @@ export default function CreateAd()
             submitForm = false
         }
 
+        // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
+
+        // const advertise = 
+        // { 
+        //     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
+        //     colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
+        //     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
+        //     manufacturerName: theManufacturerName, modelName: theModelName, images: "", imagePosition: mainImagePosition, country: theCountry
+        // }
+        // console.log(advertise)
+        // clearProductStore()
+        // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
+        // return false
+        // alert("I got here")
+        
+
         if(submitForm === false)
         {
             setFillForm("Attend to all fields above") 
@@ -388,8 +422,6 @@ export default function CreateAd()
                 {
                     setProcessAdvertAsDraft(false) 
                 }, 2000)
-            } else {
-                processData = true
             }
         } else {
             // return       , mainImage: mainImagePosition       avatar: imagesToSave,      , draft: x
@@ -416,7 +448,7 @@ export default function CreateAd()
                 const firstPayLoad = 
                 { 
                     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-                    colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, trim: theTrim,
+                    colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
                     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
                     manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: theCountry
                 }
@@ -578,6 +610,7 @@ export default function CreateAd()
 
     const clearProductStore = () => 
     {      
+        advertState.setCountry(-1)
         advertState.setStates(-1)
         advertState.setCateg(-1)
         advertState.setMaker(-1)
@@ -596,6 +629,8 @@ export default function CreateAd()
         advertState.setOnEdit('no')
         advertState.setTheModelName("")
         advertState.setTheManufacturerName("")
+        advertState.setMileAge("")
+        advertState.setFuelType(-1)
     }
 
     const selectMultipleFiles = (event) => 
@@ -734,7 +769,7 @@ export default function CreateAd()
                                                                     // alert(e.target.value)
                                                                     if(Number(e.target.value) === -1)
                                                                     {
-                                                                        setTheCountry(advertState.setCountry(-1))
+                                                                        advertState.setCountry(-1)
                                                                         setTheCountry(-1)
                                                                         submitForm = false
                                                                         setCountryErrorMsg("Kindly Select Country")
@@ -752,11 +787,13 @@ export default function CreateAd()
                                                                 {
                                                                     allRequiredData?.countries &&
                                                                     allRequiredData?.countries?.length !== 0 &&
-                                                                    allRequiredData?.countries.map((country) => (
-                                                                        <option key={country.id} value={country.id} selected={country.id === Number(theCountry) ? Number(theCountry) : ""}>
-                                                                            {country.name}
-                                                                        </option>
-                                                                    ))
+                                                                    allRequiredData?.countries.map((country) => {
+                                                                        return (
+                                                                            <option key={country.id} value={country.id} selected={country.id === Number(theCountry) ? Number(theCountry) : ""}>
+                                                                                {country.name}
+                                                                            </option>
+                                                                        )
+                                                                    })
                                                                 }
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -788,16 +825,18 @@ export default function CreateAd()
                                                                                 }
                                                                             }
                                                                         } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                        {  (theCountry === -1) && <option value={-1}> - First Select Country -  </option> }
-                                                                        {  (theCountry != -1) && <option value={-1}> - Select State -  </option> }
+                                                                        {  (Number(theCountry) === -1) && <option value={-1}> - First Select Country - </option> }
+                                                                        {  (Number(theCountry) != -1) && <option value={-1}> - Select State -  </option> }
                                                                         {   
-                                                                            selectedStates &&
-                                                                            selectedStates?.length !== 0 &&
-                                                                            selectedStates.map((state) => (
-                                                                                <option key={state.id} value={state.id} selected={state.country_id === Number(theState) ? Number(theState) : ""}>
-                                                                                    {state.name}
-                                                                                </option>
-                                                                            ))
+                                                                            advertState.getStateModel() && (theCountry != -1) &&
+                                                                            advertState.getStateModel().length !== 0 &&
+                                                                            advertState.getStateModel().map((state) =>  {
+                                                                                return (
+                                                                                    <option key={state.id} value={state.id} selected={state.country_id === theState ? theState : ""}>
+                                                                                        {state.name}
+                                                                                    </option>
+                                                                                )
+                                                                            })
                                                                         }
                                                                     </select>
                                                                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -805,7 +844,7 @@ export default function CreateAd()
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-red-500 font-bold text-sm">{ (theState === -1) ?  stateErrorMsg : "" }</div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (Number(theState) === -1) ?  stateErrorMsg : "" }</div>
                                                         </div>
                                                     </div>
                                                     
@@ -834,11 +873,13 @@ export default function CreateAd()
                                                                 {   
                                                                     allRequiredData?.category &&
                                                                     allRequiredData?.category?.length !== 0 &&
-                                                                    allRequiredData?.category.map((category) => (
-                                                                        <option key={category.id} value={category.id} selected={category.id === Number(theCategory) ? Number(theCategory) : ""}>
-                                                                            {category.name}
-                                                                        </option>
-                                                                    ))
+                                                                    allRequiredData?.category.map((category) => {
+                                                                        return (
+                                                                            <option key={category.id} value={category.id} selected={category.id === Number(theCategory) ? Number(theCategory) : ""}>
+                                                                                {category.name}
+                                                                            </option>
+                                                                        )
+                                                                    })
                                                                 }
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -876,10 +917,15 @@ export default function CreateAd()
                                                                                 advertState.setModel(-1)
                                                                                 setTheModel(-1)
                                                                                 advertState.setTheMakerModels([])
+                                                                                advertState.setTrim(-1)
                                                                                 setTheSelectManufacturer(false)
 
                                                                                 setMakerErrorMsg("Kindly Select Manufacturer")
                                                                                 setNoMakerOption(true)
+
+                                                                                
+                                                                                advertState.setTheModelTrim([])
+                                                                                // setSelectedTrim([])
                                                                                 submitForm = false
                                                                             } else{
                                                                                 setTheOthers("")
@@ -896,15 +942,19 @@ export default function CreateAd()
                                                                                 submitForm = true
                                                                             }
                                                                         }
+                                                                        
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                     { <option value={-1}> - Select Maker -  </option> }
-                                                                    {   allRequiredData?.maker && 
+                                                                    {   
+                                                                        allRequiredData?.maker && 
                                                                         allRequiredData?.maker?.length !== 0 &&
-                                                                        allRequiredData?.maker.map((maker) => (
-                                                                            <option key={maker.id} value={maker.id} selected={maker.id === Number(theManufacturer) ? Number(theManufacturer) : ""}>
-                                                                                {maker.title}
-                                                                            </option>
-                                                                        ))                                                                        
+                                                                        allRequiredData?.maker.map((maker) => {
+                                                                            return (
+                                                                                <option key={maker.id} value={maker.id} selected={maker.id === Number(theManufacturer) ? Number(theManufacturer) : ""}>
+                                                                                    {maker.title}
+                                                                                </option>
+                                                                            )
+                                                                        })                                                                        
                                                                     }
                                                                     <option key={"others"} value={"others"} selected={"others" === theOthers ? theOthers : ""}>
                                                                         Others
@@ -925,14 +975,14 @@ export default function CreateAd()
                                                             <div className="mb-0">
                                                                 <div className="relative">
                                                                     { (theOthers != "others") && <span className="w-full font-bold text-sm">Model</span>}
-                                                                    {   !selectManufacturer && (theOthers != "others") && 
+                                                                    {   (theManufacturer === -1) && (theOthers != "others") && 
                                                                         <select onChange={(e) => {  }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                            {/* { (theManufacturer === "" || theManufacturer === -1) && <option key={-1} value={-1}> - Select Manufacturer First - </option> } */}
-                                                                            { (theManufacturer === -1) && <option key={-1} value={-1}> - Select Manufacturer - </option> }
+                                                                            { (theManufacturer === -1) && <option key={-1} value={-1}> - Select Manufacturer First - </option> }
+                                                                            {/* { (theManufacturer != -1) && <option key={-1} value={-1}> - Select Manufacturer - </option> } */}
                                                                         </select>
                                                                     }
-                                                                    {   !selectedCarModelOption && selectManufacturer && (selectedModel.length === 0 || selectedModel.length > 0) && (theManufacturer === -1) &&
+                                                                    {   !selectedCarModelOption && selectManufacturer && (selectedModel.length === 0) && (theManufacturer === -1) &&
                                                                         (theOthers != "others") &&   
                                                                         <select onChange={(e) =>{ 
                                                                                 advertState.setModel(Number(e.target.value))
@@ -944,43 +994,49 @@ export default function CreateAd()
                                                                             {                                                                                
                                                                                 selectedModel  && !noMakerOption &&
                                                                                 selectedModel?.length != 0 &&
-                                                                                selectedModel.map((model) => (
-                                                                                    <option key={model.code} value={model.id} selected={model.make_id === Number(theModel) ? Number(theModel) : ""}>
-                                                                                        {model.title}
-                                                                                    </option>
-                                                                                ))
+                                                                                selectedModel.map((model) => {
+                                                                                    return (
+                                                                                        <option key={model.code} value={model.id} selected={model.make_id === Number(theModel) ? Number(theModel) : ""}>
+                                                                                            {model.title}
+                                                                                        </option>
+                                                                                    )
+                                                                                })
                                                                             }
                                                                             {/* { (theManufacturer != "") && tellData(theManufacturer) } */}
                                                                             {                                                                                
                                                                                 (theManufacturer === -1) && selectManufacturer && selectedModel  && !noMakerOption &&
                                                                                 selectedModel?.length != 0 &&
-                                                                                selectedModel.map((model) => (
-                                                                                    <option key={model.code} value={model.id} selected={model.make_id === theModel ? theModel : ""}>
-                                                                                        {model.title}
-                                                                                    </option>
-                                                                                ))
+                                                                                selectedModel.map((model) => {
+                                                                                    return (
+                                                                                        <option key={model.code} value={model.id} selected={model.make_id === theModel ? theModel : ""}>
+                                                                                            {model.title}
+                                                                                        </option>
+                                                                                    )
+                                                                                })
                                                                             }
                                                                         </select>
                                                                     }
 
                                                                     
-                                                                    {   !selectedCarModelOption && selectManufacturer && (selectedModel.length > 0) && (theManufacturer != -1) &&
+                                                                    {   (selectedModel.length > 0) && (theManufacturer != -1) &&
                                                                         (theOthers != "others") &&   
                                                                         <select onChange={(e) =>{ 
                                                                                 advertState.setModel(Number(e.target.value))
-                                                                                callTellData(e.target.value)
                                                                                 setTheModel(Number(e.target.value))
+                                                                                callTellData(e.target.value)
                                                                                 console.log(Number(e.target.value))
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             {/* { (theManufacturer != "") && tellData(theManufacturer) } */}
                                                                             <option key={-1} value={-1}> - Select Model - </option>
                                                                             {            
-                                                                                selectedModel.map((model) => (
-                                                                                    <option key={model.code} value={model.id} selected={Number(model.id) === (Number(theModel)) ? (Number(theModel)) : ""}>
-                                                                                        {model.title}
-                                                                                    </option>
-                                                                                ))
+                                                                                selectedModel.map((model) => {
+                                                                                    return (
+                                                                                        <option key={model.code} value={model.id} selected={Number(model.id) === (Number(theModel)) ? (Number(theModel)) : ""}>
+                                                                                            {model.title}
+                                                                                        </option>
+                                                                                    )
+                                                                                })
                                                                             }
                                                                         </select>
                                                                     }
@@ -1010,39 +1066,39 @@ export default function CreateAd()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                <span className="w-full font-bold text-sm">Trim</span>
-                                                                <select onChange={(e) => { 
+                                                                    <span className="w-full font-bold text-sm">Trim</span>
+                                                                    <select onChange={(e) => { 
                                                                         if(Number(e.target.value) === -1)
                                                                         {
-                                                                            advertState.setTheModelTrim(-1)
+                                                                            advertState.setTrim(-1)
                                                                             setTheTrim(-1)
                                                                             submitForm = false
                                                                             setTrimErrorMsg("Kindly Select Trim")
                                                                         } else {
                                                                             // alert(e.target.value)
-                                                                            advertState.setTheModelTrim(Number(e.target.value))
+                                                                            advertState.setTrim(Number(e.target.value))
                                                                             setTheTrim(Number(e.target.value))
                                                                             submitForm = true
                                                                             setTrimErrorMsg("")
                                                                         }
-                                                                } 
-                                                                    } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { (theModel === -1) && <option value={-1}> - First Select Model -  </option> }
-                                                                { (theModel != -1) && selectedTrim?.length != 0 && <option value={-1}> - Select Trim -  </option> }
-                                                                { (theModel != -1) && selectedTrim?.length === 0 && <option value={-1}> - No trim for this model -  </option> }
-                                                                {
-                                                                    selectedTrim &&
-                                                                    selectedTrim?.length !== 0 &&
-                                                                    selectedTrim?.map((trim, index) => (
-                                                                        <option key={index} value={trim.id} selected={Number(trim.id)  === Number(theTrim) ? Number(theTrim) : ""}>
-                                                                          {trim.name}
-                                                                        </option>
-                                                                    ))
-                                                                }
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                                </div>
+                                                                    } 
+                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                    { (theModel === -1) && <option value={-1}> - First Select Model -</option> }    
+                                                                    { (theModel != -1) && (Number(theManufacturer) != -1) && (advertState.getTheModelTrim().length > 0) && <option value={-1}> - Select Trim -  </option> } 
+                                                                    { theModel != -1 && theManufacturer != -1 && advertState.getTheModelTrim().length === 0 && <option value={-1}> - No trim for this model -  </option> }
+                                                                    {
+                                                                        (advertState.getTheModelTrim().length > 0) && advertState.getTheModelTrim().map((trim, index) => {                                                               
+                                                                            return (                                                                                
+                                                                                <option key={index} value={trim.id} selected={Number(trim.id)  === Number(theTrim) ? Number(theTrim) : ""}>
+                                                                                    {trim.name}
+                                                                                </option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                    </select>
+                                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="text-red-500 font-bold text-sm">{ (theTrim === -1  || theTrim === "") ?  trimErrorMsg : "" }</div>
@@ -1076,11 +1132,13 @@ export default function CreateAd()
                                                                 {
                                                                     allRequiredData?.fuel &&
                                                                     allRequiredData?.fuel?.length !== 0 &&
-                                                                    allRequiredData?.fuel.map((fuel) => (
-                                                                        <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
-                                                                            {fuel.name}
-                                                                        </option>
-                                                                    ))
+                                                                    allRequiredData?.fuel.map((fuel) => {
+                                                                        return (
+                                                                            <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
+                                                                                {fuel.name}
+                                                                            </option>
+                                                                        )
+                                                                    })
                                                                 }
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -1158,11 +1216,13 @@ export default function CreateAd()
                                                                 {
                                                                     allRequiredData?.colour &&
                                                                     allRequiredData?.colour?.length !== 0 &&
-                                                                    allRequiredData?.colour.map((colour) => (
-                                                                        <option key={colour.id} value={colour.id} data-id={colour.name} selected={colour.id === Number(theColour) ? Number(theColour) : ""}>
-                                                                            {colour.name}
-                                                                        </option>
-                                                                    ))
+                                                                    allRequiredData?.colour.map((colour) => {
+                                                                        return (
+                                                                            <option key={colour.id} value={colour.id} data-id={colour.name} selected={colour.id === Number(theColour) ? Number(theColour) : ""}>
+                                                                                {colour.name}
+                                                                            </option>
+                                                                        )
+                                                                    })
                                                                 }
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -1197,11 +1257,13 @@ export default function CreateAd()
                                                                 {
                                                                     allRequiredData?.transmission &&
                                                                     allRequiredData?.transmission?.length !== 0 &&
-                                                                    allRequiredData?.transmission.map((transmission) => (
-                                                                        <option key={transmission.id} value={transmission.id} selected={transmission.id === Number(theTransmission) ? Number(theTransmission) : ""}>
-                                                                            {transmission.name}
-                                                                        </option>
-                                                                    ))
+                                                                    allRequiredData?.transmission.map((transmission) => {
+                                                                        return (
+                                                                            <option key={transmission.id} value={transmission.id} selected={transmission.id === Number(theTransmission) ? Number(theTransmission) : ""}>
+                                                                                {transmission.name}
+                                                                            </option>
+                                                                        )
+                                                                    })
                                                                 } 
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
@@ -1258,7 +1320,7 @@ export default function CreateAd()
                                                             <input onKeyUp={(e) => {    
                                                                 advertState.getMileAge(e.target.value)
                                                                 setTheMileAge(e.target.value)} 
-                                                            } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
+                                                            } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
                                                             <div className="text-red-500 font-bold text-sm">{ (theMileAge === "") ?  mileAgeError : "" }</div>
                                                         </div>
                                                     </div>

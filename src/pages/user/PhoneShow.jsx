@@ -34,10 +34,7 @@ export default function PhoneShow({productItem, refetch})
   const [productMessages, setProductMessages] = useState(advertState.getProductComments())
   const [productTitle, setProductTitle] = useState(advertState.getProductTitle())
 
-  const callThatPlace = () => 
-  {
-      Oncli
-  }
+ 
 
   const populateProductStore = (item) => 
   {      
@@ -59,10 +56,10 @@ export default function PhoneShow({productItem, refetch})
         advertState.setAvatar(item?.avatar)
         advertState.setOnEdit('yes')
         console.log("=======================")
-        console.log(advertState.getStates())
+        console.log(item)
         console.log("=======================")
         advertState.setMileAge(item?.mileage)
-        advertState.setFuelType(item?.fuel)
+        advertState.setFuelType(item?.fuel_type)
   }
 
   return (   
@@ -119,7 +116,7 @@ export default function PhoneShow({productItem, refetch})
                                             populateProductStore(productItem)
                                             localStorage.setItem("modelId", productItem.id)
                                             console.log(productItem)
-                                            navigate(`${productItem.id}/edit`)
+                                            navigate(`${productItem.id}/edit/${productItem.country_id}/${productItem.make_id}/${productItem.model_id}`) // stateId, modelId, trimId
                                         }  
                                     }>
                                         <div className="relative flex justify-center items-center">                                              
