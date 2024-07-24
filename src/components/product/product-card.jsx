@@ -157,10 +157,6 @@ export function ProductCard({ data, innerRef }) {
                 <img src={waterM} className="" style={{width: '90px'}} />
             </div>
       </div>
-      
-      <span className="text-xs md:text-sm text-red-600 font-semibold">
-            {data?.country?.name}
-          </span>
 
       <div className="flex flex-col gap-[1px] p-2 px-4 pb-2">
         <p className="font-bold md:text-md text-lg" style={{ fontSize: '16px', color: '#05b52c' }}>
@@ -174,8 +170,8 @@ export function ProductCard({ data, innerRef }) {
         <p className="text-brandRed leading-none">
           <IoLocationSharp size={10} className="inline" />{" "}
           <span className="text-xs md:text-sm text-red-600 font-semibold">
-            {data?.country?.name + ", "}
-            {data?.state?.name} - {data?.country?.name}
+            {(data?.country?.name === undefined) ? "It`s Undefined" : "The Country"}
+            {data?.state?.name}
           </span>
         </p>
       </div>
