@@ -97,7 +97,7 @@ export function ProductCard2({ data }) {
 export function ProductCard({ data, innerRef }) {
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
-  const theCountry = data?.slug?.name;
+  const theCountry = data?.lga?.name;
   console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
   console.log(theCountry)
   console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
