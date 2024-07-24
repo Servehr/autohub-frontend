@@ -97,10 +97,7 @@ export function ProductCard2({ data }) {
 export function ProductCard({ data, innerRef }) {
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
-  const theCountry = data?.lga?.name;
-  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-  console.log(theCountry)
-  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+  console.log(imgUrl)
   const navigate = useNavigate();
   const { data: user } = useUser();
   const { data: watchlist } = useQuery("watchlist", fetchWatchList, {
@@ -170,8 +167,7 @@ export function ProductCard({ data, innerRef }) {
         <p className="text-brandRed leading-none">
           <IoLocationSharp size={10} className="inline" />{" "}
           <span className="text-xs md:text-sm text-red-600 font-semibold">
-            {(data?.country?.name === undefined) ? "It`s Undefined" : "The Country"}
-            {data?.state?.name}
+            {data?.country?.name}
           </span>
         </p>
       </div>
