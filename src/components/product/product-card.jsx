@@ -98,7 +98,9 @@ export function ProductCard({ data, innerRef }) {
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
   const theCountry = data?.country?.name;
-  console.log(imgUrl)
+  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+  console.log(theCountry)
+  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
   const navigate = useNavigate();
   const { data: user } = useUser();
   const { data: watchlist } = useQuery("watchlist", fetchWatchList, {
