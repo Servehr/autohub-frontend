@@ -295,7 +295,7 @@ export default function ProductDetailsPage()
                                     {/* <span className="text-md w-full flex justify-center text-center">{data?.product.detail.user.phoneno}</span> */}
                                 </a>
                             </div>                            
-                            <div className="flex md:col-span-4 sm:hidden xs:hidden bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
+                            {/* <div className="flex md:col-span-4 sm:hidden xs:hidden bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>
@@ -308,7 +308,7 @@ export default function ProductDetailsPage()
                                     }} className="bg-brandGreen rounded-br-md rounded-tr-md w-full px-3 py-2 text-xs justify-center font-bold text-white col-span-6">
                                     <span className="text-sm w-full flex justify-center text-center cursor-pointer">Chat Advertiser</span>
                                 </a>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="w-full mb-5 flex justify-center items-center space-x-10">
