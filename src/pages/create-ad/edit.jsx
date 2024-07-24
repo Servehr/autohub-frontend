@@ -25,6 +25,17 @@ import Header from "@/layouts/header";
 import axios from "axios";
 import { BASE_URL } from "@/lib/axios";
 
+
+function randomNumber()
+{
+    return Math.floor(Math.random() * 19453 * 86559)
+}
+
+function randomNumb()
+{
+    return Math.floor(Math.random() * 89874212 * 4958685)
+}
+
 export default function EditProduct() 
 {
   const navigate = useNavigate();
@@ -32,6 +43,10 @@ export default function EditProduct()
   const { country_id } = useParams();
   const { make_id } = useParams();
   const { model_id } = useParams();
+  const a = randomNumber()
+  const b = randomNumb()
+
+//   alert(a)
 
   
   const advertState = appStore((state) => state)
@@ -87,9 +102,14 @@ export default function EditProduct()
   const [formValid, setFormValid] = useState("no")
   const [fillForm, setFillForm] = useState("")
 
+  const [chooseAnotherState, setChooseAnotherState] = useState(false)
+  const [chooseAnotherModel, setChooseAnotherModel] = useState(false)
+  const [chooseAnotherTrim, setChooseAnotherTrim] = useState(false)
+  const [changingTrim, setChangingTrim] = useState(0)
+
   console.log({id, country_id, make_id, model_id})
   
-  const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data"], () => fetchAllRequiredDataForEdit(id, country_id, make_id, model_id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
+  const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery([`required-data-${id}${country_id}${make_id}${model_id}`], () => fetchAllRequiredDataForEdit(id, country_id, make_id, model_id), { refetchOnWindowFocus: false, retry: 2 });
 
   if(!isRequiredDataLoading)
   {
@@ -98,7 +118,7 @@ export default function EditProduct()
   console.log(advertState.getStateModel())
   useEffect(() => 
   {
-        clearProductStore()
+        // clearProductStore()
         // save data to session
             // advertState.setCountry(localStorage.getItem("country"))
             // advertState.setStates(localStorage.getItem("state"))
@@ -145,13 +165,20 @@ export default function EditProduct()
 
   useEffect(() => {
 
-  }, [theCountry, theFuelType, theMileAge, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition])
+  }, [theCountry, theFuelType, theMileAge, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, selectedTrim])
 
     // model
   const callTellData = (x) => 
   {
         const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
         console.log(filteredTrim)
+        console.log(filteredTrim.length)
+        if(filteredTrim.length > 0)
+        {
+            setChangingTrim(filteredTrim.length)
+        } else {
+            setChangingTrim(0)
+        }
         advertState.setTheModelTrim(filteredTrim)
         console.log(advertState.getTheModelTrim())
   }
@@ -238,33 +265,67 @@ export default function EditProduct()
 
   const updateAdvertDetail = () => 
   {
+
+    let submitForm = true
+    
+    if(theState === "" || theState === -1)
+    { 
+       setStateErrorMsg("Kindly Select State"); submitForm = false; 
+    } else {
+       setStateErrorMsg(""); submitForm = true; 
+    }
+    
+    if(theModel === -1){ 
+       setModelErrorMsg("Kindly Select Model")
+       submitForm = false
+    } else {
+       setModelErrorMsg("")
+       submitForm = true;
+    }
+
+    if(theTrim === -1 || theTrim === "")
+    {
+        setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
+    } else {
+        setTrimErrorMsg(""); submitForm = true;
+    }
+
       setLoading(true)
       const advertDetail = { 
                                 state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-                                colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, 
-                                chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: theFuel, country: theCountry
+                                colour: Number(theColour), transmission: theTransmission, condition: Number(theCondition), trim: theTrim, description: theDescription, 
+                                chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: Number(theFuelType), 
+                                country: theCountry
                             }   
+    
     console.log(advertDetail)
-    updateAds(advertDetail)
-      .then((res) => {
-            setError(false)
-            setLoading(false);
-            console.log(res)
-            setIsSuccess(res.message)
-            clearProductStore()
-            setSuccessModal(true)            
-            setTimeout(() => {
-                advertState.setRefresh(Math.random())
-                setSuccessModal(false)
-                navigate('/dashboard/store')
-            }, 2000)
-      })
-      .catch((err) => {
-        setIsSuccess("")
-        console.log(err)
-        setLoading(false);
-        setError(`${err}`);
-      });
+
+    if(submitForm === true)
+    {
+        updateAds(advertDetail)
+        .then((res) => {
+              setError(false)
+              setLoading(false);
+              console.log(res)
+              setIsSuccess(res.message)
+              clearProductStore()
+              setSuccessModal(true)            
+              setTimeout(() => {
+                  advertState.setRefresh(Math.random())
+                  setSuccessModal(false)
+                  navigate('/dashboard/store')
+              }, 2000)
+        })
+        .catch((err) => {
+          setIsSuccess("")
+          console.log(err)
+          setLoading(false);
+          setError(`${err}`);
+        });
+    } else {
+        console.log("Something went wrong")
+    }
+    
   }
 
 
@@ -300,71 +361,60 @@ export default function EditProduct()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                <span className="w-full font-bold text-sm">Country</span>
-                                                                <select onChange={(e) => { 
-                                                                    // alert(e.target.value)
-                                                                    if(Number(e.target.value) === -1)
-                                                                    {
-                                                                        advertState.setCountry(-1)
-                                                                        setTheCountry(-1)
-                                                                        
-                                                                        setCountryErrorMsg("Kindly Select Country")
-                                                                    } else {
+                                                                <span className="w-full font-bold text-sm">Country {allRequiredData?.userProductDetail?.country_id}</span>
+                                                                <select onChange={(e) => 
+                                                                    { 
                                                                         advertState.setCountry(Number(e.target.value))
                                                                         setTheCountry(Number(e.target.value))
                                                                         callData(e.target.value)
-                                                                        
-                                                                        setCountryErrorMsg("")
+                                                                        setChooseAnotherState(true) 
+                                                                        setTheState(-1)
+                                                                        advertState.setStates(-1)
+                                                                    } 
+                                                                    } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                    {/* { <option value={-1}> - Select Country -  </option> } */}
+                                                                    {
+                                                                        allRequiredData?.countries &&
+                                                                        allRequiredData?.countries?.length !== 0 &&
+                                                                        allRequiredData?.countries.map((country) => {
+                                                                            return (
+                                                                                <option key={country.id} value={country.id} selected={country.id === allRequiredData?.userProductDetail?.country_id ? allRequiredData?.userProductDetail?.country_id : ""}>
+                                                                                    {country.name}
+                                                                                </option>
+                                                                            )
+                                                                        })
                                                                     }
-                                                                    // setTheTrim(e.target.value)
-                                                                } 
-                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Country -  </option> }
-                                                                {
-                                                                    allRequiredData?.countries &&
-                                                                    allRequiredData?.countries?.length !== 0 &&
-                                                                    allRequiredData?.countries.map((country) => {
-                                                                        return (
-                                                                            <option key={country.id} value={country.id} selected={country.id === Number(theCountry) ? Number(theCountry) : ""}>
-                                                                                {country.name}
-                                                                            </option>
-                                                                        )
-                                                                    })
-                                                                }
                                                                 </select>
                                                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
                                                                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                                                 </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-red-500 font-bold text-sm">{ (theCountry === -1) ?  countryErrorMsg : "" }</div>
+                                                            {/* <div className="text-red-500 font-bold text-sm">{ (theCountry === -1) ?  countryErrorMsg : "" }</div> */}
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                    <span className="w-full font-bold text-sm">Select State</span>
+                                                                    <span className="w-full font-bold text-sm">Select State {typeof allRequiredData?.userProductDetail?.state_id}</span>
                                                                     <select onChange={
                                                                             (e) => {
                                                                                 if(Number(e.target.value) === -1)
                                                                                 {
                                                                                     setTheState(-1)
-                                                                                    advertState.setStates(-1)
-                                                                                    
+                                                                                    advertState.setStates(-1)                                                                                    
                                                                                     setStateErrorMsg("Kindly Select State")
                                                                                 } else {
                                                                                     console.log(e.target.value)
                                                                                     advertState.setStates(Number(e.target.value))
                                                                                     console.log(advertState.getStates())
-                                                                                    setTheState(Number(e.target.value))
-                                                                                    
+                                                                                    setTheState(Number(e.target.value))                                                                                    
                                                                                     setStateErrorMsg("")
                                                                                 }
                                                                             }
                                                                         } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                        {/* {  (Number(theCountry) === -1) && <option value={-1}> - First Select Country - {theCountry} + {theCategory} </option> }
-                                                                        {  (Number(theCountry) != -1) && <option value={-1}> - Select State -  </option> }
-                                                                        {   
-                                                                            advertState.getStateModel() && (theCountry != -1) &&
+                                                                        <option value={-1}> - Select State -  </option>
+                                                                        {   chooseAnotherState &&   
+                                                                            advertState.getStateModel() &&
                                                                             advertState.getStateModel().length !== 0 &&
                                                                             advertState.getStateModel().map((state) =>  {
                                                                                 return (
@@ -373,11 +423,11 @@ export default function EditProduct()
                                                                                     </option>
                                                                                 )
                                                                             })
-                                                                        } */}
-                                                                        {
+                                                                        }
+                                                                        {   !chooseAnotherState &&
                                                                             allRequiredData?.user_state?.map((state) =>  {
                                                                                 return (
-                                                                                    <option key={state.id} value={state.id} selected={state.country_id === Number(theState) ? theState : ""}>
+                                                                                    <option key={state.id} value={state.id} selected={state.id === allRequiredData?.userProductDetail?.state_id ? allRequiredData?.userProductDetail?.state_id: ""}>
                                                                                         {state.name}
                                                                                     </option>
                                                                                 )
@@ -403,24 +453,22 @@ export default function EditProduct()
                                                                             if(Number(e.target.value) === -1)
                                                                             {
                                                                                 advertState.setCateg(-1)
-                                                                                setTheCategory(-1)
-                                                                                
+                                                                                setTheCategory(-1)                                                                                
                                                                                 setCategoryErrorMsg("Kindly Select Category")
                                                                             } else {
                                                                                 advertState.setCateg(Number(e.target.value))
-                                                                                setTheCategory(Number(e.target.value))
-                                                                                
+                                                                                setTheCategory(Number(e.target.value))                                                                                
                                                                                 setCategoryErrorMsg("")
                                                                             }
                                                                         }
                                                                 } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Category -  </option> }
+                                                                {/* { <option value={-1}> - Select Category -  </option> } */}
                                                                 {   
                                                                     allRequiredData?.category &&
                                                                     allRequiredData?.category?.length !== 0 &&
                                                                     allRequiredData?.category.map((category) => {
                                                                         return (
-                                                                            <option key={category.id} value={category.id} selected={category.id === Number(theCategory) ? Number(theCategory) : ""}>
+                                                                            <option key={category.id} value={category.id} selected={category.id === allRequiredData?.userProductDetail?.category_id ? allRequiredData?.userProductDetail?.category_id: ""}>
                                                                                 {category.name}
                                                                             </option>
                                                                         )
@@ -440,44 +488,32 @@ export default function EditProduct()
                                                                 <span className="w-full font-bold text-sm">Manufacturer</span>
                                                                 <select onChange={
                                                                     (e) => {    
-                                                                            if(Number(e.target.value) === -1)
-                                                                            {
-                                                                                setTheManufacturer(-1)                                                                                
-                                                                                advertState.setMaker(-1)
-                                                                                advertState.setOthers(-1)
-                                                                                setTheOthers(-1)
-                                                                                setCarSelectedModelGroupOption(false)
-                                                                                advertState.setModel(-1)
-                                                                                setTheModel(-1)
-                                                                                advertState.setTheMakerModels([])
-                                                                                advertState.setTrim(-1)
-                                                                                setTheSelectManufacturer(false)
+                                                                            setTheSelectManufacturer(true)
+                                                                            setTheManufacturer(Number(e.target.value))
+                                                                            advertState.setMaker(Number(e.target.value))
+                                                                            setChooseAnotherModel(true)
+                                                                            advertState.setTheModelTrim([])
 
-                                                                                setMakerErrorMsg("Kindly Select Manufacturer")
-                                                                                setNoMakerOption(true)
+                                                                            advertState.setTrim(-1)
+                                                                            setTheTrim(-1)
 
-                                                                                advertState.setTheModelTrim([])
-                                                                                
-                                                                            } else {
-                                                                                advertState.setMaker(Number(e.target.value))
-                                                                                setTheSelectManufacturer(true)
-                                                                                setTheManufacturer(Number(e.target.value))
-                                                                                setSelectedMaker(Number(e.target.value))
-                                                                                setCarSelectedModelGroupOption(false)
-                                                                                tellData(e.target.value) 
-                                                                                setNoMakerOption(false)
-                                                                                
-                                                                            }
-                                                                        }
-                                                                        
+                                                                            advertState.setModel(-1)
+                                                                            setTheModel(-1)
+                                                                            
+                                                                            setChangingTrim(true)
+                                                                            tellData(e.target.value) 
+                                                                            // setNoMakerOption(false)
+                                                                            // setSelectedMaker(Number(e.target.value))
+                                                                            // setCarSelectedModelGroupOption(false)
+                                                                        }                                                                        
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                    { <option value={-1}> - Select Maker -  </option> }
-                                                                    {   
+                                                                    {/* { <option value={-1}> - Select Manufacturer -  </option> } */}
+                                                                    { 
                                                                         allRequiredData?.maker && 
                                                                         allRequiredData?.maker?.length !== 0 &&
                                                                         allRequiredData?.maker.map((maker) => {
                                                                             return (
-                                                                                <option key={maker.id} value={maker.id} selected={maker.id === Number(theManufacturer) ? Number(theManufacturer) : ""}>
+                                                                                <option key={maker.id} value={maker.id} selected={maker.id === allRequiredData?.userProductDetail?.make_id ? allRequiredData?.userProductDetail?.make_id: ""}>
                                                                                     {maker.title}
                                                                                 </option>
                                                                             )
@@ -489,7 +525,7 @@ export default function EditProduct()
                                                                 </div>
                                                                 </div>
                                                             </div>                                                            
-                                                            <div className="text-red-500 font-bold text-sm">{ (theManufacturer === -1) ?  makerErrorMsg : "" }</div>
+                                                            {/* <div className="text-red-500 font-bold text-sm">{ (theManufacturer === -1) ?  makerErrorMsg : "" }</div> */}
                                                         </div>
                                                     </div>
                                                     
@@ -539,7 +575,7 @@ export default function EditProduct()
                                                                     } */}
 
                                                                     
-                                                                    {/* {   (selectedModel.length > 0) && (theManufacturer != -1) &&
+                                                                    {   chooseAnotherModel && (selectedModel.length > 0) &&
                                                                         <select onChange={(e) =>{ 
                                                                                 advertState.setModel(Number(e.target.value))
                                                                                 setTheModel(Number(e.target.value))
@@ -558,21 +594,29 @@ export default function EditProduct()
                                                                                 })
                                                                             }
                                                                         </select>
-                                                                    } */}
+                                                                    }
 
-                                                                    {   
-                                                                        <select onChange={(e) =>{ 
-                                                                                advertState.setModel(Number(e.target.value))
-                                                                                setTheModel(Number(e.target.value))
-                                                                                callTellData(e.target.value)
-                                                                                console.log(Number(e.target.value))
+                                                                    {   !chooseAnotherModel &&
+                                                                        <select onChange={(e) => {
+                                                                                if(Number(e.target.value) === -1)
+                                                                                {
+                                                                                    advertState.setModel(-1)
+                                                                                    setTheModel(-1)                                                                            
+                                                                                    setModelErrorMsg("Kindly Select Model")
+                                                                                } else {
+                                                                                    advertState.setModel(Number(e.target.value))
+                                                                                    setTheModel(Number(e.target.value))
+                                                                                    callTellData(e.target.value)
+                                                                                    console.log(Number(e.target.value))
+                                                                                    setChooseAnotherTrim(true)
+                                                                                }
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             <option key={-1} value={-1}> - Select Model - </option>
                                                                             {                                                                                
                                                                                 allRequiredData?.user_model?.map((model) => {
                                                                                     return (
-                                                                                        <option key={model.code} value={model.id} selected={model.make_id === theModel ? theModel : ""}>
+                                                                                        <option key={model.code} value={model.id} selected={model.id === allRequiredData?.userProductDetail?.model_id ? allRequiredData?.userProductDetail?.model_id: ""}>
                                                                                             {model.title}
                                                                                         </option>
                                                                                     )
@@ -591,39 +635,39 @@ export default function EditProduct()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                    <span className="w-full font-bold text-sm">Trim</span>
+                                                                    <span className="w-full font-bold text-sm">{advertState.getTheModelTrim().length} Trim{(advertState.getTheModelTrim().length) > 1 ? "s" : "" }</span>
                                                                     <select onChange={(e) => { 
                                                                         if(Number(e.target.value) === -1)
                                                                         {
                                                                             advertState.setTrim(-1)
-                                                                            setTheTrim(-1)
-                                                                            
+                                                                            setTheTrim(-1)                                                                            
                                                                             setTrimErrorMsg("Kindly Select Trim")
                                                                         } else {
                                                                             // alert(e.target.value)
                                                                             advertState.setTrim(Number(e.target.value))
-                                                                            setTheTrim(Number(e.target.value))
-                                                                            
+                                                                            setTheTrim(Number(e.target.value))                                                                            
                                                                             setTrimErrorMsg("")
                                                                         }
                                                                     } 
                                                                 } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                    {/* { (theModel === -1) && <option value={-1}> - First Select Model -</option> }     */}
+                                                                    { chooseAnotherModel && (changingTrim === 0) && <option value={-1}> - No trim for this model - </option> }
+                                                                    { chooseAnotherModel && (changingTrim > 0) && <option value={-1}> - Select Trim  -</option> }
                                                                     {/* { (theModel != -1) && (Number(theManufacturer) != -1) && (advertState.getTheModelTrim().length > 0) && <option value={-1}> - Select Trim -  </option> }  */}
                                                                     {/* { theModel != -1 && theManufacturer != -1 && advertState.getTheModelTrim().length === 0 && <option value={-1}> - No trim for this model -  </option> } */}
-                                                                    {/* {
-                                                                        (advertState.getTheModelTrim().length > 0) && advertState.getTheModelTrim().map((trim, index) => {                                                               
+                                                                    {
+                                                                        (advertState.getTheModelTrim().length > 0) &&
+                                                                        advertState.getTheModelTrim().map((trim, index) => {                                                               
                                                                             return (                                                                                
                                                                                 <option key={index} value={trim.id} selected={Number(trim.id)  === Number(theTrim) ? Number(theTrim) : ""}>
                                                                                     {trim.name}
                                                                                 </option>
                                                                             )
                                                                         })
-                                                                    } */}
-                                                                    {
+                                                                    }
+                                                                    {   advertState.getTheMakerModels().length === 0 &&
                                                                         allRequiredData?.user_trim?.map((trim, index) => {                                                               
                                                                             return (                                                                                
-                                                                                <option key={index} value={trim.id} selected={Number(trim.id)  === Number(theTrim) ? Number(theTrim) : ""}>
+                                                                                <option key={index} value={trim.id} selected={Number(trim.id)  === allRequiredData?.userProductDetail?.trim ? allRequiredData?.userProductDetail?.trim: ""}>
                                                                                     {trim.name}
                                                                                 </option>
                                                                             )
@@ -635,7 +679,7 @@ export default function EditProduct()
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-red-500 font-bold text-sm">{ (theTrim === -1  || theTrim === "") ?  trimErrorMsg : "" }</div>
+                                                            <div className="text-red-500 font-bold text-sm">{ (theModel === -1  || theModel === "") ?  modelErrorMsg : "" }</div>
                                                         </div>
                                                     </div>
                                                     {/* Fuel Type  */}
@@ -662,13 +706,13 @@ export default function EditProduct()
                                                                         }
                                                                     } 
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Fuel -  </option> }
+                                                                {/* { <option value={-1}> - Select Fuel -  </option> } */}
                                                                 {
                                                                     allRequiredData?.fuel &&
                                                                     allRequiredData?.fuel?.length !== 0 &&
                                                                     allRequiredData?.fuel.map((fuel) => {
                                                                         return (
-                                                                            <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
+                                                                            <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(allRequiredData?.userProductDetail?.fuel_type) ? Number(allRequiredData?.userProductDetail?.fuel_type) : ""}>
                                                                                 {fuel.name}
                                                                             </option>
                                                                         )
@@ -692,23 +736,21 @@ export default function EditProduct()
                                                                         if(Number(e.target.value) === -1)
                                                                         {
                                                                             advertState.setYearOfPoduction(-1)
-                                                                            setTheProductionYear(-1)
-                                                                            
+                                                                            setTheProductionYear(-1)                                                                            
                                                                             setProductionYearErrorMsg("Kindly Select Production Year")
                                                                         } else {
                                                                             advertState.setYearOfPoduction(Number(e.target.value))
-                                                                            setTheProductionYear(Number(e.target.value))
-                                                                            
+                                                                            setTheProductionYear(Number(e.target.value))                                                                            
                                                                             setProductionYearErrorMsg("")
                                                                         }
                                                                 } 
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Year -  </option> }
+                                                                {/* { <option value={-1}> - Select Year -  </option> } */}
                                                                 {
                                                                     years &&
                                                                     years?.length !== 0 &&
                                                                     years.map((year) => (
-                                                                        <option key={year} value={year} selected={Number(year)  === Number(theProductionYear) ? Number(theProductionYear) : ""}>
+                                                                        <option key={year} value={year} selected={Number(year)  === Number(allRequiredData?.userProductDetail?.year_of_production) ? Number(allRequiredData?.userProductDetail?.year_of_production) : ""}>
                                                                           {year}
                                                                         </option>
                                                                     ))
@@ -735,24 +777,22 @@ export default function EditProduct()
                                                                         if(Number(e.target.value) === -1)
                                                                         {
                                                                             advertState.setColour(-1)
-                                                                            setTheColour(-1)
-                                                                            
+                                                                            setTheColour(-1)                                                                            
                                                                             setColorErrorMsg("Kindly Select Colour")
                                                                         } else {
                                                                             advertState.setColour(Number(e.target.value))
-                                                                            setTheColour(Number(e.target.value))
-                                                                            
+                                                                            setTheColour(Number(e.target.value))                                                                            
                                                                             setColorErrorMsg("")
                                                                         }
                                                                     } 
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Colour -  </option> }
+                                                                {/* { <option value={-1}> - Select Colour -  </option> } */}
                                                                 {
                                                                     allRequiredData?.colour &&
                                                                     allRequiredData?.colour?.length !== 0 &&
                                                                     allRequiredData?.colour.map((colour) => {
                                                                         return (
-                                                                            <option key={colour.id} value={colour.id} data-id={colour.name} selected={colour.id === Number(theColour) ? Number(theColour) : ""}>
+                                                                            <option key={colour.id} value={colour.id} data-id={colour.name} selected={Number(colour.id) === Number(allRequiredData?.userProductDetail?.colour) ? Number(allRequiredData?.userProductDetail?.colour) : ""}>
                                                                                 {colour.name}
                                                                             </option>
                                                                         )
@@ -776,24 +816,22 @@ export default function EditProduct()
                                                                         if(Number(e.target.value) === -1)
                                                                         {
                                                                             advertState.setTransmission(-1)
-                                                                            setTheTransmission(-1)
-                                                                            
+                                                                            setTheTransmission(-1)                                                                            
                                                                             setTransmissionErrorMsg("Kindly Select Transmission")
                                                                         } else {
                                                                             advertState.setTransmission(Number(e.target.value))
-                                                                            setTheTransmission(Number(e.target.value))
-                                                                            
+                                                                            setTheTransmission(Number(e.target.value))                                                                            
                                                                             setTransmissionErrorMsg("")
                                                                         }
                                                                     } 
                                                                     } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Transmission -  </option> }
+                                                                {/* { <option value={-1}> - Select Transmission -  </option> } */}
                                                                 {
                                                                     allRequiredData?.transmission &&
                                                                     allRequiredData?.transmission?.length !== 0 &&
                                                                     allRequiredData?.transmission.map((transmission) => {
                                                                         return (
-                                                                            <option key={transmission.id} value={transmission.id} selected={transmission.id === Number(theTransmission) ? Number(theTransmission) : ""}>
+                                                                            <option key={transmission.id} value={transmission.id} selected={transmission.id === Number(allRequiredData?.userProductDetail?.transmission_id) ? Number(allRequiredData?.userProductDetail?.transmission_id) : ""}>
                                                                                 {transmission.name}
                                                                             </option>
                                                                         )
@@ -820,23 +858,21 @@ export default function EditProduct()
                                                                             if(Number(e.target.value) === -1)
                                                                             {
                                                                                 advertState.setCondition(-1)
-                                                                                setTheCondition(-1)
-                                                                                
+                                                                                setTheCondition(-1)                                                                                
                                                                                 setConditionErrorMsg("Kindly Select Condition")
                                                                             } else {
                                                                                 advertState.setCondition(Number(e.target.value))
-                                                                                setTheCondition(Number(e.target.value))
-                                                                                
+                                                                                setTheCondition(Number(e.target.value))                                                                                
                                                                                 setConditionErrorMsg("")
                                                                             }
                                                                         }
                                                                         } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                    { <option value={-1}> - Select Condition -  </option> }
+                                                                    {/* { <option value={-1}> - Select Condition -  </option> } */}
                                                                     {
                                                                         allRequiredData?.condition &&
                                                                         allRequiredData?.condition?.length !== 0 &&
                                                                         allRequiredData?.condition.map((condition) => (
-                                                                            <option key={condition.id} value={condition.id} selected={condition.id === Number(theCondition) ? Number(theCondition) : ""}>
+                                                                            <option key={condition.id} value={condition.id} selected={condition.id === Number(allRequiredData?.userProductDetail?.condition_id) ? Number(allRequiredData?.userProductDetail?.condition_id) : ""}>
                                                                                 {condition.name}
                                                                             </option>
                                                                         ))
@@ -851,17 +887,19 @@ export default function EditProduct()
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">MileAge</span>
-                                                            <input onKeyUp={(e) => {    
+                                                            <input 
+                                                                defaultValue={allRequiredData?.userProductDetail?.mileage}
+                                                                onKeyUp={(e) => {    
                                                                 advertState.getMileAge(e.target.value)
                                                                 setTheMileAge(e.target.value)} 
-                                                            } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
+                                                            } type="number" id="price" name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
                                                             <div className="text-red-500 font-bold text-sm">{ (theMileAge === "") ?  mileAgeError : "" }</div>
                                                         </div>
                                                     </div>
 
                                                     <div className="flex flex-wrap -m-2 mt-5 md:mb-10 mb-20 p-2">
                                                         <span className="w-full font-bold text-sm">Description</span>
-                                                        <ReactQuill theme="snow" defaultValue={value} onChange={setValue} className="w-full h-[150px]" modules={modules} />
+                                                        <ReactQuill theme="snow" defaultValue={allRequiredData?.userProductDetail?.description} onChange={setValue} className="w-full h-[150px]" modules={modules} />
                                                         
                                                         {/* <textarea onChange={(e) => { 
                                                                 advertState.setDescription(e.target.value)
@@ -880,14 +918,14 @@ export default function EditProduct()
                                                             <input onBlur={(e) => {
                                                                 advertState.setChasisNumber(e.target.value)
                                                                 setTheChasisNo(e.target.value)
-                                                            }} type="text" id="vin" defaultValue={theChasisNo}  name="vin" placeholder="VIN chasis number (Optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                            }} type="text" id="vin" defaultValue={allRequiredData?.userProductDetail?.chasis_no}  name="vin" placeholder="VIN chasis number (Optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Price</span>
                                                             <input onKeyUp={(e) => {    
                                                                 advertState.setPrice(e.target.value)
                                                                 setThePrice(e.target.value)} 
-                                                            } type="text" id="price" defaultValue={thePrice} name="price" placeholder="Price (₦)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
+                                                            } type="text" id="price" defaultValue={allRequiredData?.userProductDetail?.price} name="price" placeholder="Price (₦)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
                                                             <div className="text-red-500 font-bold text-sm">{ (thePrice === "") ?  priceErrorMsg : "" }</div>
                                                         </div>
                                                     </div>

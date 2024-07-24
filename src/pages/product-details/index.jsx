@@ -278,7 +278,7 @@ export default function ProductDetailsPage()
                         </div>
 
                         <div className="grid md:grid-cols-12 grid-cols-12 gap-5 md:-mb-8 py-4">
-                            <div className="flex md:col-span-4 col-span-12 -mb-1 md:mb-0 w-full rounded-md">
+                            <div className="flex md:col-span-6 col-span-12 -mb-1 md:mb-0 w-full rounded-md">
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>
@@ -286,7 +286,7 @@ export default function ProductDetailsPage()
                                     <span className="text-sm w-full flex justify-center text-center">Advertiser</span>
                                 </a>
                             </div>
-                            <div className="flex md:col-span-4 col-span-12 bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
+                            <div className="flex md:col-span-6 col-span-12 bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>
@@ -295,7 +295,7 @@ export default function ProductDetailsPage()
                                     {/* <span className="text-md w-full flex justify-center text-center">{data?.product.detail.user.phoneno}</span> */}
                                 </a>
                             </div>                            
-                            <div className="flex md:col-span-4 col-span-12 bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
+                            <div className="flex md:col-span-4 sm:hidden xs:hidden bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>

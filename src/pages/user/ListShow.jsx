@@ -126,8 +126,10 @@ export default function ListShow({productItem, refetch})
           <div className="col-span-3 items-center justify-center mx-2"> 
               <div className="flex gap-2" onClick={() => { 
                     populateProductStore(productItem)
-                    localStorage.setItem("modelId", productItem.id)
+                    // localStorage.setItem("modelId", productItem.id)
+                    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                     console.log(productItem)
+                    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                     navigate(`${productItem.id}/edit/${productItem.country_id}/${productItem.make_id}/${productItem.model_id}`) // stateId, modelId, trimId
                   }  
               }>

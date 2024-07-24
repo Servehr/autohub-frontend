@@ -114,7 +114,7 @@ export default function PhoneShow({productItem, refetch})
                     <div className="col-span-2"> 
                                     <div className="flex gap-2" onClick={() => { 
                                             populateProductStore(productItem)
-                                            localStorage.setItem("modelId", productItem.id)
+                                            // localStorage.setItem("modelId", productItem.id)
                                             console.log(productItem)
                                             navigate(`${productItem.id}/edit/${productItem.country_id}/${productItem.make_id}/${productItem.model_id}`) // stateId, modelId, trimId
                                         }  
