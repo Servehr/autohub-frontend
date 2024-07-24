@@ -170,7 +170,7 @@ export function ProductCard({ data, innerRef }) {
         <p className="text-brandRed leading-none">
           <IoLocationSharp size={10} className="inline" />{" "}
           <span className="text-xs md:text-sm text-red-600 font-semibold">
-            {(data?.country?.name === undefined) ? "It`s Undefined" : "The Country"}
+            {/* {(data?.country?.name === undefined) ? "It`s Undefined" : "The Country"} */}
             {data?.state?.name}
           </span>
         </p>
