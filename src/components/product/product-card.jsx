@@ -156,7 +156,7 @@ export function ProductCard({ data, innerRef }) {
       </div>
 
       <div className="flex flex-col gap-[1px] p-2 px-4 pb-2">
-        <p className="font-bold md:text-base" style={{ fontSize: '12px', color: '#05b52c' }}>
+        <p className="font-bold md:text-md text-lg" style={{ fontSize: '16px', color: '#05b52c' }}>
           {data?.title}
         </p>
 

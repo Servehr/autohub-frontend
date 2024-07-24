@@ -74,7 +74,7 @@ export default function Pagination({onClick, perPageNo, currentPageNo, noOfPages
     console.log(increase)
     const after= increase.map((num, index) => 
     {
-          if(num !== currentPage && currentPage >= 1)
+          if(num != currentPage && currentPage >= 1)
           {
               if(parseInt(pages) >= num)
               {
