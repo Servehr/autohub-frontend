@@ -97,6 +97,7 @@ export function ProductCard2({ data }) {
 export function ProductCard({ data, innerRef }) {
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
+  const theCountry = data?.country?.name;
   console.log(imgUrl)
   const navigate = useNavigate();
   const { data: user } = useUser();
@@ -167,7 +168,7 @@ export function ProductCard({ data, innerRef }) {
         <p className="text-brandRed leading-none">
           <IoLocationSharp size={10} className="inline" />{" "}
           <span className="text-xs md:text-sm text-red-600 font-semibold">
-            {data?.lga?.name + ", "}
+            {theCountry + ", "}
             {data?.state?.name}
           </span>
         </p>
