@@ -453,7 +453,12 @@ export default function CreateAd()
                     manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: theCountry
                 }
                 console.log(firstPayLoad)
+                
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                console.log("33333")
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
                 // return false
+
                 await axios.post(`${BASE_URL}ad/create-ad`, firstPayLoad, {
                         headers: {
                                 'Content-Type': 'multipart/form-data',
@@ -1475,14 +1480,18 @@ export default function CreateAd()
                                                             setProcessAdvert(true)
                                                             advertState.setProcessAdvert(true)
                                                             savePost('no')
-                                                        }} className="bg-brandGreen text-white font-semibold px-4 py-3 rounded disabled:bg-brandDarkGray" style={{backgroundColor: "#1e3a8a"}}>
+                                                        }} className="bg-brandGreen text-white font-semibold px-4 py-3 rounded disabled:bg-brandDarkGray"
+                                                        disabled={processAdvert}
+                                                        style={{backgroundColor: "#1e3a8a"}}>
                                                             { processAdvert ? <BeatLoader size={10} color="#fff" /> : "Upload Ad"}
                                                         </button>
                                                         <button onClick={() => {
                                                             advertState.setProcessAdvertAsDraft(true)
                                                             setProcessAdvertAsDraft(true)
                                                             savePost('yes')
-                                                        }} className="bg-brandGreen text-white font-semibold px-4 py-3 rounded disabled:bg-brandDarkGray" style={{backgroundColor: "#1e3a8a"}}>
+                                                        }} className="bg-brandGreen text-white font-semibold px-4 py-3 rounded disabled:bg-brandDarkGray"
+                                                        disabled={processAdvertAsDetail} 
+                                                        style={{backgroundColor: "#1e3a8a"}}>
                                                             { processAdvertAsDetail ? <BeatLoader size={10} color="#fff" /> : "Save As Draft"}
                                                         </button>
                                                     </div>
