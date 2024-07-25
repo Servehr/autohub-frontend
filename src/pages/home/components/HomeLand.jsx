@@ -3,7 +3,7 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import categories from "@/constant/categories";
 import { useLocation } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
-import { fetchByCategory, allProductsUploaded } from "@/apis/ads";
+import { fetchByCategory, allProductsUploaded, allProduct } from "@/apis/ads";
 import { Loader } from "@/App";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
@@ -25,7 +25,7 @@ export default function HomeLand()
   console.log("Home Land")
 
   const {
-    data,
+    data: allProduct,
     isSuccess,
     hasNextPage,
     fetchNextPage,
@@ -47,7 +47,7 @@ export default function HomeLand()
     },
   });
   // console.log(error, isError);
-  console.log(data)
+  console.log(allProduct)
 
   const handleRetry = () => {
     refetch();
@@ -55,7 +55,7 @@ export default function HomeLand()
 
   const content =
     isSuccess &&
-    data?.pages?.map((page) =>
+    allProduct?.pages?.map((page) =>
       page?.data.map((item, idx) => {
         if (page.data.length === idx + 1) {
           return <ProductCard innerRef={ref} key={item.id} data={item} />;
@@ -86,7 +86,7 @@ export default function HomeLand()
 
             {isSuccess && (
               <>
-                {data.pages[0].data?.length === 0 ? (
+                {allProduct.pages[0].data?.length === 0 ? (
                   <>
                     <div className="py-4">
                       <SponsoredSection />
