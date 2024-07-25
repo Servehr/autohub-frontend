@@ -58,9 +58,11 @@ export default function HomeLand()
     allProduct?.pages?.map((page) =>
       page?.data.map((item, idx) => {
         if (page.data.length === idx + 1) {
-          return <ProductCard innerRef={ref} key={item.id} data={item} />;
+          // return <ProductCard innerRef={ref} key={item.id} data={item} />;
+          return <h1>{item.country.name}</h1>
         }
-        return <ProductCard key={item.id} data={item} />;
+        // return <ProductCard key={item.id} data={item} />;
+        return <h1>{item.country.name}</h1>
       })
     );
 
