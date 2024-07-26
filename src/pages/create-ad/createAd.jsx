@@ -451,7 +451,7 @@ export default function CreateAd()
                     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
                     colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
                     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
-                    manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: theCountry
+                    manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: Number(theCountry)
                 }
                 console.log(firstPayLoad)
                 
