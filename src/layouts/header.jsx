@@ -18,14 +18,23 @@ export default function Header()
 {
   const advertState = appStore((state) => state)
   const [loggedInUserType, setLoggedInUserType] = useState('')
+  const [userService, setUserService] = useState('')
+
+  useEffect(() => 
+  {
+      setUserService('')
+  }, [])
 
   useEffect(() => 
   {
       const loggedInUser = localStorage.getItem('users')
+      // console.log(loggedInUser)
+      const useServ = userService
       const convert = JSON.parse(loggedInUser)
       // localStorage.setItem('ux', convert.type)
       // setLoggedInUserType(convert.type)
-  }, [loggedInUserType])
+      setUserService(useServ)
+  }, [loggedInUserType, userService])
 
   // advertState.setLoggedInUserType(ux)
   // alert(loggedInUserType)
@@ -99,6 +108,24 @@ function Main() {
       document.body.classList.remove("stop-scroll");
     }
   }, [menu, pathname]);
+  const [loggedInUserType, setLoggedInUserType] = useState('')
+  const [userService, setUserService] = useState('')
+
+  useEffect(() => 
+  {
+      setUserService('')
+  }, [])
+
+  useEffect(() => 
+  {
+      const loggedInUser = localStorage.getItem('users')
+      // console.log(loggedInUser)
+      const useServ = userService
+      const convert = JSON.parse(loggedInUser)
+      // localStorage.setItem('ux', convert.type)
+      // setLoggedInUserType(convert.type)
+      setUserService(useServ)
+  }, [loggedInUserType, userService])
 
   return (
     <>
@@ -132,7 +159,7 @@ function Main() {
                       Login
                     </Link>
                   )} */}
-                  { (localStorage.getItem("services") != "4") && 
+                  { (userService != "4") && 
                       <button
                         onClick={() => {
                             advertState.setLoggedInUserType('market')
@@ -245,6 +272,26 @@ function Dash()
     }
   }, [menu, pathname]);
 
+  
+  const [loggedInUserType, setLoggedInUserType] = useState('')
+  const [userService, setUserService] = useState('')
+
+  useEffect(() => 
+  {
+      setUserService('')
+  }, [])
+
+  useEffect(() => 
+  {
+      const loggedInUser = localStorage.getItem('users')
+      // console.log(loggedInUser)
+      const useServ = userService
+      const convert = JSON.parse(loggedInUser)
+      // localStorage.setItem('ux', convert.type)
+      // setLoggedInUserType(convert.type)
+      setUserService(useServ)
+  }, [loggedInUserType, userService])
+
   return (
     <>
       <Menu />
@@ -279,7 +326,7 @@ function Dash()
                   )}
 
                   {
-                     (localStorage.getItem("services") != "4") && 
+                     (userService != "4") && 
                       <button
                         onClick={() => {
                           // alert("Great")
@@ -358,6 +405,27 @@ function Account({ showAccount, setShowAccount })
   const navigate = useNavigate();
   const { data: user } = useUser();
   console.log(user)
+
+  
+  const [loggedInUserType, setLoggedInUserType] = useState('')
+  const [userService, setUserService] = useState('')
+
+  useEffect(() => 
+  {
+      setUserService('')
+  }, [])
+
+  useEffect(() => 
+  {
+      const loggedInUser = localStorage.getItem('users')
+      // console.log(loggedInUser)
+      const useServ = userService
+      const convert = JSON.parse(loggedInUser)
+      // localStorage.setItem('ux', convert.type)
+      // setLoggedInUserType(convert.type)
+      setUserService(useServ)
+  }, [loggedInUserType, userService])
+  
 
   const goThere = () => 
   {
@@ -518,7 +586,7 @@ function Account({ showAccount, setShowAccount })
                     >
                       As A Student
                     </a>
-                    { (localStorage.getItem("services") != "4") && <a
+                    { (userService != "4") && <a
                         onClick={() => {
                           advertState.setLoggedInUserType("market")
                           // advertState.setUserServices("1")

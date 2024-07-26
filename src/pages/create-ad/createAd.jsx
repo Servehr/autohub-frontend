@@ -97,6 +97,7 @@ export default function CreateAd()
   const [mainImageErrorMsg, setMainImageErrorMsg] = useState("")
   const [formValid, setFormValid] = useState("no")
   const [fillForm, setFillForm] = useState("")
+  const [postStatus, setPostStatus] = useState("")
 
   const [theUserState, setTheUserStates] = useState("")
   const [thumbnail, setImages] = useState(advertState.getProductImages())
@@ -472,7 +473,9 @@ export default function CreateAd()
                         adProcessing = response.data.status
                         // onClick(true)
                 }).catch((error) => { 
-                        console.log(error)                      
+                        console.log(error)    
+                        setPostStatus("First Stage of Processing")  
+                        setProcessAdvert(false)                   
                         return false
                 })
             }
@@ -502,7 +505,9 @@ export default function CreateAd()
                     adProcessing = response.data.status
                     // return
                 }).catch((error) => { 
-                        console.log(error)                      
+                        console.log(error)     
+                        setPostStatus("Second Stage of Processing")     
+                        setProcessAdvert(false)            
                         return false
                 })
             }
@@ -531,6 +536,8 @@ export default function CreateAd()
                 {  
                     adProcessing = response.data.status
                 }).catch((error) => { 
+                    setPostStatus("Third Stage of Processing")   
+                    setProcessAdvert(false)
                 })
             }        
             
@@ -552,8 +559,9 @@ export default function CreateAd()
                     navigate('/dashboard/store')
                 }, 2000)
             } else {
-                setMsg('Posting Failed')
+                setMsg(`Posting Failed on ${postStatus}` )
                 setSuccessModal(true)
+                setProcessAdvert(false)
                 setTimeout(() => {
                     setSuccessModal(false)
                 }, 2000)           

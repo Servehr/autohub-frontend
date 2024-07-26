@@ -156,7 +156,7 @@ export function ProductCard({ data, innerRef }) {
       </div>
 
       <div className="flex flex-col gap-[1px] p-2 px-4 pb-2">
-        <p className="font-bold md:text-md text-lg" style={{ fontSize: '16px', color: '#05b52c' }}>
+        <p className="font-bold md:text-md text-md" style={{ color: '#05b52c' }}>
           {data?.title}
         </p>
 
@@ -169,7 +169,7 @@ export function ProductCard({ data, innerRef }) {
           <span className="text-xs md:text-sm text-red-600 font-semibold uppercase mr-1">
               {data?.country_name}
           </span>
-          <span className="mr-1">- {data?.state?.name}</span>
+          <span className="text-xs md:text-sm text-red-600">- {data?.state?.name}</span>
         </p>
       </div>
     </div>

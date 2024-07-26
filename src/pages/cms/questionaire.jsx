@@ -21,6 +21,8 @@ import Folder from "@/components/Folder";
 export default function Questionaire()
 {
     
+    // const { data, isLoading } = useQuery([`${x}/test-questionaires`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
+
     const { isMobile } = browserType();
     // const advertState = appStore((state) => state) 
     const  data  = [
@@ -32,7 +34,8 @@ export default function Questionaire()
         {id: 6, title: 'General Knowledge on Automobile', figures: 3573, icon: "visitors" },
         {id: 7, title: 'General Knowledge on Automobile', figures: 3573, icon: "visitors" },
         {id: 8, title: 'Auctioning', figures: 3573, icon: "visitors"},
-    ]      
+    ]    
+
     const [dataTable, setDatable] = useState("")
     const columns = [
         { field: 'id' },
@@ -138,6 +141,7 @@ export default function Questionaire()
             </div>
 
             { openQuestionaire && <AddQuestionaireModal onClick={(e) => {
+                                                // refetch()
                                                 setOpenQuestionaire(false) 
                                                 // setClickTable(e) 
                                             }
