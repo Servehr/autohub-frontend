@@ -8,11 +8,12 @@ import { appStore } from "@/state/appState";
 import { useEffect, useState } from "react";
 import { AVATAR } from "@/lib/axios";
 import { ChangeProfilePicture } from "@/components/ChangeProfilePicture";
+import { BasicProfile } from "./user-profile/BasicProfile";
 
 export default function Profile() 
 {
   const advertState = appStore((state) => state)
-  const { data, isLoading } = useUser();
+  const { data, isLoading, refetch } = useUser();
   const [ imageOpenModal, setImageOpenModal] = useState(false)  
   const [profilePicture, setProfilePicture] = useState(`${AVATAR}${data.data.avatar}`)
   const { isMobile } = browserType();
@@ -21,6 +22,7 @@ export default function Profile()
   const [loggedInUserType, setLoggedInUserType] = useState('')
   const [theService, setTheService] = useState(-1)
   const [isUser, setIsUser] = useState("-1")
+  const [openBasicInfo, setOpenBasicInfo] = useState(false)
 
   useEffect(() => 
   {
@@ -120,32 +122,49 @@ export default function Profile()
               )}
             </div>
           )}
+          { !isLoading && data &&
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
+                <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
+                  Firstname
+                </p>
+                <p className="w-full text-ellipsis truncate">{data?.data?.name}</p>
+              </div>
 
-          <div className="grid md:grid-cols-2 gap-5  ">
-            <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
-              <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
-                Name
-              </p>
-              <p className="w-full text-ellipsis truncate">{data?.data?.name}</p>
+              <EditDetails />
+              <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
+                <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
+                  Surname
+                </p>
+                <p className="w-full text-ellipsis truncate">{data?.data?.lastname}</p>
+              </div>
+              <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
+                <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
+                  Email
+                </p>
+                <p className="w-full text-ellipsis truncate">
+                  {data?.data?.email}
+                </p>
+              </div>
+              <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
+                <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
+                  Phone Number
+                </p>
+                <p className="w-full text-ellipsis truncate">
+                  {data?.data?.phoneno}
+                </p>
+              </div>
             </div>
+          }
 
-            <EditDetails />
-            <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
-              <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
-                Email
-              </p>
-              <p className="w-full text-ellipsis truncate">{data?.data?.email}</p>
-            </div>
-            <div className="w-full h-[50px] rounded-lg border border-brandGreen relative flex items-center px-3 text-sm text-brandDarkGray font-bold">
-              <p className="absolute -top-2 left-4 font-semibold text-xs text-brandDarkGray bg-white px-2">
-                Phone Number
-              </p>
-              <p className="w-full text-ellipsis truncate">
-                {data?.data?.phoneno}
-              </p>
-            </div>
-          </div>
         </div>
+        
+        <div className="font-bold w-fit p-4 mt-5 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenBasicInfo(true)}>Edit Information</div>
+
+        { openBasicInfo && <BasicProfile data={data?.data} openBasicInfo={openBasicInfo}  onClick={() => {
+              refetch()
+              setOpenBasicInfo(false)
+        }} /> }
 
         {/* <div className="w-full justify-end flex">
           <div

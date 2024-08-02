@@ -60,6 +60,7 @@ export default function PhoneShow({productItem, refetch})
         console.log("=======================")
         advertState.setMileAge(item?.mileage)
         advertState.setFuelType(item?.fuel_type)
+        advertState.setLocation(item?.location)
   }
 
   return (   

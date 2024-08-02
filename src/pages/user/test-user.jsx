@@ -7,6 +7,8 @@ import * as yup from "yup";
 import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useQuery } from "react-query";
+import { TestQuestions } from "@/apis/backend/course";
 
 
 export default function TestUser() 
@@ -29,18 +31,21 @@ export default function TestUser()
 
 function Course() 
 {
+  const id = (Math.round()*337)
+  const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestQuestions(), { cacheTime: 0 })
 
+  if(!isLoading)
+  {
+      console.log(data)
+  }
+
+  const [loading, setIsLoading] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const info = [
-    { name: 'Ads', nos: 34 },
-    { name: 'WishList', nos: 13 },
-    { name: 'Draft', nos: 20 },
-    { name: 'Active', nos: 5 },
-    { name: 'Enrollment', nos: 2 },
-    { name: 'Advert', nos: 5 },
-    { name: 'Product Views', nos: 20 },
-    { name: 'Profile Views', nos: 5 },
-  ]
+
+  const showQuestion = (question) => 
+  {
+      setCurrentQuestion(question)
+  }
 
   const Questions = [
       { id: 1, question: "Artificial Intelligence is about_____", options: [ 'Playing a game on Computer', 'Making a machine Intelligent', 'Programming on Machine with your Own Intelligence',
@@ -55,24 +60,119 @@ function Course()
   
   return (
     <>
-      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">Artificial Intelligence</div> 
+      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">Course: Artificial Intelligence</div> 
       <div
         className="grid md:grid-cols-12 md:bg-transparent bg-white md:p-0 p-5 grid-cols-12 justify-center items-center gap-5 pb-20"
       >
           <div className="col-span-12">
               {
-                  
-                  <div className="w-full mb-5 text-lg">
-                      <span className="font-bold text-blue-700 pr-5" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of 10:</span> {Questions[currentQuestion].question}
-                  </div>
+                isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                    <BeatLoader color="#1c9236" />
+                </div>
               }
               {
+                !isLoading && (data.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                    <h1 className="font-bold">
+                        No course created yet
+                    </h1>
+                </div>
+              }
+
+              { !isLoading &&
+                  
+                  <div className="w-full text-lg">
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.length}</span>
+                  </div>
+              }
+              { !isLoading && (data?.length > 0) &&
                  <div className="w-full mb-5">
-                      {/* <div className="d-flex">                       */}
-                          {
-                              Questions[currentQuestion].options.map((option, index) => {
-                                  return (
-                                      <div className="flex py-3">       
+                      <div className="d-flex -mb-3 col-span-12 py-1">
+                          {/* <h1 className="font-bold -mb-1 ml-1">Question: {((data?.length))}</h1> */}
+                          <div className="p-5 shadow-md bg-white border border-2 border-green-200 my-2">
+                             
+                            <h1 className="w-full font-bold text-blue-900 mb-4">{data[currentQuestion]['question']}</h1>
+                            <div className="flex mt-2 justify-left space-between-5 mb-3">
+                                <div className="p-1 font-bold text-blue-300">(a)</div>
+                                <input type="radio"
+                                                className="peer relative appearance-none w-5 h-5
+                                                            border border-red-400 border-2
+                                                            cursor-pointer rounded-full
+                                                            checked:bg-blue-600 mt-1 ml-3 mr-1"
+                                                      id="circular-checkbox" name="testing-user"
+                                          /> 
+                                <div className="p-1 text-lg -mt-1">{data[currentQuestion]['option_a']}</div>
+                            </div>
+                            <div className="flex mt-2 justify-left space-between-5 mb-3">
+                                <div className="p-1 font-bold text-blue-300">(b)</div>
+                                <input type="radio"
+                                                className="peer relative appearance-none w-5 h-5
+                                                            border border-red-400 border-2
+                                                            cursor-pointer rounded-full
+                                                            checked:bg-blue-600 mt-1 ml-3 mr-1"
+                                                      id="circular-checkbox" name="testing-user"
+                                          /> 
+                                <div className="p-1 text-lg -mt-1">{data[currentQuestion]['option_b']}</div>
+                            </div>
+                            <div className="flex mt-2 justify-left space-between-5 mb-3">
+                                <div className="p-1 font-bold text-blue-300">(c)</div>
+                                <input type="radio"
+                                                className="peer relative appearance-none w-5 h-5
+                                                            border border-red-400 border-2
+                                                            cursor-pointer rounded-full
+                                                            checked:bg-blue-600 mt-1 ml-3 mr-1"
+                                                      id="circular-checkbox" name="testing-user"
+                                          /> 
+                                <div className="p-1 text-lg -mt-1">{data[currentQuestion]['option_c']}</div>
+                            </div>
+                            <div className="flex mt-2 justify-left space-between-5 mb-3">
+                               <div className="p-1 font-bold text-blue-300">(d)</div>
+                                <input type="radio"
+                                                className="peer relative appearance-none w-5 h-5
+                                                            border border-red-400 border-2
+                                                            cursor-pointer rounded-full
+                                                            checked:bg-blue-600 mt-1 ml-3 mr-1"
+                                                      id="circular-checkbox" name="testing-user"
+                                          /> 
+                               <div className="p-1 text-lg -mt-1">{data[currentQuestion]['option_d']}</div>
+                            </div>
+                        </div>
+                      </div>          
+                </div>
+              }
+
+              
+          <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-10">
+            <nav className="flex  flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
+              {/* <a className="md:flex sm:col-span-1 w-fit h-10 mx-1 justify-center items-center px-2 text-black hover:text-green-800 hover:font-bold" href="#" title="Page 1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" class="w-4 h-4 font-bold">
+                  <path fill-rule="evenodd" d="M10.72 11.47a.75.75 0 0 0 0 1.06l7.5 7.5a.75.75 0 1 0 1.06-1.06L12.31 12l6.97-6.97a.75.75 0 0 0-1.06-1.06l-7.5 7.5Z" clip-rule="evenodd" />
+                  <path fill-rule="evenodd" d="M4.72 11.47a.75.75 0 0 0 0 1.06l7.5 7.5a.75.75 0 1 0 1.06-1.06L6.31 12l6.97-6.97a.75.75 0 0 0-1.06-1.06l-7.5 7.5Z" clip-rule="evenodd" />
+                </svg>
+                Previous
+              </a> */} 
+              {                  
+                  data?.map((num, index) => {
+                    const currentAnswer = (currentQuestion === index) ? "bg-blue-700 text-white text-green-500 disabled" : "bg-white border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white"
+                    const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 
+                    return (
+                      <a className={style} title="Page 1" onClick={() => showQuestion(index)}>
+                        {index+1}
+                      </a>  
+                    )
+                  })
+              }
+              {/* <a className="md:flex w-fit h-10 mx-1 justify-center items-center px-2 text-black hover:text-green-800 hover:font-bold" href="#" title="Page 1">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" class="w-4 h-4 font-bold">
+                  <path fill-rule="evenodd" d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                  <path fill-rule="evenodd" d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                </svg>
+              </a> */}
+            </nav>
+          </div>
+
+              
+{/* <div className="flex py-3">       
                                           <input type="radio"
                                                 className="peer relative appearance-none w-5 h-5
                                                             border border-red-400 border-2
@@ -81,15 +181,9 @@ function Course()
                                                       id="circular-checkbox" name="testing-user"
                                           />                                          
                                           <div className="w-9/12"><span className="w-fit pl-5 pr-3">{index+1}. </span>{option}</div>
-                                      </div>
-                                  ) 
-                              })
-                          }
-                      {/* </div> */}
-                 </div>
-              }
+                                      </div> */}
           </div>
-          <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-10">
+          {/* <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-10">
             <nav className="flex  flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
               <a className="md:flex sm:col-span-1 w-fit h-10 mx-1 justify-center items-center px-2 text-black hover:text-green-800 hover:font-bold" href="#" title="Page 1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" class="w-4 h-4 font-bold">
@@ -136,7 +230,7 @@ function Course()
                 </svg>
               </a>
             </nav>
-          </div>
+          </div> */}
 
           <div className="p-5"></div>
 

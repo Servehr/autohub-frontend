@@ -218,3 +218,60 @@ export async function fetchMyMessage() {
       });
   });
 }
+
+export async function UpdateUserProfile(data) {
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .post("update-user-info", data)
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.data);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function isPaidAndStudentSummary() 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .get("is-paid-and-summary")
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(new Error(res.data.message));
+        } else {
+          console.log(res.data);
+          resolve(res.data);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function uploadReceipt(receipt) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .post("upload-receipt", { receipt: receipt})
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(new Error(res.data.message));
+        } else {
+          console.log(res.data);
+          resolve(res.data);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+

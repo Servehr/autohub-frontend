@@ -16,10 +16,10 @@ export async function loginUser(email, password) {
             localStorage.setItem("admin", res.data.admin);
             localStorage.setItem("user", res.data);
             localStorage.setItem("users", JSON.stringify(res.data.data));
-            // console.log(res.data.persin)
+            console.log(res.data)
             localStorage.setItem("services", res.data.persin)
+            // alert(res.data.persin)
             // console.log(res.data.data.id)
-            // return
             const theUser = localStorage.getItem('user')
             // const theUsers = localStorage.getItem('users')
             // const convert = JSON.parse(theUsers)
@@ -267,6 +267,33 @@ export function logOut()
             localStorage.removeItem("autoHub")
             localStorage.clear()
             window.location.href = "/"
+          }
+        })
+        .catch((err) => {
+          alert("User already logged out")
+          let message = "Something went wrong";
+          reject(new Error(message));
+        });
+  });
+//   localStorage.removeItem("autoHub")
+//   localStorage.clear()
+//   window.location.href = "/"
+}
+
+
+export function logItOut()
+{
+    return new Promise((resolve, reject) => {
+      axios_instance
+        .post(`${BASE_URL}login-out`)
+        .then((res) => {
+          console.log(res.data)
+          if (res.data.success === false) {
+            reject(res.data.message);
+          } else {
+            localStorage.removeItem("autoHub")
+            localStorage.clear()
+            window.location.href = "/login"
           }
         })
         .catch((err) => {

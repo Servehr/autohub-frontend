@@ -40,7 +40,7 @@ const MACEOSRegistration = Yup.object().shape(
         firstname:        Yup.string().min(3).required("Firstname is required"),
         surname:          Yup.string().min(3).required("Surname is required"),
         middlename:       Yup.string().min(3).required("Middle is required"),
-        email:            Yup.string().email("Invalid email address").required("Email is required"),
+        // email:            Yup.string().email("Invalid email address").required("Email is required"),
         phoneno:      Yup.string().required("Phone number is required"),
         companyName:      Yup.string().required("Company Name is required"),
         companyAddress:   Yup.string().required("Company Address is required"),
@@ -51,10 +51,10 @@ const MACEOSRegistration = Yup.object().shape(
         birth:            Yup.date().nullable().transform((curr, orig) => orig === '' ? null : curr).required('Enter date of birth'),
         gender:           Yup.string().required("Gender is required"),
         academic:         Yup.string().required("Academic is required"),
-        password:         Yup.string().required("Password is required"),
-        confirm_password:  Yup.string()
-                          .oneOf([Yup.ref("password"), null], "Passwords must match")
-                          .required("Confirm Password is required"),
+        // password:         Yup.string().required("Password is required"),
+        // confirm_password:  Yup.string()
+        //                   .oneOf([Yup.ref("password"), null], "Passwords must match")
+        //                   .required("Confirm Password is required"),
         agree:            Yup.bool().oneOf([true], "You must accept the terms and conditions")
     }
 );

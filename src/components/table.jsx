@@ -23,6 +23,8 @@ import { ApproveExpenses } from "./expenses/ApproveExpenses";
 import { DeclineExpenses } from "./expenses/DeclineExpenses";
 import { EditItemModal } from "./item/EditItemModal";
 import { DeleteItemModal } from "./item/DeleteItemModal";
+import { RemoveCourseModal } from "./course/RemoveCourseModal";
+import { AdminCourseFaqQuestion } from "./maceos/AdminCourseFaqQuestion";
 
 
 export default function DynamicTable({header, columns, data, onClick, page})
@@ -44,8 +46,12 @@ export default function DynamicTable({header, columns, data, onClick, page})
     const [path, setPath] = useState('')
 
     const [editCourseModal, setEditCourseModal] = useState(false)
+    const [editDataCourse, setEditDataCOurse] = useState("")
     const [uploadCourse, setUploadCourse] = useState(false)
     const [deleteCourseModal, setDeleteCourseModal] = useState(false)
+    const [deleteDataCourse, setDeleteDataCourse] = useState("")
+    const [uploadId, setUploadCourseid] = useState("")
+    const [openTheCourseFaq, setOpenTheCourseFaq] = useState(false)
 
     const [editStaff, setEditStaffModal] = useState(false)
     const [suspendUser, setSuspendUser] = useState(false)
@@ -58,6 +64,9 @@ export default function DynamicTable({header, columns, data, onClick, page})
 
     const [editItem, setEditItem] = useState(false)
     const [deleteItem, setDeleteItem] = useState(false)
+
+    const [removeCourseId, setRemoveCourseId] = useState("")
+    const [removeUploadCourse, setRemoveUploadCourse] = useState(false)
 
     console.log(data)
 
@@ -103,8 +112,8 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                             {
                                                 columns.map((column, index) => {
                                                     return (
-                                                        <td key={index} style={{ wordWrap: "break-word" }}
-                                                            className="whitespace-nowrap w-fit px-6 py-3 text-md font-medium text-black hover:font-bold">
+                                                        <td key={index} style={{ wordWrap: "break-word", fontSize: '16px'  }}
+                                                            className="whitespace-nowrap w-fit px-6 py-3 font-medium text-gray-700 hover:font-bold">
                                                                 <div dangerouslySetInnerHTML={{ __html: product[column.field] }} className="w-400" style={{ wordBreak: 'break-all' }} />
                                                                     {/* {product[column.field]} */}
                                                                 {/* </div> */}
@@ -137,7 +146,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setTitle(product.title)
                                                                 setContent(product.content)
                                                                 setIsOpened(product.isOpened)
-                                                                setViewFaqModal(true) 
+                                                                // setViewFaqModal(true) 
                                                             } }>
                                                                 View
                                                         </div>
@@ -172,7 +181,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setTitle(product.title)
                                                                 setContent(product.content)
                                                                 setIsOpened(product.isOpened)
-                                                                setViewFaqModal(true) 
+                                                                // setViewFaqModal(true) 
                                                             } }>
                                                                 View
                                                         </div>
@@ -251,21 +260,50 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
+                                                                setEditDataCOurse(product)
                                                                 setEditCourseModal(true)
                                                             } }>
                                                                 Edit
                                                         </div> 
                                                         <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
+                                                                setDeleteDataCourse(product)
                                                                 setDeleteCourseModal(true)
                                                             } }>
                                                                 Delete
                                                         </div>
-                                                        <div className="bg-red-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                        <div className="bg-red-500 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
+                                                                setUploadCourseid(product)
                                                                 setUploadCourse(true)
                                                             } }>
                                                                 Upload Course
+                                                        </div>  
+                                                        {
+                                                            (product?.file_name != null) && 
+                                                                <>                                                                    
+                                                                    <div className="bg-green-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                                        { 
+                                                                            setUploadCourseid(product)
+                                                                            setUploadCourse(true)
+                                                                        } }>
+                                                                            Download
+                                                                    </div> 
+                                                                    <div className="bg-red-900 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                                        { 
+                                                                            setRemoveCourseId(product)
+                                                                            setRemoveUploadCourse(true)
+                                                                        } }>
+                                                                        Remove
+                                                                </div> 
+                                                                </>
+                                                        }                                                       
+                                                        <div className="bg-blue-500 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                            { 
+                                                                setUploadCourseid(product)
+                                                                setOpenTheCourseFaq(true)
+                                                            } }>
+                                                                FAQ
                                                         </div> 
                                                     </>
                                                 }
@@ -415,16 +453,24 @@ export default function DynamicTable({header, columns, data, onClick, page})
                  setStudentMessage(false)
             }} message={''} /> }
 
-            { editCourseModal && <EditCourseModal editCourseModal={editCourseModal} courseId={''} onClick={() => {
+            { editCourseModal && <EditCourseModal editCourseModal={editCourseModal} editCourse={editDataCourse} courseId={''} onClick={(e) => {
+                 onClick(false)
                  setEditCourseModal(false)
             }} message={''} /> }
 
-            { deleteCourseModal && <DeleteCourseModal deleteCourseModal={deleteCourseModal} courseId={''} onClick={() => {
+            { deleteCourseModal && <DeleteCourseModal deleteCourseModal={deleteCourseModal} deleteCourse={deleteDataCourse} courseId={''} onClick={() => {
+                 onClick(false)
                  setDeleteCourseModal(false)
             }} message={''} /> }
 
-            { uploadCourse && <UploadCourseModal uploadCourse={uploadCourse} courseId={''} onClick={() => {
+            { uploadCourse && <UploadCourseModal uploadCourse={uploadCourse} courseId={uploadId} onClick={() => {
+                 onClick(false)
                  setUploadCourse(false)
+            }} message={''} /> }
+
+            { removeUploadCourse && <RemoveCourseModal removeUploadCourse={removeUploadCourse} removeCourse={removeCourseId} courseId={''} onClick={() => {
+                 onClick(false)
+                 setRemoveUploadCourse(false)
             }} message={''} /> }
 
             { editStaff && <EditStaffModal editStaff={editStaff} onClick={() => {
@@ -462,14 +508,20 @@ export default function DynamicTable({header, columns, data, onClick, page})
               }} /> 
             }
 
-            { editItem && <EditItemModal editItemModal={editItem} itemId ={''} onClick={() => {
+            {/* { editItem && <EditItemModal editItemModal={editItem} itemId ={''} onClick={() => {
                  setEditItem(false)
               }} /> 
-            }
+            } */}
 
             { deleteItem && <DeleteItemModal DeleteItemModal={deleteItem} itemId ={''} onClick={() => {
                  setDeleteItem(false)
               }} /> 
+            }
+
+            { 
+                openTheCourseFaq && <AdminCourseFaqQuestion openTheCourseFaq={openTheCourseFaq} courseId={uploadId} onClick={() => {
+                    setOpenTheCourseFaq(false)
+                }} />
             }
            
         </>

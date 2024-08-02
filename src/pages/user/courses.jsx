@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { setUserNewEmail } from "@/apis/auth";
 import { useForm } from "react-hook-form";
@@ -8,6 +7,8 @@ import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FormCode } from "@/components/FormCode";
+import { AllCourse } from "@/apis/backend/course";
+import { useQuery } from "react-query";
 
 
 export default function Courses() 
@@ -30,6 +31,15 @@ export default function Courses()
 
 function Course() 
 {
+  const id = (Math.round()*337)
+  const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse(), { cacheTime: 0 })
+
+  if(!isLoading)
+  {
+      console.log(data)
+  }
+
+  const [loading, setIsLoading] = useState(false)
 
   const [downloadForm, setDownloadForm] = useState(false)
 
@@ -46,21 +56,33 @@ function Course()
   ]
   
   return (
-    <div className="px-3 mb-3">
+    <div className="p-3 mb-3 rounded-lg bg-white">
         <div className="font-bold text-xl mb-5 text-blue-700 mt-28 md:mt-0">MACEOS ACADEMY COURSES</div> 
         <div
-          className="grid md:grid-cols-12 grid-cols-12 justify-center items-center gap-5"
+          className="grid md:grid-cols-12 grid-cols-12 gap-5"
           >
               {/* <span className="col-span-12 font-bold text-green-800 mb-3">MACEOS ACADEMY COURSES: </span> */}
               <span className="col-span-12 font-bold text-red-800 text-sm -mt-3 mb-3">Download Course</span>
               {/* <p className="mb-4 col-span-12 ">Below are the courses we offer. Browse through for your kind perusal; from the main courses to sub-courses and modules.</p> */}
 
-               {
-                      info.map((x) => {
+              {
+                  isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <BeatLoader color="#1c9236" />
+                  </div>
+                }
+                {
+                  !isLoading && (data.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <h1 className="font-bold">
+                          No course created yet
+                      </h1>
+                  </div>
+                }
+                {
+                      data?.map((x) => {
                                 return (
                                         <div
                                           onClick={() => setDownloadForm(true)}
-                                          className="text-md text-left col-span-4 px-2 py-2 mb-3 justify-center w-full font-bold cursor-pointer 
+                                          className="text-md text-left md:col-span-4 col-span-12 px-2 py-2 mb-1 justify-center w-full font-bold cursor-pointer 
                                                     text-black gap-2 bg-white 
                                                     ring-2 ring-blue-100 hover:bg-green-100 rounded-lg px-1 border border-solid 
                                                     border-blue-400 flex justify-between px-5"

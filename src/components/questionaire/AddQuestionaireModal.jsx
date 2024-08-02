@@ -6,7 +6,7 @@ import { appStore } from "@/state/appState";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { CreateFaq } from '@/apis/misc';
-import { AddTestQuestion } from '@/apis/backend/questionaires';
+import { AddTestQuestionaire } from '@/apis/backend/questionaires';
 import { BeatLoader } from "react-spinners";
 
 
@@ -14,12 +14,13 @@ export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
 {
         const advertState = appStore((state) => state)
         const [loading, setIsLoading] = useState(false)
+        const [theTitle, setTitle] = useState("")
+        const [theContent, setTheContent] = useState("")
         const [errMsg, setErrMsg] = useState("")
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
-        const [theTitle, setTitle] = useState("")
-        const [theContent, setTheContent] = useState("")
         const [theIsOpened, setTheIsOpened] = useState(-1)
+        
         const options = [
                 { key: -1, value: "- Select whether you want it published immediately or not -" },
                 { key: "opened", value: "Yes" },
@@ -37,7 +38,7 @@ export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
                 setIsLoading(true)
                 const data = { name: theTitle, description: theContent }
                 console.log(data)
-                AddTestQuestion(data)
+                AddTestQuestionaire(data)
                 .then((res) => 
                 {
                         console.log(res)
@@ -57,7 +58,7 @@ export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
                                 <div className='col-span-12 pb-2 overflow-auto justify-center h-fit py-2 item-center -mt-5'>
                                         <>                                                
                                                 <div className="p-1 mt-1">
-                                                        <h1 className='font-bold text-lg mb-5'>Create Question</h1>
+                                                        <h1 className='font-bold text-lg mb-5'>Create Objective Questionaire</h1>
                                                         <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
                                                                 <input onChange={(e) => {
                                                                         setTitle(e.target.value)
@@ -68,8 +69,6 @@ export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
                                                         </div>
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
                                                                 <textarea onBlur={(e) => {
-                                                                        // advertState.setChasisNumber(e.target.value)
-                                                                        // setTheChasisNo(e.target.value)
                                                                         setTheContent(e.target.value)
                                                                 }} type="text" id="description" defaultValue={theContent}  
                                                                    name="description" 

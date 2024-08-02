@@ -187,6 +187,7 @@ export default function EditProduct()
      advertState.setCountry(-1)
      advertState.setMileAge("")
      advertState.setFuelType("")
+     advertState.setLocation("")
    }
 
 

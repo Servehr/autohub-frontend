@@ -20,6 +20,7 @@ import currencyFormatter from "@/utils/currency-formatter";
 import { generateProductDetailsRouteWithSlugUrl } from "@/constant/links";
 import ProgressiveImage from "react-progressive-graceful-image";
 import { IMAGE_SLIDER } from "@/lib/axios";
+import { SlideTheImages } from "./slider";
 
 const SlideShow = () => {
   const { data, isLoading, isFetching } = useQuery("image-slider", ImageSlider, {
@@ -27,16 +28,24 @@ const SlideShow = () => {
   })
 
   const [slide, setSlide] = useState(0)
+  const [sliderSize, setSliderSize] = useState(0)
   let sliderTimeOut;
 
   useEffect(() => 
   {
+      setSliderSize(data?.length)
       sliderTimeOut =  setTimeout(() => {
           if(slide === 0)
           {
-              setSlide(1)
+              if(sliderSize === 1)
+              { 
+                setSlide(1)
+              }
               console.log(slide)
+              console.log(data?.length)
               console.log("It`s Zero")
+          } else if(sliderSize === 1) {
+                setSlide(0)
           } else if(slide < Number(data?.length)-1) {
               setSlide(slide+1)
               console.log("It`s the last number")
@@ -66,7 +75,7 @@ const SlideShow = () => {
 
   if(!isLoading)
   {
-     console.log(data.length)
+     console.log(data?.length)
      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
      console.log(data)
      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
@@ -78,7 +87,7 @@ const SlideShow = () => {
 
   if(!isFetching)
   {
-     console.log(data.length)
+     console.log(data?.length)
      console.log(data)
   }
 
@@ -88,50 +97,25 @@ const SlideShow = () => {
            >
 
               {
-                  (!isLoading && (data?.length < 1)) && <></>
-              }
-
-              {
                   (!isLoading && (data?.length > 0)) && <img
                                                                 src={`${IMAGE_SLIDER}${data[slide]?.slider?.url?.image_url}`} 
                                                                 className="slide absolute w-full h-full object-fit" 
                                                             />
               }
 
-              <div className="absolute top-[40%] -translate-x-0 translate-y-[-50%] left-5 text-xl rounded-full text-white cursor-pointer"> 
-                  <BsArrowLeftCircleFill color="green" fill="green" className="arrow arrow-left" style={{ backgroundColor: "" }} onClick={prevSlide} />
-              </div>
-              
-              <div className="absolute top-[40%] -translate-x-0 translate-y-[-50%] right-5 text-xl rounded-full text-white cursor-pointer">
-                  <BsArrowRightCircleFill color="green" className="arrow arrow-right" style={{ backgroundColor: "" }} onClick={nextSlide} />
-              </div>
-
-              {/* <BsArrowRightCircleFill className="arrow arrow-right" onClick={nextSlide} /> */}
-
-             {/* <span className="indicators bg-green-700 rounded-full hidden md:block left-10 bg-red-600">
-              { (!isLoading && (data?.length > 0)) &&
-                  data?.map((control, index) => {
-                      return (
-                        <button key={index}	onClick={() => goToSlide(index)} 
-                          className={ slide === index ? "rounded-full bg-white p-2 m-3" : "rounded-full bg-blue-400 p-2 m-3" }>
-                        </button>
-                      )
-                  })
+              {
+                    !isLoading && (data?.length === 0) && <>
+                        <div className="flex justify-content items-center  top-[40%] -translate-x-0 translate-y-[-50%] left-5 text-xl rounded-full text-white cursor-pointer"
+                        >
+                            <h1 className="w-full flex jusftify-center items-center font-bold text-2xl text-green-900">
+                                Place An Advert
+                            </h1>
+                        </div>
+                    </>
               }
-             </span> */}
 
-             {
-               !isLoading && 
-                <div className="absolute bg-brandGreen/80 rounded-full px-4 py-2 bottom-7 md:bottom-5 font-semibold text-sm  text-white right-2">
-                    <span className="">{data[slide].slider.url.product.title} - </span>&nbsp;
-                    <span className="">{currencyFormatter(data[slide].slider.url.product.price)}</span>
-                    <br />
-                    <span className="text-xs font-medium">
-                        {`${data[slide].slider.lga && `${data[slide].slider.lga}, `}`}
-                        {data[slide].slider.state || data[slide].slider.lga }
-                    </span>
-                  </div>
-             }
+              { (!isLoading && (data?.length > 0)) && <SlideTheImages data={data} imageSize={data?.length} />  }
+
 
           </div>          
       </>

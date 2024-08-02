@@ -9,7 +9,7 @@ export async function AuthenticatedUser(userId)
             .get(`maceos-registration/${userId}`)
             .then((res) => {
                 console.log(res)
-                resolve(res.data.data);
+                resolve(res.data);
             })
             .catch(() => {
               let message = "Something went wrong!";

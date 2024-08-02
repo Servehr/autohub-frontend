@@ -7,7 +7,7 @@ export async function dashboardOverview()
         axios_instance
           .get("dashboard-overview")
           .then((res) => {
-            if (res.data.success === 0) {
+            if (res.data.success === false) {
               reject(res.data.message);
             } else {
               resolve(res.data.data);

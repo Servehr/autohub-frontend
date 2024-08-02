@@ -6,44 +6,57 @@ import '../css/dragAndDrop.css'
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { Modal } from '../Modal';
+import { BeatLoader, BounceLoader } from "react-spinners";
 
 export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
 {
         // console.log(adverProductId)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();        
+        const [loading, setIsLoading] = useState(false)
         const [imageToUpload, setImageToUpload] = useState(false)
         const [error, setError] = useState(false)
         const [imgeUrl, setUrl] = useState(false)
         const [course, setCourseId] = useState(courseId)
+        const [courseFile, setCourseFile] = useState("")
         
-        const uploadImage = async () =>
+        const uploadCourseFile = async () =>
         {
-                // let token = localStorage.getItem("token")           
-                // let imgTo = new FormData();
-                // imgTo.append('course', course)
-                // imgTo.append('product', imageToUpload[0])
-                // await axios.post(`${BASE_URL}ad/add-product-ads`, imgTo, {
-                //         headers: {
-                //                 'Content-Type': 'multipart/form-data',
-                //                 'Authorization': token ? `Bearer ${token}` : "",
-                //         }
-                // }).then((response) => 
-                // {  
-                //         setUrl("")
-                //         onClick(true)
-                // }).catch((error) => { 
-                //         console.log(error)                      
-                //         return false
-                // })
+                setIsLoading(true)
+                let token = localStorage.getItem("token")           
+                let fileDocument = new FormData();
+                fileDocument.append('id', courseId.id)
+                fileDocument.append('material', courseFile)
+                // console.log(courseId.id)
+                // console.log(fileDocument)
+                // return false
+                await axios.post(`${BASE_URL}upload-course-document`, fileDocument, {
+                        headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': token ? `Bearer ${token}` : "",
+                        }
+                }).then((response) => 
+                {  
+                        // setUrl("")
+                        if(response.data.success === true)
+                        {
+                                return onClick(true)
+                        } else {
+                                // alert("Error")
+                                setIsLoading(false)
+                        }
+                }).catch((error) => { 
+                        setIsLoading(false)
+                        console.log(error)                      
+                        return false
+                })
         }
 
-        const imageUrlToDisplay = (file) => 
+        const uploadDocument = (file) => 
         {
-                const img = file[0]
-                const displayedImage = URL.createObjectURL(img)
-                setUrl(displayedImage)
-                setImageToUpload(file)
+                const course = file[0]
+                console.log(course)
+                setCourseFile(course)
         }
 
         const closeIt = () => 
@@ -60,41 +73,37 @@ export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
                                                 <p className=" w-max text-center text-xs text-[#D10000]">{error}</p>
                                         </div>
                                 </div>
-                                <div className="grid grid:col-12 gap-5 mt-5 mb-5 justify-center items-center">
-                                        <div className="bg-white shadow-md w-fit mx-auto">
-                                                {/* <img src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTgzODM0NDU&ixlib=rb-1.2.1&q=80" alt="Product image" className="h-80 w-72 object-cover" /> */}
-                                               { imgeUrl && 
-                                                        <img src={imgeUrl} alt="Product image" className="h-80 w-72 object-cover" />
-                                                }
-                                         </div>
-                                         
+                                <div 
+                                        className="grid grid:col-12 gap-5 mt-5 mb-5 justify-center items-center"
+                                >                                         
                                          <div className="drag-area p-3 items-center text-center mx-auto">
                                                 <span className="flex select justify-center items-center text-xs block" role="button">
                                                         <b class="px-10 py-5">Browse</b>
                                                         <input type="file" id="product" name="product" className="file" onChange={
                                                                 (e) => {
-                                                                        imageUrlToDisplay(e.target.files)
+                                                                        uploadDocument(e.target.files)
                                                                 }
                                                          } />
                                                 </span>
                                         </div>
                                 </div>
                                 
-                                <div className="items-center gap-5 mt-2 sm:flex flex justify-left mb-2 mx-5 mt-1 -ml-1 justify-center flexx">                                        
+                                <div className="items-center gap-5 mt-2 sm:flex flex justify-left mb-2 mx-5 mt-1 -ml-1 justify-center flexx">       
                                         <button  
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-green-900 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
-                                                onClick={closeIt}
+                                                className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"
+                                                onClick={() => {
+                                                        onClick(!uploadCourse)
+                                                }}
                                         >
-                                                Close
+                                                        Cancel
                                         </button>
-                                        {
-                                                (imgeUrl != "") && <button  
-                                                        className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-900 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
-                                                        onClick={uploadImage}
-                                                        >
-                                                        Upload Image
-                                                </button>
-                                        }
+                                        <button
+                                                disabled={loading}
+                                                className="mt-2 py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
+                                                onClick={uploadCourseFile}
+                                                >                                                
+                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Upload Document" )          }
+                                        </button>
                                 </div>
                         </Modal>
                 </> 

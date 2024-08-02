@@ -6,16 +6,18 @@ import { appStore } from "@/state/appState";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { UpdateFaq } from '@/apis/misc';
+import { UpdateTestQuestionaires } from '@/apis/backend/questionaires';
+import { BeatLoader } from "react-spinners";
 
 
-export const EditQuestionaireModal = ({onClick, editFolder, courseId})  =>
+export const EditQuestionaireModal = ({onClick, editFolder, description, courseId, id, name})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-
+        const [loading, setIsLoading] = useState(false)
         const [theProductId, setTheProductId] = useState(courseId)
-        const [theTitle, setTheTitle] = useState('')
-        const [theContent, setTheContent] = useState('')
+        const [theTitle, setTitle] = useState(name)
+        const [theContent, setTheContent] = useState(description)
         const [theIsOpened, setTheIsOpened] = useState('')
         const options = ["opened", "closed"]
 
@@ -24,24 +26,21 @@ export const EditQuestionaireModal = ({onClick, editFolder, courseId})  =>
                 onClick(true)
         }
 
-        const updateFaqData = () => 
+        const updateFolder = () => 
         {
-                const data = {courseId: courseId }
+                setIsLoading(true)
+                const data = { id: id, name: theTitle, description: theContent }
                 console.log(data)
-                UpdateFaq(data)
+                UpdateTestQuestionaires(data)
                 .then((res) => 
                 {
-                        // return onClick(courseId*Math.random())
+                        return onClick(courseId*Math.random())
                 })
                 .catch((err) => 
                 {
+                        setIsLoading(false)
                         console.log(err)
                 })                 
-        }
-
-        const whenOptionChanged = () => 
-        {
-
         }
         
         return (
@@ -51,33 +50,46 @@ export const EditQuestionaireModal = ({onClick, editFolder, courseId})  =>
                                 <div className='col-span-12 pb-2 overflow-auto justify-center h-fit py-2 item-center'>
                                         <>                                                
                                                 <div className="p-1 mt-1">
-                                                        <h1 className='font-bold text-lg mb-10'>Rename Folder</h1>
-                                                        <div className="w-full d-flex-row md:flex mt-1 gap-5 mb-5">
-                                                                {/* <span className="font-bold text-sm">Title</span> */}
-                                                                <input onBlur={(e) => {
-                                                                        
-                                                                }} type="text" id="folder" defaultValue={'folder name'}  name="folder" 
-                                                                placeholder='foler name' 
+                                                        <h1 className='font-bold text-lg mb-5'>Rename Folder</h1>
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                                <input onChange={(e) => {
+                                                                        setTitle(e.target.value)
+                                                                }} type="text" id="title" defaultValue={name}  
+                                                                name="title" 
+                                                                placeholder="Enter Questionaire Name" 
                                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                        </div>
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5">
+                                                                <textarea onBlur={(e) => {
+                                                                        setTheContent(e.target.value)
+                                                                }} type="text" id="description" defaultValue={description}  
+                                                                   name="description" 
+                                                                   placeholder="Enter Description" 
+                                                                   rows={5}
+                                                                   className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                                                >
+                                                                </textarea>
                                                         </div>
                                                 </div>
                                         </>
                                 </div>
                                 
-                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mx-1 -mb-4">
+                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mx-1 -mb-4"
+                                >
                                         <button  
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
+                                                className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"
                                                 onClick={() => {
                                                         onClick(!editFolder)
                                                 }}
                                         >
-                                                        Close
+                                                        Cancel
                                         </button>
                                         <button
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                                onClick={() => console.log('') }
-                                                >
-                                                Rename
+                                                disabled={loading}
+                                                className="mt-2 py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
+                                                onClick={updateFolder}
+                                                >                                                
+                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Rename" )          }
                                         </button>
                                 </div>
                         </div>

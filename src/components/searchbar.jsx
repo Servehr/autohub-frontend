@@ -121,12 +121,8 @@ export default function SearchBar({ customStyle = "" }) {
                           )[0]?.name
                         }
                       </span>{" "}
-                      <span>
-                        (
-                        {`${
-                          suggestion?.lga?.name && `${suggestion.lga.name},`
-                        } ${suggestion?.state?.name}`}
-                        )
+                      <span className="uppercase">
+                        ( {`${  suggestion?.country_name && `${suggestion?.country_name},`} ${suggestion?.state?.name}`} )
                       </span>
                     </p>
                     <p className="text-xs">

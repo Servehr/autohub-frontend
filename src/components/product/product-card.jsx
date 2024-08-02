@@ -10,6 +10,7 @@ import { fetchWatchList } from "@/apis/watchlist";
 import ProgressiveImage from "react-progressive-graceful-image";
 import logoImg from "@/assets/logo.png";
 import { PRODUCT_FACE, WATER_MARK } from "@/lib/axios";
+import { useEffect, useState } from "react";
 
 function isProductInWatchList(watchlist, product_id) {
   try {
@@ -94,16 +95,22 @@ export function ProductCard2({ data }) {
   );
 }
 
-export function ProductCard({ data, innerRef }) {
+export function ProductCard({ data, innerRef }) 
+{
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
   console.log(imgUrl)
   const navigate = useNavigate();
   const { data: user } = useUser();
-  const { data: watchlist } = useQuery("watchlist", fetchWatchList, {
+  const { data: watchlist, refetch } = useQuery("watchlist", fetchWatchList, {
     staleTime: Infinity,
     token: !!user,
   });
+  const [refreshPage, setRefreshPage] = useState("")
+
+  useEffect(() => {
+    console.log("Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? ")
+  }, [refreshPage])
 
   console.log(imgUrl)
 
@@ -124,6 +131,10 @@ export function ProductCard({ data, innerRef }) {
           <WatchListIcon
             id={data?.id}
             inWatchlist={isProductInWatchList(watchlist, data?.id)}
+            onClick={() => {
+              setRefreshPage((Math.random()*(333*11*6.3)))
+              refetch()
+            }}
           />
         </div>
         {/* )} */}

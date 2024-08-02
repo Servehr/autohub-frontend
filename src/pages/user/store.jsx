@@ -93,8 +93,8 @@ export function Moderation() {
 
   const [currentPage, setCurrentPage] = useState(1)  
   const [perPage, setPerPage] = useState(5) 
-  const { data, isLoading, refetch, isRefetching, isError }= useQuery(['pending-product'], () => pendingProduct(currentPage, perPage), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
-
+  const { data, isLoading, refetch, isRefetching, isError }= useQuery(['pending-product'], () => pendingProduct(currentPage, perPage), { cacheTime: 0 })
+  // { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 }
 
   if(!isLoading)
   {
@@ -430,7 +430,7 @@ export function Unposted()  {
 
   const [currentPage, setCurrentPage] = useState(1)  
   const [perPage, setPerPage] = useState(5) 
-  const { data, isLoading, refetch, isRefetching, isError }= useQuery(['draft-product'], () => draftProduct(currentPage, perPage), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+  const { data, isLoading, refetch, isRefetching, isError }= useQuery(['draft-product'], () => draftProduct(currentPage, perPage), { cacheTime: 0 })
 
 
   if(!isLoading)
@@ -499,6 +499,7 @@ const populateProductStore = (item) =>
         console.log("=======================")
         console.log(advertState.getStates())
         console.log("=======================")
+        advertState.setLocation(item?.location)
   }
 
   return (
@@ -673,7 +674,7 @@ export function Active()
 
   const [currentPage, setCurrentPage] = useState(1)  
   const [perPage, setPerPage] = useState(5) 
-  const { data, isLoading, refetch, isRefetching, isError } = useQuery(["get-all-draft-post"], () => publishedPost(currentPage, perPage), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+  const { data, isLoading, refetch, isRefetching, isError } = useQuery(["get-all-draft-post"], () => publishedPost(currentPage, perPage), { cacheTime: 0 })
 
   const [refresh, setRefresh] = useState(0)
   const navigate = useNavigate();
@@ -914,7 +915,7 @@ export function WatchList()
   const [currentPage, setCurrentPage] = useState(1)  
   const [perPage, setPerPage] = useState(3) 
 
-  const { data, isLoading, refetch, isRefetching, isError } = useQuery(["user-watch-list"], () => UserWatchList(currentPage, perPage), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+  const { data, isLoading, refetch, isRefetching, isError } = useQuery(["user-watch-list"], () => UserWatchList(currentPage, perPage), { cacheTime: 0 })
 
   
   const navigate = useNavigate();

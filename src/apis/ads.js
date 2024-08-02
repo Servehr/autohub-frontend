@@ -57,6 +57,9 @@ export async function ImageSlider()
           if (res.data.success === 0) {
             resolve([]);
           } else {
+                // localStorage.setItem("sliderSizee", res.data.data.slider.length)
+                // console.log(res.data.data.slider.length)
+                // console.log(res.data.data.slider)
                 resolve(res.data.data);
           }
         })
@@ -533,7 +536,8 @@ export async function allProduct()
 
 export async function getAdverts(currentPage, PerPage, searchQuery)
 {
-    if(searchQuery === "" | searchQuery === undefined | searchQuery === null)
+    let theQuery = searchQuery.trim()
+    if(theQuery.length === 0)
     {        
       // console.log("All Searched Product")
         return new Promise((resolve, reject) => {
@@ -556,7 +560,7 @@ export async function getAdverts(currentPage, PerPage, searchQuery)
         return new Promise((resolve, reject) => {
       
           axios_instance
-            .get(`ad/product-search/${currentPage}/${PerPage}/${searchQuery}`)
+            .get(`ad/product-search/${currentPage}/${PerPage}/${theQuery}`)
             .then((res) => {
               if (res.data.success === 0) {
                 reject(res.data.message);

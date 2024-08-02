@@ -74,6 +74,7 @@ export default function EditProduct()
   const [theDescription, setTheDescription] = useState(advertState.getDescription())
   const [theChasisNo, setTheChasisNo] = useState(advertState.getChasisNumber())
   const [thePrice, setThePrice] = useState(advertState.getPrice())
+  const [theLocation, setTheLocation] = useState(advertState.getLocation())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setIsSuccess] = useState("")
@@ -93,8 +94,9 @@ export default function EditProduct()
   const [fuelTypeErrorMsg, setFuelTypeErrorMsg] = useState("")
   const [mileAgeError, setTheMileAgeError] = useState("")
   const [transmissionErrorMsg, setTransmissionErrorMsg] = useState("")
-  const [conditionErrorMsg, setConditionErrorMsg] = useState("")
   const [trimErrorMsg, setTrimErrorMsg] = useState("")
+  const [locationErrorMsg, setLocationErrorMsg] = useState()
+  const [conditionErrorMsg, setConditionErrorMsg] = useState("")
   const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
   const [priceErrorMsg, setPriceErrorMsg] = useState("")
   const [entryErrorMsg, setEntryErrorMsg] = useState("")
@@ -163,9 +165,9 @@ export default function EditProduct()
   }, [value])
 
 
-  useEffect(() => {
+//   useEffect(() => {
 
-  }, [theCountry, theFuelType, theMileAge, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, selectedTrim])
+//   }, [theCountry, theFuelType, theMileAge, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, selectedTrim, theLocation])
 
     // model
   const callTellData = (x) => 
@@ -265,6 +267,7 @@ export default function EditProduct()
       advertState.setImageOnEdit("")
       advertState.setAvatar([])
       advertState.setOnEdit('no')
+      advertState.setLocation("")
   }
 
   const updateAdvertDetail = () => 
@@ -296,13 +299,15 @@ export default function EditProduct()
 
       setLoading(true)
       const advertDetail = { 
-                                state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
+                                state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, location: theLocation,
                                 colour: Number(theColour), transmission: theTransmission, condition: Number(theCondition), trim: theTrim, description: theDescription, 
                                 chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: Number(theFuelType), 
                                 country: theCountry
                             }   
     
     console.log(advertDetail)
+    // setLoading(false)
+    // return false
 
     if(submitForm === true)
     {
@@ -893,17 +898,29 @@ export default function EditProduct()
                                                             <span className="w-full font-bold text-sm">MileAge</span>
                                                             <input 
                                                                 defaultValue={allRequiredData?.userProductDetail?.mileage}
-                                                                onKeyUp={(e) => {    
-                                                                advertState.getMileAge(e.target.value)
+                                                                onChange={(e) => {    
+                                                                advertState.setMileAge(e.target.value)
                                                                 setTheMileAge(e.target.value)} 
                                                             } type="number" id="price" name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
                                                             <div className="text-red-500 font-bold text-sm">{ (theMileAge === "") ?  mileAgeError : "" }</div>
                                                         </div>
                                                     </div>
 
+                                                    <div className="flex flex-wrap -m-2 mt-2 mb-5">
+                                                        <div className="p-2 md:w-2/2 w-full">
+                                                            <span className="w-full font-bold text-sm">City/Location</span>
+                                                            <input onChange={(e) => {
+                                                                advertState.setLocation(e.target.value)
+                                                                setTheLocation(e.target.value)
+                                                            }} type="text" id="location" defaultValue={allRequiredData?.userProductDetail?.location}  name="location" placeholder="location" 
+                                                               className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                            <div className="text-red-500 font-bold text-sm">{ (locationErrorMsg === "") ?  locationErrorMsg : "" }</div>
+                                                        </div>
+                                                    </div>
+
                                                     <div className="flex flex-wrap -m-2 mt-5 md:mb-10 mb-20 p-2">
                                                         <span className="w-full font-bold text-sm">Description</span>
-                                                        <ReactQuill theme="snow" defaultValue={allRequiredData?.userProductDetail?.description} onChange={setValue} className="w-full h-[150px]" modules={modules} />
+                                                        <ReactQuill theme="snow" defaultValue={allRequiredData?.userProductDetail?.description} onChange={setValue} className="w-full h-[250px]" modules={modules} />
                                                         
                                                         {/* <textarea onChange={(e) => { 
                                                                 advertState.setDescription(e.target.value)
@@ -919,14 +936,14 @@ export default function EditProduct()
                                                     <div className="flex flex-wrap -m-2 mt-2 mb-5">
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Chasis Number</span>
-                                                            <input onBlur={(e) => {
+                                                            <input onChange={(e) => {
                                                                 advertState.setChasisNumber(e.target.value)
                                                                 setTheChasisNo(e.target.value)
                                                             }} type="text" id="vin" defaultValue={allRequiredData?.userProductDetail?.chasis_no}  name="vin" placeholder="VIN chasis number (Optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Price</span>
-                                                            <input onKeyUp={(e) => {    
+                                                            <input onChange={(e) => {    
                                                                 advertState.setPrice(e.target.value)
                                                                 setThePrice(e.target.value)} 
                                                             } type="text" id="price" defaultValue={allRequiredData?.userProductDetail?.price} name="price" placeholder="Price (₦)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />

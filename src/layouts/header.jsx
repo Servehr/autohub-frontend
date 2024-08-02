@@ -22,7 +22,8 @@ export default function Header()
 
   useEffect(() => 
   {
-      setUserService('')
+      setUserService('')      
+      advertState.setUserServices(localStorage.getItem("services"))
   }, [])
 
   useEffect(() => 
@@ -42,6 +43,7 @@ export default function Header()
   const { id } = useParams()
   console.log(id)
   const editPost = localStorage.getItem('editPost')
+  const ques = localStorage.getItem('questions')
   const pathToEdit = `/edit-post/${editPost}`
   console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
   console.log(Number(editPost))
@@ -65,9 +67,13 @@ export default function Header()
     "/edit-post",
     "/students",
     "/result",
-    "/questionaires",
+    "/test-questionaires",
+    "/exam-questionaires",
     `/edit-post/${editPost}`,
-    `/questions`,
+    `/questions/${ques}`,
+    `/exams/${ques}`,
+    `/test-thoery-question/${ques}`,
+    `/exam-thoery-question/${ques}`,
     `/courses`,
     `/dealers`,
     `/dealer-post`,
@@ -297,7 +303,7 @@ function Dash()
       <Menu />
 
       <div
-        className="fixed top-0 left-0 z-40 w-full bg-white px-5 sm:px-8 md:px-10 select-none md:pb-3"
+        className="fixed top-0 left-0 z-40 w-full bg-white px-5 sm:px-8 md:px-10 select-none md:pb-3 border border-b-5 border-solid"
         onMouseLeave={() => setShowAccount(false)}
       >
         <MaxWidthWrapper>
@@ -586,7 +592,7 @@ function Account({ showAccount, setShowAccount })
                     >
                       As A Student
                     </a>
-                    { (userService != "4") && <a
+                    { ((advertState.getUserServices() === "2")) && <a
                         onClick={() => {
                           advertState.setLoggedInUserType("market")
                           // advertState.setUserServices("1")

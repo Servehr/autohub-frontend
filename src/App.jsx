@@ -63,7 +63,6 @@ import CourseFaq from "./pages/user/course-faq";
 import Students from "./pages/cms/students";
 import Result from "./pages/cms/result";
 import Course from "./pages/cms/courses";
-import Questionaire from "./pages/cms/questionaire";
 import Questions from "./pages/cms/questions";
 import Dealers from "./pages/cms/dealers";
 import Staff from "./pages/cms/staff";
@@ -73,6 +72,11 @@ import Settings from "./pages/cms/settings";
 import RequestItems from "./pages/cms/requestItem";
 import Items from "./pages/cms/Items";
 import DealerPost from "./pages/cms/dealerPost";
+import TestQuestionaire from "./pages/cms/testQuestionaire";
+import ExamQuestionaire from "./pages/cms/examQuestionaire";
+import Exams from "./pages/cms/exams";
+import TheoryQuestion from "./pages/cms/theoryQuestion";
+import ExamTheoryQuestion from "./pages/cms/examTheoryQuestion";
 
 export const Loader = ({ full }) => {
   return (
@@ -139,8 +143,12 @@ export default function App()
             <Route path="/settings" element={<Settings />} />
 
             {/* <Route path="/course" element={<Course />} /> */}
-            <Route path="/questionaires" element={<Questionaire />} />
-            <Route path="/questions" element={<Questions />} />
+            <Route path="/test-questionaires" element={<TestQuestionaire />} />
+            <Route path="/exam-questionaires" element={<ExamQuestionaire />} />
+            <Route path="/exams/:id" element={<Exams />} />
+            <Route path="/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
+            <Route path="/test-thoery-question/:id" element={<TheoryQuestion />} />
+            <Route path="/questions/:id" element={<Questions />} />
             <Route path="/result" element={<Result />} />
             <Route path="/ads" element={<Ads />} />
             <Route path="/faqs" element={<Faqs />} />

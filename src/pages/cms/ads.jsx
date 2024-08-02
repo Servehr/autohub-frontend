@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { useState, useRef, useEffect } from "react";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, BounceLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import Sidebar  from "../shared/sidebar";
@@ -12,27 +12,19 @@ import DynamicTable from "@/components/table"
 import { GetSearchedProduct, allProduct, getAdverts } from "@/apis/ads";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
+import Pagination from "@/components/Pagination";
 
 export default function Ads()
 {
     // const advertState = appStore((state) => state)
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(11)  
+    const [perPage, setPerPage] = useState(5)  
     const [searchQuery, setSearchQuery] = useState("")
     
-    const { data: advertData, isLoading, refetch } = useQuery(["get-all-product"], () => getAdverts(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+    const { data: advertData, isLoading, isRefetching, refetch } = useQuery(["get-all-product"], () => getAdverts(currentPage, perPage, searchQuery), { cacheTime: 0 })
     const [dataTable, setDatable] = useState("")
     const [refresh, setRefresh] = useState(0)
       
-    const [totalRow, setTotalRow] = useState(0)  
-    const [pages, setPages] = useState(0)    
-    const [theData, setData] = useState([]) 
-    const [dataState, setDataState] = useState(false)
-    const [hasNextPage, setHasNextPage] = useState() 
-    const [hasPreviousPage, setHasPreviousPage] = useState() 
-    const [isLoadingData, setIsLoading] = useState(false)
-
-
     if(!isLoading)
     {
         // console.log(advertData)
@@ -55,118 +47,9 @@ export default function Ads()
         // console.log("Great")
     }, [refresh])
 
-    // useEffect(() => 
-    // {
-        // setadvertData(roleadvertData(currentPage, perPage))
-    // }, [])
-
-    // const [isLoading, setIsLoading] = useState(false)
-    // useEffect(() => {
-    //     getProducts()
-    // }, [isLoading])
-
-    // const getProducts = async () => 
-    // {
-    //     let token = localStorage.getItem("token")  
-    //     await axios.get(`${BASE_URL}ad/all-product`, {
-    //             headers: { 'Authorization': token ? `Bearer ${token}` : ""}
-    //             }).then((response) => 
-    //             {  
-    //                 if(response.data.data)
-    //                 {
-    //                     setIsLoading(true)
-    //                     setDatable(response.data.data)
-    //                 }
-    //             }).catch((error) => {                        
-    //                     console.log(error)
-    //             })
-    // }
-
-    const fetchRoles = (theCurrentPage, thePerPage) =>
-    {
-        setCurrentPage(theCurrentPage)
-        setPerPage(thePerPage)
-        // refetch()
-        roleData(theCurrentPage, thePerPage)
-    }
-
-    const roleData = async (theCurrentPage, thePerPage) => 
-    {
-        // setIsLoading(true)
-        // setDataState(false)
-        getAdverts(theCurrentPage, thePerPage)
-            .then((res) => 
-            {
-                // refetch()
-                // setIsLoading(true)
-                console.log(res)
-                // setTimeout(() => {
-                    setCurrentPage(res?.product_advert?.currentPage)
-                    setTotalRow(res?.product_advert?.totalPage)
-                    setPages(res?.product_advert?.noOfPages)
-                    setHasPreviousPage(res?.product_advert?.hasPreviousPage)
-                    setHasNextPage(res?.product_advert?.hasNextPage)
-                    // localStorage.setItem('noOfPages', res?.product_advert?.noOfPages)
-                    // localStorage.setItem('totalPage', res?.product_advert?.totalPages)
-                    // localStorage.setItem('currentPage', res?.product_advert?.currentPage)
-                    setData(res?.product_advert?.roles)
-                    setIsLoading(false)
-                    refetch()
-                // }, 2000)
-            })
-            .catch((err) => 
-            {
-                console.log(err)
-                alert('No data found')
-                 setDataState(true)
-            })
-    }
-    let decrease = [];
-    let increase = [];
-    // const totaly = localStorage.getItem('currentPage')
-    const totaly = currentPage
-    // const showOnlySomeLinks: number = parseInt(totaly) - (parseInt(totaly) - 6)
-    const showOnlySomeLinks = 2
-    const y = parseInt(totaly)
-  
-    for (let index = 1; index <= showOnlySomeLinks; index++) 
-    {
-        if((y-index) >= 1)
-        {
-          decrease.push(y-index) 
-        }
-    }
-  
-    for (let index = 1; index <= showOnlySomeLinks; index++) 
-    {
-        if((y+index) > y)
-        {
-          increase.push(y+index) 
-        }
-    }
-  
-    const sorting = decrease.reverse()
-    const before= sorting.map((num, index) => 
-    {
-          if(num !== y && y >= 1)
-          {
-              return <button className="rounded-lg border border-teal-500 px-3 py-1 hover:border-5 hover:border-green-500 text-white cursor-pointer bg-brandDarkGray hover:bg-brandGreen" onClick={() => fetchRoles(num, perPage)}>{(num)}</button> 
-          }
-    })
-  
-    // const total = localStorage.getItem('noOfPages')
-    const total = pages
-    const viewingPage = currentPage //localStorage.getItem('currentPage')
-    const after= increase.map((num, index) => 
-    {
-          if(num !== y && y >= 1)
-          {
-              if(parseInt(total) >= num)
-              {
-                  return <button className="rounded-lg border border-teal-500 px-3 py-1 hover:border-5 hover:border-green-500 text-white cursor-pointer bg-brandDarkGray hover:bg-brandGreen" onClick={() => fetchRoles(num, perPage)}>{(num)}</button> 
-              }
-          }
-    })
+    useEffect(() => {
+        // setSearchQuery(searchQuery)
+    }, [searchQuery])
 
     const searchedProduct = (queryParameter) => 
     {
@@ -189,10 +72,14 @@ export default function Ads()
       )
     }
 
+    const tellThePost = (e) => 
+    {        
+        setSearchQuery(e.target.value)
+        callTheSearch(e)
+    }
+
     const callTheSearch = (e) => 
     {        
-        setCurrentPage(1)
-        setPerPage(11)
         if (e.target.value != "") 
         {
             // searchedProduct(value)
@@ -205,9 +92,6 @@ export default function Ads()
             refetch()                            
         }
     }
-
-
-
 
   return ( 
         <div className="pb-5 bg-white">
@@ -228,21 +112,26 @@ export default function Ads()
                             // value={query}
                             className="md:w-10/12 sm:w-full w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
                             placeholder="Search sender, product, price, state, condition, status    "
-                            onChange ={(e) => {
-                                setSearchQuery(e.target.value)
-                                console.log(searchQuery)
-                                callTheSearch(e)
-                            }}
+                            onChange ={tellThePost}
                         />
                     </div>
                     
-                    <div className="w-full p-3 mb-3 mt-3">
+                    <div className="w-full p-3 mb-3 mt-3"
+                    >
+                        {isLoading && !isRefetching && (
+                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">                            
+                                <BounceLoader color="#1c9236" />    
+                            </div>
+                        )}
+
+                        {!isLoading && isRefetching && (
+                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">                            
+                                <BounceLoader color="#1c9236" />
+                            </div>
+                        )}
+
                         {
-                            // !isLoading &&  <DynamicTable 
-                            //                             header={['Title', 'Manufacturer', 'Model', 'Price', 'State', 'Condition', 'Actions']} 
-                            //                             data={data} 
-                            //                         />
-                            !isLoading && (advertData?.product_advert?.product?.length > 0) &&  <DynamicTable 
+                            !isLoading && !isRefetching && (advertData?.product_advert?.product?.length > 0) &&  <DynamicTable 
                                                                         header={['Sender', 'Products', 'Price', 'State', 'Condition', 'Views', 'Status', 'Actions']} 
                                                                         columns={columns}
                                                                         data={advertData?.product_advert?.product}
@@ -250,13 +139,36 @@ export default function Ads()
                                                                             console.log(e)
                                                                             setRefresh(e)
                                                                         } }
-                                                                        page={'advert'}
+                                                                        page={''}
                                                                     />
                         }
                     </div>
                 </div>
             </div>
-            { !isLoading && 
+            { 
+                    !isLoading && !isRefetching && (advertData?.product_advert?.product.length > 0) && 
+                            <Pagination onClick={(data) => {
+                                      setCurrentPage(data)
+                                      console.log(data)
+                                      console.log(currentPage)
+                                      // setRefresh(data)
+                                      // setPerPage(data.perPage)
+                                      setTimeout(() => {
+                                          refetch()   
+                                      }, 1000)
+                                      // do all the setting here and then refresh for new set of data rows
+                                  } 
+                              } 
+                              perPageNo={perPage} 
+                              currentPageNo={currentPage} 
+                              noOfPages={advertData?.product_advert?.noOfPages} 
+                              hasNextPage={advertData?.product_advert?.hasNextPage} 
+                              hasPreviousPage={advertData?.product_advert?.hasPreviousPage} 
+                              from={''}
+                          />    
+            }
+
+            {/* { !isLoading && 
                 <nav className="w-full items-center mb-2 flex justify-center bg-brandDarkGray space-x-1 -mt-10" aria-label="Pagination">
                     { 
                         advertData?.product_advert?.hasPreviousPage && 
@@ -273,7 +185,6 @@ export default function Ads()
                         before
                     }
                     {
-                        // (currentPage > 1) && 
                         <button className="rounded-lg border border-blue-900 bg-blue-900 px-3 py-1 text-white cursor-default">{currentPage} </button> 
                     }
                     { 
@@ -290,7 +201,7 @@ export default function Ads()
                             </button>
                     }
                 </nav>
-            }
+            } */}
         </div>
   )
 }

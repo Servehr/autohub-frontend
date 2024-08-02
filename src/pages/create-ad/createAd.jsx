@@ -65,6 +65,7 @@ export default function CreateAd()
   const [theDescription, setTheDescription] = useState(advertState.getDescription())
   const [theChasisNo, setTheChasisNo] = useState(advertState.getChasisNumber())
   const [thePrice, setThePrice] = useState(advertState.getPrice())
+  const [theLocation, setTheLocation] = useState(advertState.getLocation())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setIsSuccess] = useState("")
@@ -95,6 +96,7 @@ export default function CreateAd()
   const [priceErrorMsg, setPriceErrorMsg] = useState("")
   const [entryErrorMsg, setEntryErrorMsg] = useState("")
   const [mainImageErrorMsg, setMainImageErrorMsg] = useState("")
+  const [locationErrorMsg, setLocationErrorMsg] = useState("")
   const [formValid, setFormValid] = useState("no")
   const [fillForm, setFillForm] = useState("")
   const [postStatus, setPostStatus] = useState("")
@@ -172,9 +174,9 @@ export default function CreateAd()
     setProcessAdvertAsDraft(false)
   }, [])
 
-  useEffect(() => {
+//   useEffect(() => {
 
-  }, [theCountry, theFuelType, theMileAge, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers])
+//   }, [theCountry, theFuelType, theMileAge, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers, theLocation])
 
   
   useEffect(() => {
@@ -363,6 +365,14 @@ export default function CreateAd()
             setFuelTypeErrorMsg("")
             submitForm = true
         }
+        if(theLocation === "" || theLocation === -1 || theLocation === null || theLocation === undefined)
+        {
+            setLocationErrorMsg("Kindly provide city or location")
+            submitForm = false
+        } else {
+            setLocationErrorMsg("")
+            submitForm = true
+        }
 
         //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
@@ -388,14 +398,15 @@ export default function CreateAd()
 
         // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
 
-        // const advertise = 
-        // { 
-        //     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-        //     colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
-        //     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
-        //     manufacturerName: theManufacturerName, modelName: theModelName, images: "", imagePosition: mainImagePosition, country: theCountry
-        // }
-        // console.log(advertise)
+        const advertise = 
+        { 
+            state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, location: theLocation,
+            colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
+            chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
+            manufacturerName: theManufacturerName, modelName: theModelName, images: "", imagePosition: mainImagePosition, country: theCountry
+        }
+        console.log(advertise)
+        setProcessAdvert(false)
         // clearProductStore()
         // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
         // return false
@@ -425,6 +436,7 @@ export default function CreateAd()
                 }, 2000)
             }
         } else {
+            console.log(imagesToSave)
             // return       , mainImage: mainImagePosition       avatar: imagesToSave,      , draft: x
             const flash = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
             let chunckOne = []
@@ -449,7 +461,7 @@ export default function CreateAd()
                 const firstPayLoad = 
                 { 
                     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-                    colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
+                    colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, location: theLocation,
                     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
                     manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: Number(theCountry)
                 }
@@ -568,12 +580,37 @@ export default function CreateAd()
             }
         }
     }
+
+    function fixBinary (bin) 
+    {
+        var length = bin.length;
+        var buf = new ArrayBuffer(length);
+        var arr = new Uint8Array(buf);
+        for (var i = 0; i < length; i++) {
+          arr[i] = bin.charCodeAt(i);
+        }
+        return buf;
+    }
+
+    function base64ToBlob(toConvert, contentType = '')
+    {
+        const byteCharacters = atob(toConvert)
+        const byteArrays  = []
+
+        for (let index = 0; index < byteCharacters.length; index++) 
+        {
+            byteArrays.push(byteCharacters.charCodeAt(index))            
+        }
+        const byteArray = new Uint8Array(byteArrays);
+        return new Blob([byteArray], { type: contentType })
+    }
     
     // const fileInputRef = useRef(null)
     const formData = new FormData();
     const handleMultipleImages = (e) => 
     {
         const files = Array.from(e.target.files)
+
         if (files.length > 0) 
         {
             setProductImages([...images, ...files]);
@@ -587,9 +624,10 @@ export default function CreateAd()
                 });
             })
             ).then((results) => {
+                console.log(results)
                 setPreviewUrls([...previewUrls, ...results]);
             });
-        }          
+        }     
         setMainImageErrorMsg("")      
     };
 
@@ -644,6 +682,7 @@ export default function CreateAd()
         advertState.setTheManufacturerName("")
         advertState.setMileAge("")
         advertState.setFuelType(-1)
+        advertState.setLocation("")
     }
 
     const selectMultipleFiles = (event) => 
@@ -1059,13 +1098,13 @@ export default function CreateAd()
                                                                         </div>
                                                                     }
                                                                     { (theOthers === "others") && <span className="w-full font-bold text-sm">Enter Model</span>}
-                                                                    { (theOthers === "others") && <input onBlur={(e) => {
+                                                                    { (theOthers === "others") && <input onChange={(e) => {
                                                                             advertState.setTheManufacturerName(e.target.value)
                                                                             setTheManufacturerName(e.target.value)
                                                                         }} type="text" id="manufacturerName" defaultValue={theManufacturerName}  name="manufacturerName" placeholder={"Enter Manufacturer Name"}
                                                                         className="mb-3 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                                     }
-                                                                    { (theOthers === "others") && <input onBlur={(e) => {
+                                                                    { (theOthers === "others") && <input onChange={(e) => {
                                                                             advertState.setTheModelName(e.target.value)
                                                                             setTheModelName(e.target.value)
                                                                         }} type="text" id="modelName" defaultValue={theModelName}  name="modelName" placeholder={"Enter Model Name"} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
@@ -1122,41 +1161,43 @@ export default function CreateAd()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <div className="mb-0">
                                                                 <div className="relative">
-                                                                <span className="w-full font-bold text-sm">Fuel Type</span>
-                                                                <select onChange={(e) => 
-                                                                    {                                                                         
-                                                                        // advertState.setColour(e.target.value)
-                                                                        // setTheColour(e.target.value)
-                                                                        if(Number(e.target.value) === -1)
-                                                                        {
-                                                                            advertState.setFuelType(-1)
-                                                                            setFuelType(-1)
-                                                                            submitForm = false
-                                                                            setFuelTypeErrorMsg("Kindly Select Fuel Type")
-                                                                        } else {
-                                                                            advertState.setFuelType(Number(e.target.value))
-                                                                            setFuelType(Number(e.target.value))
-                                                                            setFuelTypeErrorMsg("")
-                                                                            submitForm = true
-                                                                        }
-                                                                    } 
-                                                                    } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                                { <option value={-1}> - Select Fuel -  </option> }
-                                                                {
-                                                                    allRequiredData?.fuel &&
-                                                                    allRequiredData?.fuel?.length !== 0 &&
-                                                                    allRequiredData?.fuel.map((fuel) => {
-                                                                        return (
-                                                                            <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
-                                                                                {fuel.name}
-                                                                            </option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
-                                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                                </div>
+                                                                    <span className="w-full font-bold text-sm">Fuel Type</span>
+                                                                    <select onChange={(e) => 
+                                                                        {                                                                         
+                                                                            // advertState.setColour(e.target.value)
+                                                                            // setTheColour(e.target.value)
+                                                                            if(Number(e.target.value) === -1)
+                                                                            {
+                                                                                advertState.setFuelType(-1)
+                                                                                setFuelType(-1)
+                                                                                submitForm = false
+                                                                                setFuelTypeErrorMsg("Kindly Select Fuel Type")
+                                                                            } else {
+                                                                                advertState.setFuelType(Number(e.target.value))
+                                                                                setFuelType(Number(e.target.value))
+                                                                                setFuelTypeErrorMsg("")
+                                                                                submitForm = true
+                                                                            }
+                                                                        } 
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                    { <option value={-1}> - Select Fuel -  </option> }
+                                                                    {
+                                                                        allRequiredData?.fuel &&
+                                                                        allRequiredData?.fuel?.length !== 0 &&
+                                                                        allRequiredData?.fuel.map((fuel) => {
+                                                                            return (
+                                                                                <option key={fuel.id} value={fuel.id} data-id={fuel.name} selected={fuel?.id === Number(theFuelType) ? Number(theFuelType) : ""}>
+                                                                                    {fuel.name}
+                                                                                </option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                    </select>
+                                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                                                        </svg>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="text-red-500 font-bold text-sm">{ (theFuelType === -1) ?  fuelTypeErrorMsg : "" }</div>
@@ -1330,7 +1371,7 @@ export default function CreateAd()
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">MileAge</span>
-                                                            <input onKeyUp={(e) => {    
+                                                            <input onChange={(e) => {    
                                                                 advertState.getMileAge(e.target.value)
                                                                 setTheMileAge(e.target.value)} 
                                                             } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
@@ -1338,9 +1379,20 @@ export default function CreateAd()
                                                         </div>
                                                     </div>
 
+                                                    <div className="flex flex-wrap -m-2 mt-2 mb-5">
+                                                        <div className="p-2 md:w-2/2 w-full">
+                                                            <span className="w-full font-bold text-sm">City/Location</span>
+                                                            <input onChange={(e) => {
+                                                                advertState.setLocation(e.target.value)
+                                                                setTheLocation(e.target.value)
+                                                            }} type="text" id="location" defaultValue={theLocation}  name="location" placeholder="location" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                        <div className="text-red-500 font-bold text-sm">{ (theLocation === "") ?  locationErrorMsg : "" }</div>
+                                                        </div>
+                                                    </div>
+
                                                     <div className="flex flex-wrap -m-2 mt-5 md:mb-10 mb-20 p-2">
                                                         <span className="w-full font-bold text-sm">Description</span>
-                                                        <ReactQuill theme="snow" defaultValue={value} onChange={setValue} className="w-full h-[150px]" modules={modules} />
+                                                        <ReactQuill theme="snow" defaultValue={value} onChange={setValue} className="w-full h-[250px]" modules={modules} />
                                                         
                                                         {/* <textarea onChange={(e) => { 
                                                                 advertState.setDescription(e.target.value)
@@ -1356,14 +1408,14 @@ export default function CreateAd()
                                                     <div className="flex flex-wrap -m-2 mt-2 mb-5">
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Chasis Number</span>
-                                                            <input onBlur={(e) => {
+                                                            <input onChange={(e) => {
                                                                 advertState.setChasisNumber(e.target.value)
                                                                 setTheChasisNo(e.target.value)
                                                             }} type="text" id="vin" defaultValue={theChasisNo}  name="vin" placeholder="VIN chasis number (Optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Price</span>
-                                                            <input onKeyUp={(e) => {    
+                                                            <input onChange={(e) => {    
                                                                 advertState.setPrice(e.target.value)
                                                                 setThePrice(e.target.value)} 
                                                             } type="text" id="price" defaultValue={thePrice} name="price" placeholder="Price (₦)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />

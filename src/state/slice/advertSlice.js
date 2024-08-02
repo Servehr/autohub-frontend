@@ -397,6 +397,20 @@ const createAdvertSlice  = (set, get) => (
         getProductTitle()
         {
             return get().productTitle
+        },      
+
+        location: "",
+        setLocation(location)
+        {
+            set((state) => (
+                {
+                    location: location
+                }
+            ))
+        },
+        getLocation()
+        {
+            return get().location
         }, 
 
         avatar: [],

@@ -61,6 +61,7 @@ export default function Dashboard()
                     </div>
                     
                     <div className='grid grid-cols-12 gap-5 py-2 px-3 mt-5 mb-20'>
+                        <span className="font-bold text-xl col-span-12 mb-4 text-green-600">Summary</span>
                         {
                             isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                                 <BeatLoader color="#1c9236" />

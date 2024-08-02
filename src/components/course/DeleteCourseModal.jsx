@@ -6,27 +6,33 @@ import { appStore } from "@/state/appState";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { DeleteFaq } from '@/apis/misc';
+import { DeleteCourse } from '@/apis/backend/course';
+import { BeatLoader, BounceLoader } from "react-spinners";
 
 
-export const DeleteCourseModal = ({onClick, deleteCourseModal, courseId})  =>
+export const DeleteCourseModal = ({onClick, deleteCourseModal, deleteCourse, courseId})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
+        const [loading, setIsLoading] = useState(false)
+        const [id, setId] = useState(Number(deleteCourse.id))
 
         const cancelModal = () => 
         {
                 onClick(true)
         }
-
-        const deleteFaq = () => 
+        // alert(id)
+        const deleteCourses = () => 
         {
-                DeleteFaq(courseId)
+                setIsLoading(true)
+                DeleteCourse(id)
                 .then((res) => 
                 {
                         onClick(Math.random())
                 })
                 .catch((err) => 
                 {
+                        setIsLoading(false)
                         console.log(err)
                 })       
         }
@@ -34,22 +40,24 @@ export const DeleteCourseModal = ({onClick, deleteCourseModal, courseId})  =>
         return (
                 <Modal onClick={onClick} isOpen={deleteCourseModal} wrapperWidth={800} margin={'100px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll d-flex justify-center item-center'>
-                                <h1 className='flex w-full justify-center items-center font-bold text-lg mb-10 mx-auto'>You are about to delete Course {'title'}</h1>
+                                <h1 className='flex w-full justify-center items-center font-bold text-lg uppercase text-red-600 mx-auto'><span className='text-black mr-1'>You are about to delete Course </span> ({deleteCourse.name})</h1>
+                                <span className='flex w-full justify-center items-center font-bold text-lg mb-10 mx-auto text-blue-600'>Material Under<span className='text-red-600 mr-1 ml-1'> ({deleteCourse.name})</span> will also be deleted</span>
                                 
                                 <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-2 mt-5">
                                         <button  
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
+                                                className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"
                                                 onClick={() => {
                                                         onClick(!deleteCourseModal)
                                                 }}
-                                                >
-                                                        Close
+                                        >
+                                                        Cancel
                                         </button>
                                         <button
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                                onClick={() => deleteFaq() }
-                                        >
-                                        Delete 
+                                                disabled={loading}
+                                                className="mt-2 py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
+                                                onClick={deleteCourses}
+                                                >                                                
+                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Delete" )          }
                                         </button>
                                 </div>
                         </div>

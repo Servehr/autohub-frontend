@@ -6,10 +6,13 @@ import { appStore } from "@/state/appState";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { DeleteFaq } from '@/apis/misc';
+import { DeleteTestQuestionaires } from '@/apis/backend/questionaires';
+import { BeatLoader } from "react-spinners";
 
 
-export const DeleteQuestionaireModal = ({onClick, deleteFolder, courseId})  =>
+export const DeleteQuestionaireModal = ({onClick, id, name, deleteFolder, courseId})  =>
 {
+        const [loading, setIsLoading] = useState(false)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
 
@@ -18,15 +21,19 @@ export const DeleteQuestionaireModal = ({onClick, deleteFolder, courseId})  =>
                 onClick(true)
         }
 
-        const deleteFaq = () => 
+        const deleteQuestionaire = () => 
         {
-                DeleteFaq(courseId)
+                setIsLoading(true)
+                const data = { id: id }
+                console.log(data)
+                DeleteTestQuestionaires(id)
                 .then((res) => 
                 {
-                        onClick(Math.random())
+                        return onClick(courseId*Math.random())
                 })
                 .catch((err) => 
                 {
+                        setIsLoading(false)
                         console.log(err)
                 })       
         }
@@ -34,11 +41,11 @@ export const DeleteQuestionaireModal = ({onClick, deleteFolder, courseId})  =>
         return (
                 <Modal onClick={onClick} isOpen={deleteFolder} wrapperWidth={800} margin={'100px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll d-flex justify-center item-center'>
-                                <h1 className='flex w-full justify-center items-center font-bold text-lg mb-10 mx-auto'>You are about to delete Course {'title'}</h1>
-                                
+                                <h1 className='flex w-full justify-center items-center font-bold text-lg uppercase text-red-600 mx-auto'>You are about to delete Course {name}</h1>
+                                <span className='flex w-full justify-center items-center font-bold text-lg mb-10 mx-auto text-blue-600'>Every question under it will also be deleted</span>
                                 <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-2 mt-5">
                                         <button  
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
+                                                className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"
                                                 onClick={() => {
                                                         onClick(!deleteFolder)
                                                 }}
@@ -46,10 +53,11 @@ export const DeleteQuestionaireModal = ({onClick, deleteFolder, courseId})  =>
                                                         Close
                                         </button>
                                         <button
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                                onClick={() => deleteFaq() }
+                                                disabled={loading}
+                                                className="mt-2 py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
+                                                onClick={() => deleteQuestionaire() }
                                         >
-                                        Delete 
+                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Delete" )          }
                                         </button>
                                 </div>
                         </div>

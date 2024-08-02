@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 import useUser from "@/hooks/useUser";
 import { queryClient } from "@/main";
 
-const WatchListIcon = ({ id, inWatchlist }) => {
+const WatchListIcon = ({onClick, id, inWatchlist }) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
-  const { data: user } = useUser();
+  const { data: user, refetch } = useUser();
 
   useEffect(() => {
     setIsInWatchlist(inWatchlist);
@@ -31,6 +31,7 @@ const WatchListIcon = ({ id, inWatchlist }) => {
           toast.success("Product removed from watchlist", {
             position: "top-center",
           });
+          onClick(true)
           queryClient.invalidateQueries("watchlist");
         })
         .catch((err) => {
@@ -42,6 +43,7 @@ const WatchListIcon = ({ id, inWatchlist }) => {
       addToWatchlist(data)
         .then(() => {
           setIsInWatchlist(true);
+          onClick(true)
           toast.success("Product Added to watchlist", { position: "top-center" });
         })
         .catch((err) => {
