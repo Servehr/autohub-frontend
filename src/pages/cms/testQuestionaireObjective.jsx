@@ -25,7 +25,7 @@ export default function TestQuestionaireObjective()
 
 
   return ( 
-        <>
+        <div className="px-5">
             {
                 !isLoading && <div className="w-full justify-between p-3 mt-2 flex bg-green-100 -mb-3 items-center rounded-lg">                        
                     <div className="p-3 mt-5">
@@ -66,6 +66,6 @@ export default function TestQuestionaireObjective()
                                             }
                                         } openQuestionaire={openQuestionaire}  
                                 /> }
-        </>
+        </div>
   )
 }

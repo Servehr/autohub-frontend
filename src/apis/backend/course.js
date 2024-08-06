@@ -126,6 +126,27 @@ export async function TestQuestions()
     });
 }
 
+export async function TestCourseTheoryQuestions(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`theory-question/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
 
 // get-test-questionaires test_questions
 export async function getCourseFaq(id) 
@@ -199,6 +220,95 @@ export async function RemoveCourseFaq(id)
     {
         axios_instance
           .delete(`course-faq/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+
+
+// get-test-questionaires test_questions
+export async function SubmitTestObjective(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post("submit-test-objective", data)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function SubmitTestTheory(data) 
+{
+  console.log(data)
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`submit-test-theory`, {course_id: data.course_id, question: data.question})
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function SubmitExamObjective(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`submit-exam-objective`, {id: data.id, question: data.question})
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function SubmitExamTheory(data) 
+{
+  console.log(id)
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .delete("submit-exam-theory", data)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);

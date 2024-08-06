@@ -77,6 +77,8 @@ import ExamQuestionaire from "./pages/cms/examQuestionaire";
 import Exams from "./pages/cms/exams";
 import TheoryQuestion from "./pages/cms/theoryQuestion";
 import ExamTheoryQuestion from "./pages/cms/examTheoryQuestion";
+import TestCourses from "./pages/cms/test-courses";
+import TestUserTheory from "./pages/user/test-user-theory";
 
 export const Loader = ({ full }) => {
   return (
@@ -143,7 +145,8 @@ export default function App()
             <Route path="/settings" element={<Settings />} />
 
             {/* <Route path="/course" element={<Course />} /> */}
-            <Route path="/test-questionaires" element={<TestQuestionaire />} />
+            <Route path="/test-questionaires/:id" element={<TestQuestionaire />} />
+            <Route path="/test-courses" element={<TestCourses />} />
             <Route path="/exam-questionaires" element={<ExamQuestionaire />} />
             <Route path="/exams/:id" element={<Exams />} />
             <Route path="/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
@@ -233,7 +236,8 @@ export default function App()
               <Route path="/dashboard/chat" element={<Chat />} />
               <Route path="/dashboard/summary" element={<DashboardSummary />} />
               <Route path="/dashboard/courses" element={<Courses />} />
-              <Route path="/dashboard/test-user" element={<TestUser />} />
+              <Route path="/dashboard/test-user-obj" element={<TestUser />} />
+              <Route path="/dashboard/test-user-theory" element={<TestUserTheory />} />
               <Route path="/dashboard/exam-user" element={<ExamUser />} />
               <Route path="/dashboard/curriculum" element={<Curriculum />} />
               <Route path="/dashboard/course-faq" element={<CourseFaq />} />

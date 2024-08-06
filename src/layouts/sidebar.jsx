@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import SupvervisorDashboard from "./SupvervisorDashboard";
 import { appStore } from "@/state/appState";
 import { AVATAR } from "@/lib/axios";
+import { Icons } from "@/util/icon";
 
 export default function DashSidebar() 
 {
@@ -39,6 +40,19 @@ export default function DashSidebar()
   useEffect(() => {
 
   }, [profilePicture])
+
+  const [testObj, setTestObj] = useState(false)
+  const [testExam, setTheExam] = useState(false)
+
+  const testControl = () => {
+      setTestObj(!testObj)
+      setTheExam(false)
+  }
+
+  const examControl = () => {
+    setTheExam(!testExam)
+    setTestObj(false)
+}
 
   return (
     <>
@@ -104,25 +118,135 @@ export default function DashSidebar()
               </li>
             ))}
             
-            { ((advertState.getUserServices() === '2') && (advertState.getLoggedInUserType() === 'both')) | ((advertState.getUserServices() === '4') && (advertState.getLoggedInUserType() === 'student')) && supervisorSidebarItems?.map((item, idx) => (
-              <li key={item + idx} className="cursor-pointer">
+            { ((advertState.getUserServices() === '2') && (advertState.getLoggedInUserType() === 'both')) | ((advertState.getUserServices() === '4') && (advertState.getLoggedInUserType() === 'student')) && 
                 <>
-                  <NavLink end to={item.link}>
-                    {({ isActive }) => (
-                      <div
-                        className={`${
-                          isActive
-                            ? "bg-blue-500 text-white font-bold"
-                            : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
-                        } px-6 py-2 rounded-[10px] font-semibold text-sm`}
-                      >
-                        {item.name}
-                      </div>
-                    )}
-                  </NavLink>
-                </>
-              </li>
-            ))} 
+                    <li key={1} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/summary'}>
+                        {({ isActive }) => (
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white py-2 font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            Dashboard
+                          </div>
+                        )}
+                      </NavLink>
+                    </li>
+                    <li key={2} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/courses'}>
+                        {({ isActive }) => (
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white py-2 font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            Courses
+                          </div>
+                        )}
+                      </NavLink>
+                    </li>
+                    <li key={3} className="cursor-pointer" onClick={() => {
+                        testControl(!testObj)
+                    }}>
+                      <NavLink>
+                        {({ isActive }) => (
+                            <div className="w-full">                                  
+                              <div
+                                className="bg-blue-200 text-black font-bold px-6 py-1 rounded-[10px] font-semibold text-sm flex justify-between items-center"
+                              >
+                                <span className="text-md">Test</span>
+                                <Icons width={7} height={7} color="black" iconName={'openArrow'} />
+                              </div>
+                              <ul className={`p-2 ${(testObj === true) ? 'block d-flex justify-center items-center w-full': 'hidden'}`}>
+                                  <NavLink end to={'/dashboard/test-user-obj'} className={`${
+                                      isActive
+                                        ? "bg-blue-500 text-white font-bold hover:bg-green-300"
+                                        : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                                    } px-6 py-3 rounded-[10px] font-semibold text-sm flex justify-between items-center`}
+                                    >
+                                      Objective
+                                  </NavLink>
+                                  <NavLink end to={'/dashboard/test-user-theory'} className={`${
+                                      isActive
+                                        ? "bg-blue-500 text-white font-bold hover:bg-green-300"
+                                        : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                                    } px-6 py-3 rounded-[10px] mt-1 font-semibold text-sm flex justify-between items-center`}
+                                    >
+                                    Theory
+                                  </NavLink>
+                              </ul>
+                            </div>
+                        )}
+                      </NavLink>
+                    </li>
+                    <li key={4} className="cursor-pointer" onClick={() => {
+                        examControl(!testExam)
+                    }}>
+                      <NavLink>
+                          {({ isActive }) => (
+                              <div className="w-full">                                  
+                                <div
+                                  className={`${
+                                    isActive
+                                    ? "bg-blue-200 text-black font-bold"
+                                      : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                                  } px-6 py-1 rounded-[10px] font-semibold text-sm flex justify-between items-center`}
+                                >
+                                  <span className="text-md">Exam</span>
+                                  <Icons width={7} height={7} color="black" iconName={'openArrow'} />
+                                </div>
+                              </div>
+                          )}
+                        </NavLink>
+                        <ul className={`p-3 ${(testExam === true) ? 'block d-flex justify-center items-center w-full -mt-2 -mb-3': 'hidden'}`}>
+                            <li className="py-2 text-black font-medium hover:bg-green-300  hover:rounded-lg pl-5"
+                                onClick={() => {
+                                          
+                                }}
+                            >Objective</li>
+                            <li className="py-2 text-black font-medium hover:bg-green-300  hover:rounded-lg pl-5"
+                              onClick={() => {
+                                          
+                              }}>Theory</li>
+                        </ul>
+                    </li>
+                    <li key={5} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/course-faq'}>
+                        {({ isActive }) => (
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            FAQ
+                          </div>
+                        )}
+                      </NavLink>
+                    </li>
+                    <li key={6} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/profile'}>
+                        {({ isActive }) => (
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            Profile
+                          </div>
+                        )}
+                      </NavLink>
+                    </li>
+               </>
+            } 
 
             <li
               onClick={logOut}
@@ -202,6 +326,16 @@ const supervisorSidebarItems = [
   {
     name: "Take A Test",
     link: "/dashboard/test-user",
+    submenu: [
+        {
+          name: "Objective",
+          link: "/dashboard/test-user",
+        },
+        {
+          name: "Theory",
+          link: "/dashboard/test-user",
+        }
+    ]
   },
   {
     name: "Take An Exam",

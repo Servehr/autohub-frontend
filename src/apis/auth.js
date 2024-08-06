@@ -266,6 +266,7 @@ export function logOut()
           } else {
             localStorage.removeItem("autoHub")
             localStorage.clear()
+            sessionStorage.clear();
             window.location.href = "/"
           }
         })

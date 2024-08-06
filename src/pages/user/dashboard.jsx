@@ -21,6 +21,7 @@ import Pagination from "@/components/Pagination";
 import { DeleteWishList } from "@/components/DeleteWishList";
 import ListShow from "./ListShow";
 import SupvervisorDashboard from "@/layouts/SupvervisorDashboard";
+import SideNav from "@/layouts/SideNav";
 
 export default function UserDashboard() 
 {
@@ -41,6 +42,7 @@ export default function UserDashboard()
             {/* side bar */}
 
             <DashSidebar />
+            {/* <SideNav /> */}
 
             {/* {
                (data?.data?.type === "supervisor") && <DashSidebar />

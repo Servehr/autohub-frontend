@@ -154,7 +154,7 @@ export default function Questions()
                                                 } openQuestionaire={openQuestionaire}  
                                         /> }
 
-                    { editQuestion && <EditQuestionModal data={dataToEdit} onClick={(e) => {
+                    { editQuestion && <EditQuestionModal datax={dataToEdit} onClick={(e) => {
                                                         refetch()
                                                         setEditQuestion(false) 
                                                     }

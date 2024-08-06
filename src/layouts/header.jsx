@@ -67,7 +67,7 @@ export default function Header()
     "/edit-post",
     "/students",
     "/result",
-    "/test-questionaires",
+    `/test-questionaires/${editPost}`,
     "/exam-questionaires",
     `/edit-post/${editPost}`,
     `/questions/${ques}`,
@@ -83,6 +83,7 @@ export default function Header()
     `/items`,
     `/request-item`,
     `/settings`,
+    `/test-courses`,
   ];
 
   const { pathname } = useLocation();
