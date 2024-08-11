@@ -41,27 +41,6 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
             }
         }, [imageOpenModal, deleteOpenModal])
 
-        // if(!isLoading)
-        // {
-        //         console.log(data)
-        // }
-
-        // if(!imageOpenModal)
-        // {
-                // axios.get(`${BASE_URL}ad/user-product-ads`, {
-                //         headers: {
-                //                 'Authorization': token ? `Bearer ${token}` : "",
-                //         }
-                // }).then((response) => 
-                // {  
-                //         consoole.log(response)
-                // }).catch((error) => {                        
-                //         return false
-                // })
-                // console.log("Fetching data from db")
-                // getImages()
-        // }
-
         const getImages = async (x = 0) => 
         {
                 console.log(userProductId)

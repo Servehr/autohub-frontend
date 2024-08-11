@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SellablePrice, deleteAdProduct, setProductSliderAdvert } from '@/apis/ads';
 import { appStore } from "@/state/appState";
 import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
+import { BASE_URL, PRODUCT_FACE } from "@/lib/axios";
 import { useQuery } from "react-query";
 import { singelProduct } from '@/apis/misc';
 import toast from "react-hot-toast";
@@ -54,7 +54,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
         }
 
         return (
-                <Modal onClick={onClick} isOpen={viewAdvert} wrapperWidth={900} margin={'20px auto 0px auto'}>
+                <Modal onClick={onClick} isOpen={viewAdvert} wrapperWidth={1100} margin={'20px auto 0px auto'}>
 
                         {/* { !isLoading && <h1 className='font-bold text-lg'>{data.title} by {data.user.name} - {data.user.phoneno}</h1> } */}
                         <div className="items-center gap-5 sm:flex flex justify-between mx-5 mb-10">
@@ -67,7 +67,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                                         Close
                                 </button>
                         </div>
-                        <div className='col-span-12 pb-2 overflow-auto overflow-y-scroll justify-center h-[620px] item-center'>
+                        <div className='col-span-12 pb-2 overflow-auto overflow-y-scroll justify-center h-[800px] item-center'>
                                 { !isLoading && 
                                         <>                                                
                                                 <div className="p-1 mt-1">
@@ -150,7 +150,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                                                                                         <div className='w-full text-xs font-bold text-red-700'>AutoHub</div>
                                                                                         <div className='text-xs font-bold text-green-800 -mt-15'>www.autohub.ng</div>
                                                                                 </div> */}
-                                                                                <img src={img.image_url} alt="product images" />
+                                                                                <img src={`${PRODUCT_FACE}${img.image_url}`} alt="product images" />
                                                                                 <button 
                                                                                         onClick={() => {
                                                                                                 console.log(img)

@@ -25,6 +25,7 @@ import { EditItemModal } from "./item/EditItemModal";
 import { DeleteItemModal } from "./item/DeleteItemModal";
 import { RemoveCourseModal } from "./course/RemoveCourseModal";
 import { AdminCourseFaqQuestion } from "./maceos/AdminCourseFaqQuestion";
+import { AssessmentModal } from "./maceos/AssessmentModal";
 
 
 export default function DynamicTable({header, columns, data, onClick, page})
@@ -58,6 +59,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
     const [changeRole, setChangeRole] = useState(false)
     const [UserDetails, setUserDetails] = useState(false)
     const [revokeUserRole, setRevokeUserRole] = useState(false)
+    const [assessment, setAssessment] = useState(false)
 
     const [approveEx, setApproveEx] = useState(false)
     const [declineEx, setDeclineEx] = useState(false)
@@ -207,7 +209,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                 {   (page === 'student') && 
                                                     <div className="flex justify-center items-center gap-3 mt-5">
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
-                                                        {/* <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                        <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setProductId(product.id)
                                                                 setTitle(product.title)
@@ -216,13 +218,13 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setViewFaqModal(true) 
                                                             } }>
                                                                 Mark
-                                                        </div> */}
+                                                        </div>
                                                         <div className="bg-blue-700 px-3 py-2 rounded-md hover:bg-blue-900 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setPath('result')
                                                                 setStudentMessage(true)
                                                             } }>
-                                                                Send Message
+                                                                Confirm Student
                                                         </div> 
                                                     </div>
                                                 }
@@ -258,13 +260,20 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                 {   (page === 'course') && 
                                                     <>
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
+                                                        <div className={`${(product.assessment === 1) ? 'bg-green-600' : 'bg-orange-600'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { console.log(product)
+                                                                setEditDataCOurse(product)
+                                                                setAssessment(true)
+                                                            } }>
+                                                                Assessment
+                                                        </div> 
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setEditDataCOurse(product)
                                                                 setEditCourseModal(true)
                                                             } }>
                                                                 Edit
-                                                        </div> 
+                                                        </div>
                                                         <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setDeleteDataCourse(product)
@@ -523,6 +532,15 @@ export default function DynamicTable({header, columns, data, onClick, page})
                     setOpenTheCourseFaq(false)
                 }} />
             }
+
+            { 
+                assessment && <AssessmentModal assessment={assessment} editDataCourse={editDataCourse} courseId={uploadId} onClick={() => {
+                    onClick(false)
+                    setAssessment(false)
+                }} />
+            }
+
+
            
         </>
   )

@@ -16,6 +16,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Compressor from 'compressorjs'
 import { Icons } from "@/util/icon";
+import QuillEditor from "../Editor";
 
 export default function CreateBlog()
 {
@@ -29,6 +30,8 @@ export default function CreateBlog()
     const [value, setValue] = useState("")
     const [point, setPoint] = useState("")
     const [imageToUpload, setImageToUpload] = useState(false)
+    const [content, setContent] = useState("")
+    const [files, setFiles] = useState([])
     const [error, setError] = useState(false)
     const [imgeUrl, setUrl] = useState("")
     const navigate = useNavigate();
@@ -64,7 +67,8 @@ export default function CreateBlog()
 
     const publishPost = () => 
     {
-        console.log({theValue: value})
+        // console.log({theValue: value})
+        console.log({ files, content })
     }
 
     const uploadImage = async () =>
@@ -98,6 +102,15 @@ export default function CreateBlog()
                 const displayedImage = URL.createObjectURL(img)
                 setUrl(displayedImage)
                 setImageToUpload(file)
+        }
+        
+        const onEditorChange = (value) => {
+            setContent(value)
+            console.log(content)
+        }
+    
+        const onFilesChange = (files) => {
+            setFiles(files)
         }
 
     // quillImageCallBack = () => 
@@ -182,11 +195,23 @@ export default function CreateBlog()
                                 rows={3}
                             >
                             </textarea>
-                            
-                            <ReactQuill theme="snow" value={value} onChange={setValue} className="w-full md:w-11/12 h-[350px]" modules={modules} />
 
-                            <div className="bg-green-800 px-2 py-4 w-[150px] rounded-md mt-20 text-sm text-white font-semibold hover:font-bold text-center cursor-pointer hover:bg-green-500 hover:text-black hover:text-sm" 
-                                onClick={uploadImage}>
+                            <QuillEditor
+                                placeholder={" ... typing"}
+                                onEditorChange={onEditorChange}
+                                onFilesChange={onFilesChange}                                
+                            />
+                            
+                            {/* <ReactQuill theme="snow" 
+                                        value={value} 
+                                        onChange={setValue} 
+                                        className="w-full md:w-11/12 h-[350px]" 
+                                        modules={modules}            
+                                    /> */}
+
+                            <div className="bg-green-800 px-2 py-4 w-[150px] rounded-md mt-5 text-sm text-white font-semibold hover:font-bold text-center cursor-pointer hover:bg-green-500 hover:text-black hover:text-sm" 
+                                onClick={publishPost}
+                            >
                                 Publish Post
                             </div>
                         </div>

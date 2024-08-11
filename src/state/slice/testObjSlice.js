@@ -36,6 +36,15 @@ const createTestObjectiveSlice  = (set, get) => (
             // console.log(this.selectedOption)
             return get().selectedOption
         },
+
+        setEmptyTestObjective(selectedOption)
+        {
+            set((state) => ({selectedOption: selectedOption}))
+        },
+        setEmptyTestObjective()
+        {
+            return get().selectedOption
+        },
     }
 )
 

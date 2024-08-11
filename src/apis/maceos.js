@@ -26,18 +26,8 @@ export async function NewUser(data)
     return new Promise((resolve, reject) => {
       axios_instance
         .post(`maceos-new-registration`, data)
-        .then((res) => {
-            if(res.data.status === 200)
-            {
-                console.log(res.data.message); 
-                resolve(res.data.message);               
-            } if(res.data.status === 400){
-                let message = "Ooops!!!, registration failed";
-                reject(new Error(message));              
-            }else {
-                let message = "Something went wrong!";
-                reject(new Error(message));              
-            }
+        .then((res) => {                
+            resolve(res.data);   
         })
         .catch(() => {
           let message = "Something went wrong!";

@@ -12,6 +12,7 @@ export async function loginUser(email, password) {
           reject(res.data.message);
         } else {
             localStorage.setItem("authenticatedId", res.data.data.id);
+            localStorage.setItem("typeOfUser", res.data.data.type);
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("admin", res.data.admin);
             localStorage.setItem("user", res.data);

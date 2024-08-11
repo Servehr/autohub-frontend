@@ -42,6 +42,8 @@ export default function StudentPage()
   
   return (
     <>               
+            
+            <div className="font-bold text-md mt-28 md:mt-0 col-span-12 pl-3">Dashboard</div>  
             {
                 (theService === "2" ||theService === "4") && 
                 <>
@@ -93,7 +95,8 @@ export default function StudentPage()
                                     <span className="px-3 text-md">{result.name}</span>
                                     <span className="hidden md:block px-3"> -- </span>
                                     <span className={`${(result.taken === "yes" ? 'text-lg block' : 'hidden')} px-3`}>{ result.score }</span>
-                                    <span className={`${(result.taken != "yes" ? 'text-xs text- block' : 'hidden')} px-3`}>{ "Not Taken" }</span>
+                                    <span className={`${(result.taken === "marking" ? 'text-xs text- block' : 'hidden')} px-3`}>{ "Not Yet Marked" }</span>
+                                    <span className={`${(((result.taken != "yes") && (result.taken != "marking")) ? 'text-xs text- block text-orange-700' : 'hidden')} px-3`}>{ "Not Taken" }</span>
                                 </div>
                               )
                           })  

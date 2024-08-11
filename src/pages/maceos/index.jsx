@@ -47,7 +47,7 @@ export default function MACEOS()
     if(!isLoading)
     {
         console.log(data)
-        console.log(data.plus)
+        console.log(data?.plus)
     }
 
     const {
@@ -62,7 +62,7 @@ export default function MACEOS()
 
     const onSubmit = (data) => { 
         setLoading(true)      
-        const x = new Date(data.birth)
+        const x = new Date(data?.birth)
         data.birth = x.getFullYear() + '-' + x.getMonth() + '-' +  x.getDay()
         // console.log(data)
         // return false
@@ -95,9 +95,22 @@ export default function MACEOS()
             if((password.length > 0 ) && (confirmPassword.length > 0) && (password === confirmPassword))
             {
                 data.password = password
+                data.email = email
+                console.log(data)
+                // setLoading(false)
+                // return false
                 NewUser(data)
                 .then((res) => {
-                    navigate('/login')
+                    if(res.success === false)
+                    {
+                        setErrMsg(res.message)
+                        setLoading(false)
+                        setTimeout(() => {
+                           setErrMsg("")
+                        }, 8000)
+                    } else {
+                        navigate('/login')
+                    }
                 })
                 .catch((err) => 
                 {
@@ -165,6 +178,11 @@ export default function MACEOS()
                                                 onSubmit={handleSubmit(onSubmit)}
                                             >
                                                 <div className="w-full mt-5">
+                                                    { errMsg &&
+                                                        <div className="w-full p-3 text-red-600 font-bold text-lg">
+                                                            { errMsg }
+                                                        </div>
+                                                    }
                                                     <div className="flex flex-wrap -m-2 mt-2 mb-2 md:mx-5 mx-2">
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">Firstname</span>
@@ -352,6 +370,11 @@ export default function MACEOS()
                                                         </div>
                                                     <p className="text-sm text-brandRed font-bold ml-5">{errors.agree?.message}</p>
                                                     </div>
+                                                    { errMsg &&
+                                                        <div className="w-full p-3 text-red-600 font-bold text-lg">
+                                                            { errMsg }
+                                                        </div>
+                                                    }
                                                     <button
                                                         type="submit"
                                                         disabled={loading}

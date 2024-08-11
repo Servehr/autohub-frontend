@@ -34,18 +34,6 @@ export default function TheoryQuestion()
         console.log(data) 
     }
 
-    // const advertState = appStore((state) => state) 
-    const Questions = [
-        { id: 1, question: "Artificial Intelligence is about_____", options: [ 'Playing a game on Computer', 'Making a machine Intelligent', 'Programming on Machine with your Own Intelligence',
-                                                                                'Putting your intelligence in Machine',
-                                                                            ] 
-        },
-        { id: 1, question: "Who is known as the -Father of AI?", options: [ 'Fisher Ada', 'Alan Turing', 'John McCarthy', 'Allen Newell' ]  },
-        { id: 3, question: "Select the most appropriate situation for that a blind search can be used", options: [ 'Real-life situation', 'Small Search Space', 'Complex game', 'All of the above' ]  },
-        { id: 4, question: "If a robot is able to change its own trajectory as per the external conditions, then the robot is considered as the__", options: [ 'Mobile', 'Non-Servo', 'Open Loop', 'Intelligent' ]  },
-        { id: 5, question: "Which algorithm is used in the Game tree to make decisions of Win/Lose?", options: [ 'Heuristic Search Algorithm', 'DFS/BFS algorithm', 'Greedy Search Algorithm', 'Min/Max algorithm' ]  },
-    ]
-
     const [openTheoryQuestion, setOpenTheoryQuestion] = useState(false)
     const [editQuestion, setEditQuestion] = useState(false)
     const [deleteQuestion, setDeleteQuestion] = useState(false)
@@ -93,15 +81,16 @@ export default function TheoryQuestion()
                                    !isLoading && (data?.length > 0) && data?.map((question, index) => {
                                         return (
                                             <>
-                                                <div className="d-flex -mb-3 col-span-12 py-1">
+                                                <div className="d-flex -mb-3 col-span-12 py-1 border border-2 border-green-200 mb-2">
                                                     <p className="font-bold -mb-1 ml-1 p-3 bg-blue-100">Question: {((data?.length) - index)}</p>
-                                                    <div className="p-3 shadow-md grid grid-cols-12 bg-white border border-2 border-green-200 my-2 pb-5">
+                                                        <div className="p-3 grid grid-cols-12 bg-white my-2 pb-5">
 
-                                                        <p className="w-full col-span-12 font-bold text-blue-900 text-lg mb-2 py-3">{question['question']}</p>
-                                                    </div>                                                
-                                                    <div className="flex border border-2 p-1 mt-2 justify-between">
-                                                            <div className="p-2 text-red-700 font-bold">Answer</div>
-                                                            <div className="p-2 font-bold text-lg text-blue-700">{question['answer']}</div>
+                                                            <p className="w-full col-span-12 font-bold text-blue-900 text-lg mb-2 py-3">{question['question']}</p>
+                                                            <p className="w-full col-span-12 font-bold text-blue-900 text-lg mb-2 py-1 -mt-3">
+                                                                <span className="text-sm text-red-600">Mark Assigned Question:</span> {question['mark']}
+                                                            </p>
+                                                        </div>                                                                 
+                                                    <div className="flex px-3 justify-left pb-3 -mt-5">
                                                             <div className="flex space-x-5">
                                                                 <span onClick={() => {
                                                                     setQuestionToEdit(data[index])

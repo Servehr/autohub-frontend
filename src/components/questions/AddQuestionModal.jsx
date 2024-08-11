@@ -40,10 +40,10 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
 
         const addQuestion = () => 
         {   
-                const data = { test_questionaire_id: Number(id), course_id: course, question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-                console.log(data)
+                const dataz = { test_questionaire_id: Number(id), course_id: Number(course), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
+                console.log(dataz)
                 setIsLoading(true)
-                AddTest(data)
+                AddTest(dataz)
                 .then((res) => 
                 {
                         console.log(res)
@@ -66,7 +66,7 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
                                 </div>
                         }
                         { 
-                                !isLoading && data  && (data?.length > 0) &&
+                                !isLoading && data?.data  && (data?.data.length > 0) &&
                                 <div className='col-span-12 pt-1 justify-center item-center'>
                                         <div className='col-span-12 pb-2 justify-center h-fit py-2 item-center -mt-5'>
                                                         <>                                                
@@ -81,9 +81,9 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
                                                                                                 } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                                                 <option value={-1}> - Select Course - </option>
                                                                                                 {       
-                                                                                                        data &&
-                                                                                                        data?.length != 0 &&
-                                                                                                        data.map((opt, index) => (
+                                                                                                        data?.data &&
+                                                                                                        data?.data?.length != 0 &&
+                                                                                                        data?.data?.map((opt, index) => (
                                                                                                         <option key={index} value={opt.id} className='p-2'>
                                                                                                                 {opt.name}
                                                                                                         </option>
@@ -141,12 +141,12 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
                                                                         </div>
                                                                         </div>
                                                                         <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
-                                                                        <div className='d-flex w-full'>
-                                                                                        <span className='w-full p-3 -ml-2 font-bold text-blue-600'>Answer</span>
-                                                                                        <input onChange={(e) => {
-                                                                                                setAnswer(e.target.value)
-                                                                                        }} type="text" id="answer" defaultValue={''}  name="answer" placeholder="Enter Answer" className="font-bold text-xl w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-                                                                        </div>
+                                                                                <div className='d-flex w-full'>
+                                                                                                <span className='w-full p-3 -ml-2 font-bold text-blue-600'>Answer</span>
+                                                                                                <input onChange={(e) => {
+                                                                                                        setAnswer(e.target.value)
+                                                                                                }} type="text" id="answer" defaultValue={''}  name="answer" placeholder="Enter Answer" className="font-bold text-xl w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                                                </div>
                                                                                 
                                                                         </div>
                                                                 </div>

@@ -143,10 +143,10 @@ export default function ProductDetailsPage()
   return (
     <>
       <Helmet>
-        <title>{data ? `${data?.product.detail.title}` : "Product Details"} | Autohub</title>
+        <title>{data ? `${data?.product?.detail?.title}` : "Product Details"} | Autohub</title>
         <meta
           name="description"
-          content={data ? `${data?.product.detail.description}` : "The Home For Automobiles"}
+          content={data ? `${data?.product?.detail?.description}` : "The Home For Automobiles"}
         />
       </Helmet>
 
@@ -182,18 +182,18 @@ export default function ProductDetailsPage()
                     <Breadcrumb
                       routes={[
                         {
-                          name: data.product.detail.category.name,
+                          name: data.product?.detail?.category.name,
                           route: `${
                             categories.filter(
-                              (item) => item.id === data.product.detail.category.id
+                              (item) => item.id === data.product?.detail?.category.id
                             )[0].link
                           }`,
                         },
                         {
-                          name: data?.product.detail.title,
+                          name: data?.product?.detail?.title,
                           route: generateProductDetailsRouteWithSlugUrl(
-                            data.product.detail.category_id,
-                            data.product.detail.slug
+                            data.product?.detail?.category_id,
+                            data.product?.detail?.slug
                           ),
                         },
                       ]}
@@ -223,32 +223,32 @@ export default function ProductDetailsPage()
                       {/* Header */}
                       <div className="w-full rounded-xl bg-white h-[195px] flex flex-col gap-1 p-1 md:p-4">
                         <h1 className="text-[#1B5B29] text-base md:text-[30px] text-[25px] font-semibold mb-2">
-                          {data?.product.detail.title}
+                          {data?.product?.detail?.title}
                         </h1>
                         <div className="flex justify-between flex-wrap items-center text-[10px] text-xs sm:text-sm">
-                          <p className="text-brandRed mb-1">{data.product.detail.make.title}</p>
+                          <p className="text-brandRed mb-1">{data.product?.detail?.make.title}</p>
 
                           <div className="d-flex gap-1">
                             <p className="text-brandRed ">{data?.product?.detail?.phoneno}</p>
                             <p className="text-brandDarkGray ">
-                              {formatDate(data.product.detail.created_at)}
+                              {formatDate(data.product?.detail?.created_at)}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex justify-between">
                             <p className="text-brandDarkGray text-sm">
-                                Comments: {data?.product.detail.messages?.length}
+                                Comments: {data?.product?.detail?.messages?.length}
                             </p>
                         </div>
 
                         
-                        <FollowUser vendor={data?.product?.detail?.user_id} image={data?.product.detail.user?.avatar} name={data?.product.detail.user?.name} />
+                        <FollowUser vendor={data?.product?.detail?.user_id} image={data?.product?.detail?.user?.avatar} name={data?.product?.detail?.user?.name} />
 
                           <div className="flex justify-between mt-2 mb-4">
                               <p className="text-brandDarkGray text-sm mr-20">
-                                  { (Number(data?.product.detail.user.online) === 0) && <div className="font-bold text-sm">Advertiser is <span className="text-red-600">Offline</span></div> }
-                                  { (Number(data?.product.detail.user.online) === 1) && <div className="font-bold text-sm">Advertiser is <span className="text-red-600">Online</span></div> }
+                                  { (Number(data?.product?.detail?.user.online) === 0) && <div className="font-bold text-sm">Advertiser is <span className="text-red-600">Offline</span></div> }
+                                  { (Number(data?.product?.detail?.user.online) === 1) && <div className="font-bold text-sm">Advertiser is <span className="text-red-600">Online</span></div> }
                               </p>
                           </div>
                       </div>
@@ -263,7 +263,7 @@ export default function ProductDetailsPage()
                         /> */}
                       {/* {console.log(data.avatar)} */}
                       {/* {console.log(JSON.parse(data.avatar))} */}
-                      <ProductImageCarousel data={data.product.images} waterMark={`${WATER_MARK}${data?.product.detail.watermark}`} />
+                      <ProductImageCarousel data={data.product.images} waterMark={`${WATER_MARK}${data?.product?.detail?.watermark}`} />
                       {/* </div> */}
 
                       {/* Description */}
@@ -290,9 +290,9 @@ export default function ProductDetailsPage()
                                 <div className="bg-blue-500 py-2 px-4 d-flex sm:pt-5 md:px-2 md:py-2 flex justify-center item-center"> 
                                     <Icons iconName={'call'} color="white" />
                                 </div>
-                                <a href={`tel:${data?.product.detail.user.phoneno}`} className="bg-brandGreen rounded-br-md rounded-tr-md w-full px-3 py-2 text-xs justify-center font-bold text-white col-span-6">
+                                <a href={`tel:${data?.product?.detail?.user.phoneno}`} className="bg-brandGreen rounded-br-md rounded-tr-md w-full px-3 py-2 text-xs justify-center font-bold text-white col-span-6">
                                     <span className="text-sm w-full flex justify-center text-center">For Complaint</span>
-                                    {/* <span className="text-md w-full flex justify-center text-center">{data?.product.detail.user.phoneno}</span> */}
+                                    {/* <span className="text-md w-full flex justify-center text-center">{data?.product?.detail?.user.phoneno}</span> */}
                                 </a>
                             </div>                            
                             {/* <div className="flex md:col-span-4 sm:hidden xs:hidden bg-green-500 -mb-1 md:mb-0 w-full rounded-md">
@@ -327,7 +327,7 @@ export default function ProductDetailsPage()
                               </div>
                               <a href="Tel: +2348097924718" className="bg-brandGreen px-3 py-3 text-xs font-bold text-white col-span-6">
                                   Call Admin for Complaint <br/>
-                                  <span className="text-lg w-full flex justify-center text-center">{data?.product.detail.user.phoneno}</span>
+                                  <span className="text-lg w-full flex justify-center text-center">{data?.product?.detail?.user.phoneno}</span>
                               </a>
                             </div>
                             <div className="flex">
@@ -356,74 +356,86 @@ export default function ProductDetailsPage()
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Manufacturer:</p>
                             <p className="text-brandGreen">
-                              {data?.product.detail.make?.title}
+                              {data?.product?.detail?.make?.title}
                             </p>
                           </div>
                           {/* Model */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Model:</p>
                             <p className="text-brandGreen">
-                              {data?.product.detail.model?.title}
+                              {data?.product?.detail?.model?.title}
                             </p>
+                          </div>                        
+                          <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
+                              <p>Trim:</p>
+                              <p className="text-brandGreen">{data?.product?.detail?.trim_d?.name}</p>
                           </div>
                           {/* Color */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Colour:</p>
                             <p className="text-brandGreen">
-                              {data?.product.detail.color?.name}
+                              {data?.product?.detail?.color?.name}
                             </p>
                           </div>
                           {/* Transmission */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Transmission:</p>
                             <p className="text-brandGreen">
-                              {data?.product.detail.trans?.name}
+                              {data?.product?.detail?.trans?.name}
                             </p>
                           </div>
                           {/* Year */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Year:</p>
                             <p className="text-brandGreen">
-                              {data?.product.detail.year_of_production}
+                              {data?.product?.detail?.year_of_production}
                             </p>
                           </div>
                           {/* Price */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Price:</p>
                             <p className="text-brandGreen">
-                              {currencyFormatter(data?.product.detail.price)}
+                              {currencyFormatter(data?.product?.detail?.price)}
                             </p>
                           </div>
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
                             <p>Sellable at:</p>
-                            { (data?.product.detail.min_price != 0) && (data?.product.detail.max_price != 0) ? 
+                            { (data?.product?.detail?.min_price != 0) && (data?.product?.detail?.max_price != 0) ? 
                                 <>
-                                  <p className="text-brandGreen">{currencyFormatter(data?.product.detail.min_price)}</p>
-                                  <p className="text-brandGreen">{currencyFormatter(data?.product.detail.max_price)}</p>
+                                  <p className="text-brandGreen">{currencyFormatter(data?.product?.detail.min_price)}</p>
+                                  <p className="text-brandGreen">{currencyFormatter(data?.product?.detail?.max_price)}</p>
                                 </>
                                 :
                                 <>
-                                  <p className="text-brandGreen">{currencyFormatter(data?.product.detail.max_price)}</p> 
+                                  <p className="text-brandGreen">{currencyFormatter(data?.product?.detail?.max_price)}</p> 
                                 </>
                               
                                 // <>
-                                //   <p className="text-brandGreen">{currencyFormatter(data?.product.detail.min_price)}</p>
-                                //   <p className="text-brandGreen">{currencyFormatter(data?.product.detail.max_price)}</p> 
+                                //   <p className="text-brandGreen">{currencyFormatter(data?.product?.detail?.min_price)}</p>
+                                //   <p className="text-brandGreen">{currencyFormatter(data?.product?.detail?.max_price)}</p> 
                                 // </>                           
                             }
-                            {/* { (data?.product.detail.min_price != 0) && (data?.product.detail.max_price != 0)  && 
-                                <p className="text-brandGreen">{currencyFormatter(data?.product.detail.max_price)}</p> 
+                            {/* { (data?.product?.detail?.min_price != 0) && (data?.product?.detail?.max_price != 0)  && 
+                                <p className="text-brandGreen">{currencyFormatter(data?.product?.detail?.max_price)}</p> 
                             } */}
                           </div>
                           {/* Door */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
-                            <p>Door:</p>
-                            <p className="text-brandGreen">{data?.product.detail.door}</p>
+                            <p>Country</p>
+                            <p className="text-brandGreen">{data?.product?.detail?.country_name}</p>
+                          </div>
+                          <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
+                            <p>State</p>
+                            <p className="text-brandGreen">{data?.product?.detail?.state?.name}</p>
                           </div>
                           {/* Seat */}
                           <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
-                            <p>Seat:</p>
-                            <p className="text-brandGreen">{data?.product.detail.seat}</p>
+                            <p>Location:</p>
+                            <p className="text-brandGreen">{data?.product?.detail?.location}</p>
+                          </div>
+                          <div className="bg-[#f8f5f5] h-10 w-full flex justify-between px-4 items-center">
+                            <p>MileAge:</p>
+                            <p className="text-brandGreen">{((data?.product?.detail?.mile_age) === "" || (data?.product?.detail?.mile_age) === undefined || (data?.product?.detail?.mile_age) === null) ? 'Not Specified' : data?.product?.detail?.mile_age}</p>
                           </div>
                         </div>
                       </div>
@@ -445,7 +457,7 @@ export default function ProductDetailsPage()
                             {/* display picture */}
                             <div className="h-[90px] aspect-square rounded-full border bg-gray-200 border border-10 border-green-500 overflow-hidden">
                               <img
-                                src={`${AVATAR}${data?.product.detail.user?.avatar}`}
+                                src={`${AVATAR}${data?.product?.detail?.user?.avatar}`}
                                 alt=""
                                 className="w-full h-full object-cover"
                               />
@@ -455,7 +467,7 @@ export default function ProductDetailsPage()
                             <div className="flex flex-col gap-1">
                               <p className="text-brandGreen font-semiboldtext-blue-900">
                                 {" "}
-                                {data?.product.detail.user?.name}{" "}
+                                {data?.product?.detail?.user?.name}{" "}
                               </p>
                               <p className="text-brandDarkGray font-semibold">
                                 {data?.user?.phoneno}
@@ -480,12 +492,12 @@ export default function ProductDetailsPage()
                         {/* Header */}
                         <div className="flex py-3 px-4 justify-center items-center bg-white rounded-t-xl">
                           <p className="font-semibold text-brandGreen">
-                            Comments ({data?.product.detail.messages?.length})
+                            Comments ({data?.product?.detail?.messages?.length})
                           </p>
                         </div>
                         {/* message */}
                         <div className="my-5 px-6 gap-2 flex flex-col">
-                          {data?.product.detail.messages?.map((item, idx) => (
+                          {data?.product?.detail?.messages?.map((item, idx) => (
                             <div
                               key={idx}
                               className="bg-white w-full p-4 rounded-xl flex flex-col gap-2"
@@ -544,7 +556,7 @@ export default function ProductDetailsPage()
 
                             <input
                               type="hidden"
-                              value={data?.product.detail.id}
+                              value={data?.product?.detail?.id}
                               {...register("product_id")}
                               name="product_id"
                             />
@@ -569,9 +581,9 @@ export default function ProductDetailsPage()
                   </div>
                 </div>
 
-                {/* <MoreFromVendor id={data.product.detail.id} /> */}
+                {/* <MoreFromVendor id={data.product?.detail?.id} /> */}
 
-                  {/* { data?.product.detail.model_id && <MoreFromModel id={data?.product.detail.model_id} /> } */}
+                  {/* { data?.product?.detail?.model_id && <MoreFromModel id={data?.product?.detail?.model_id} /> } */}
               </div>
             </>
           )}

@@ -8,33 +8,23 @@ import { CreateFaq } from '@/apis/misc';
 import { UpdateTestQuestion, UpdateTestQuestionTheory } from '@/apis/backend/questions';
 import { BeatLoader } from "react-spinners";
 import { Modal } from '@/components/Modal';
+import { AllCourse } from '@/apis/backend/course';
+import { useQuery } from 'react-query';
 
 
 export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
 {
+        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
+      
+        if(!isLoading)
+        {
+            console.log(everyCourse)
+        }
 
         const [question, setQuestion] = useState(data['question'])
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
-
-        // console.log({ question, optionA, optionB, optionC, optionD, answer })
-
-        // const advertState = appStore((state) => state)
-        // const navigate = useNavigate();
-        // const [userProductId, setUserProductId] = useState(advertState.getProductId())
-        // const [theTitle, setTitle] = useState("")
-        // const [theContent, setTheContent] = useState("")
-        // const [theIsOpened, setTheIsOpened] = useState(-1)
-        // const options = [
-        //         { key: -1, value: "- Select whether you want it published immediately or not -" },
-        //         { key: "opened", value: "Yes" },
-        //         { key: "closed", value: "No" },
-        // ]
-
-        // const cancelModal = () => 
-        // {
-        //         onClick(true)
-        // }
+        const [mark, setMark] = useState(data['mark'])
 
         console.log(data)
         
@@ -42,7 +32,7 @@ export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
         const updateQuestion = async () => 
         {       
                 // const theId = data['id']            
-                const data = { id: Number(id), question: question }
+                const data = { id: Number(id), question: question, mark: mark  }
                 console.log(data)
                 setIsLoading(true)
                 UpdateTestQuestionTheory(data)
@@ -66,6 +56,32 @@ export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
                                         <>                                                
                                                 <div className="p-1 mt-1">
                                                         <h1 className='font-bold text-lg mb-5 p-3 bg-blue-100 rounded-lg'>Edit Question</h1>
+
+                                                        {/* <div className="py-2 w-full relative">
+                                                                <div className="mb-1">
+                                                                        <span className="w-full font-bold text-sm">Course</span>
+                                                                        <select defaultValue={''} onChange={(e) => { 
+                                                                                        setCourse(e.target.value)
+                                                                                }                                                                                
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        <option value={-1}> - Select Course - </option>
+                                                                        {       
+                                                                                        everyCourse?.data &&
+                                                                                        everyCourse?.data?.length != 0 &&
+                                                                                        everyCourse?.data?.map((opt, index) => (
+                                                                                <option key={index} value={opt.id} className='p-2'>
+                                                                                        {opt.name}
+                                                                                </option>
+                                                                                ))
+                                                                        }
+                                                                        </select>
+                                                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                                                <svg className="fill-current h-4 w-4 mt-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                                                                </svg>
+                                                                        </div>
+                                                                </div>
+                                                        </div> */}
                                                         <div className="flex flex-wrap -m-2 mt-2 mb-2 px-2">
                                                                 <span className="w-full font-bold text-sm mb-2">Question</span>
                                                                 <textarea onChange={(e) => { 
@@ -78,6 +94,20 @@ export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
                                                                 >
                                                                 </textarea>
                                                         </div>
+
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                                <div className='d-flex w-full'>
+                                                                        <span className='w-full p-3 -ml-2 font-bold text-blue-600'>Answer</span>
+                                                                        <input onChange={(e) => {
+                                                                                                    setMark(e.target.value)
+                                                                                }} 
+                                                                                type="text" id="mark" 
+                                                                                defaultValue={mark}  
+                                                                                name="mark" 
+                                                                                placeholder="Enter Mark to be assigned to this question" 
+                                                                                className="font-bold text-lg w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                                </div>
+                                                        </div> 
                                                 </div>
                                         </>
                                 </div>

@@ -406,7 +406,7 @@ export default function CreateAd()
             manufacturerName: theManufacturerName, modelName: theModelName, images: "", imagePosition: mainImagePosition, country: theCountry
         }
         console.log(advertise)
-        setProcessAdvert(false)
+        // setProcessAdvert(false)
         // clearProductStore()
         // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
         // return false

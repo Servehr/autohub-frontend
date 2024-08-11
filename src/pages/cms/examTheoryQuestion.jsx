@@ -97,15 +97,16 @@ export default function ExamTheoryQuestion()
                                    !isLoading && (data?.length > 0) && data?.map((question, index) => {
                                         return (
                                             <>
-                                                <div className="d-flex -mb-3 col-span-12 py-1">
+                                                <div className="d-flex -mb-3 col-span-12 py-1 border border-2 border-green-200 mb-2">
                                                     <p className="font-bold -mb-1 ml-1 p-3 bg-blue-100">Question: {((data?.length) - index)}</p>
-                                                    <div className="p-3 shadow-md grid grid-cols-12 bg-white border border-2 border-green-200 my-2 pb-5">
+                                                    <div className="p-3 grid grid-cols-12 bg-white my-2 pb-5">
 
                                                         <p className="w-full col-span-12 font-bold text-blue-900 text-lg mb-2 py-3">{question['question']}</p>
-                                                    </div>                                                
-                                                    <div className="flex border border-2 p-1 mt-2 justify-between">
-                                                            <div className="p-2 text-red-700 font-bold">Answer</div>
-                                                            <div className="p-2 font-bold text-lg text-blue-700">{question['answer']}</div>
+                                                        <p className="w-full col-span-12 font-bold text-blue-900 text-lg mb-2 py-1 -mt-3">
+                                                            <span className="text-sm text-red-600">Mark Assigned Question:</span> {question['mark']}
+                                                        </p>
+                                                    </div>                                              
+                                                    <div className="flex px-3 justify-left pb-3 -mt-5">
                                                             <div className="flex space-x-5">
                                                                 <span onClick={() => {
                                                                     setQuestionToEdit(data[index])
@@ -121,7 +122,7 @@ export default function ExamTheoryQuestion()
                                                                     <Icons iconName={'delete'} color="red" width={6} height={6} />
                                                                 </span>
                                                             </div>
-                                                        </div>
+                                                    </div>
                                                 </div>
                                             </>
                                         )

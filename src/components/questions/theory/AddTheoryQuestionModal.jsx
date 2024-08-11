@@ -8,16 +8,24 @@ import { CreateFaq } from '@/apis/misc';
 import { BeatLoader } from "react-spinners";
 import { Modal } from '@/components/Modal';
 import { AddTestTheoryQuestion } from '@/apis/backend/questions';
+import { AllCourse } from '@/apis/backend/course';
+import { useQuery } from 'react-query';
 
 
 export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName})  =>
 {
-        const advertState = appStore((state) => state)
-        const navigate = useNavigate();
         const { id } = useParams()
+        const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
+      
+        if(!isLoading)
+        {
+            console.log(data)
+        }
 
         const [question, setQuestion] = useState("")
+        const [courseId, setCourse] = useState(-1)
         const [loading, setIsLoading] = useState(false)
+        const [mark, setMark] = useState(0)
 
         const cancelModal = () => 
         {
@@ -26,8 +34,9 @@ export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName}
 
         const addTheoryQuestion = () => 
         {   
-                const data = { test_theory_id: Number(id), question: question }
+                const data = { test_questionaire_id: Number(id), course_id: Number(courseId), question: question, mark: mark }
                 console.log(data)
+                // return false
                 setIsLoading(true)
                 AddTestTheoryQuestion(data)
                 .then((res) => 
@@ -51,6 +60,33 @@ export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName}
                                         <>                                                
                                                 <div className="p-1 mt-1">
                                                         <h1 className='font-bold text-lg mb-5 p-3 bg-blue-100 rounded-lg'>Create Question</h1>
+
+                                                        <div className="py-2 w-full relative">
+                                                                <div className="mb-1">
+                                                                        <span className="w-full font-bold text-sm">Course</span>
+                                                                        <select defaultValue={''} onChange={(e) => { 
+                                                                                        setCourse(e.target.value)
+                                                                                }                                                                                
+                                                                        } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        <option value={-1}> - Select Course - </option>
+                                                                        {       
+                                                                                        data?.data &&
+                                                                                        data?.data?.length != 0 &&
+                                                                                        data?.data?.map((opt, index) => (
+                                                                                <option key={index} value={opt.id} className='p-2'>
+                                                                                        {opt.name}
+                                                                                </option>
+                                                                                ))
+                                                                        }
+                                                                        </select>
+                                                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                                                <svg className="fill-current h-4 w-4 mt-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                                                                </svg>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+
                                                         <div className="flex flex-wrap -m-2 mt-2 mb-2 px-2">
                                                                 <span className="w-full font-bold text-sm mb-2 text-green-700">Question</span>
                                                                 <textarea onChange={(e) => { 
@@ -63,6 +99,21 @@ export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName}
                                                                 >
                                                                 </textarea>
                                                         </div>
+
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                                <div className='d-flex w-full'>
+                                                                        <span className='w-full p-3 -ml-2 font-bold text-blue-600'>Answer</span>
+                                                                        <input onChange={(e) => {
+                                                                                                    setMark(e.target.value)
+                                                                                }} 
+                                                                                type="text" id="mark" 
+                                                                                defaultValue={''}  
+                                                                                name="mark" 
+                                                                                placeholder="Enter Mark to be assigned to this question" 
+                                                                                className="font-bold text-lg w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                                </div>
+                                                        </div>                                                        
+                                                        
                                                 </div>
                                         </>
                                 </div>

@@ -42,7 +42,7 @@ export default function TestQuestionaireObjective()
                     </div>
                 }
                 {
-                    !isLoading && (data.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                    !isLoading && (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                         <h1 className="font-bold">
                             No questionaire created yet
                         </h1>
@@ -51,7 +51,7 @@ export default function TestQuestionaireObjective()
                 <div className='grid grid-cols-12 gap-5 py-2 px-3 mt-5 mb-2'>
                 {
                     
-                    !isLoading && (data.length > 0) && data?.map((data, index) => <Folder type={"test"} toEdit={"editTestFolder"} toDelete={"deleteTestFolder"} id={data.id} titles={data.name} description={data.description} figures={100} icons={'comment'} onClick={(e) => {
+                    !isLoading && (data?.length > 0) && data?.map((data, index) => <Folder type={"test"} toEdit={"editTestFolder"} toDelete={"deleteTestFolder"} id={data?.id} titles={data?.name} description={data?.description} figures={100} icons={'comment'} onClick={(e) => {
                             refetch()
                         }
                     } />)

@@ -16,11 +16,11 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-        const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
+        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
       
         if(!isLoading)
         {
-            console.log(data)
+        //     console.log(datax)
         }
 
         const [question, setQuestion] = useState(datax['question'])
@@ -34,31 +34,12 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
         const [course, setCourse] = useState("")
 
         console.log({ question, optionA, optionB, optionC, optionD, answer })
-
-        // const advertState = appStore((state) => state)
-        // const navigate = useNavigate();
-        // const [userProductId, setUserProductId] = useState(advertState.getProductId())
-        // const [theTitle, setTitle] = useState("")
-        // const [theContent, setTheContent] = useState("")
-        // const [theIsOpened, setTheIsOpened] = useState(-1)
-        // const options = [
-        //         { key: -1, value: "- Select whether you want it published immediately or not -" },
-        //         { key: "opened", value: "Yes" },
-        //         { key: "closed", value: "No" },
-        // ]
-
-        // const cancelModal = () => 
-        // {
-        //         onClick(true)
-        // }
-
-        console.log(data)
+        console.log(everyCourse)
         
 
         const updateQuestion = async () => 
-        {       
-                // const theId = data['id']            
-                const data = { id: Number(id), course_id: course, question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
+        {                  
+                const data = { id: Number(id), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
                 console.log(data)
                 setIsLoading(true)
                 UpdateTestQuestion(data)
@@ -83,14 +64,14 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
                                 </div>
                         }
                         { 
-                                !isLoading && data  && (data?.length > 0) &&
+                                !isLoading && everyCourse?.data  && (everyCourse?.data?.length > 0) &&
                                 <div className='col-span-12 pt-1 justify-center item-center'>
                                         
                                         <div className='col-span-12 pb-2 justify-center h-fit py-2 item-center -mt-5'>
                                                 <>                                                
                                                         <div className="p-1 mt-1">
                                                                 <h1 className='font-bold text-lg mb-5 p-3 bg-blue-100 rounded-lg'>Edit Question</h1>
-                                                                <div className="py-2 w-full relative">
+                                                                {/* <div className="py-2 w-full relative">
                                                                         <div className="mb-1">
                                                                                 <span className="w-full font-bold text-sm">Course</span>
                                                                                 <select defaultValue={''} onChange={(e) => { 
@@ -99,9 +80,9 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
                                                                                 } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                                         <option value={-1}> - Select Course - </option>
                                                                                         {       
-                                                                                                data &&
-                                                                                                data?.length != 0 &&
-                                                                                                data.map((opt, index) => (
+                                                                                                everyCourse &&
+                                                                                                everyCourse?.data?.length != 0 &&
+                                                                                                everyCourse?.data.map((opt, index) => (
                                                                                                         <option key={index} value={opt.id} className='p-2'>
                                                                                                                 {opt.name}
                                                                                                         </option>
@@ -114,7 +95,7 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
                                                                                         </svg>
                                                                                 </div>
                                                                         </div>
-                                                                </div>
+                                                                </div> */}
                                                                                 
                                                                 <div className="flex flex-wrap -m-2 mt-2 mb-2 px-2">
                                                                         <span className="w-full font-bold text-sm mb-2">Question</span>

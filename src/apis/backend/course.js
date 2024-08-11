@@ -32,7 +32,28 @@ export async function AllCourse()
               reject(res.data.message);
             } else {
                 console.log(res.data)
-              resolve(res.data.data);
+              resolve(res.data);
+            }
+          })
+          .catch(() => {
+            let message = "Something went wrong!";
+            reject(new Error(message));
+          });
+    });
+}
+
+export async function GetAllCourse() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get('get-all-course')
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data);
             }
           })
           .catch(() => {
@@ -116,7 +137,7 @@ export async function TestQuestions()
               reject(res.data.message);
             } else {
                 console.log(res.data)
-              resolve(res.data.data);
+              resolve(res.data);
             }
           })
           .catch((err) => {
@@ -126,12 +147,12 @@ export async function TestQuestions()
     });
 }
 
-export async function TestCourseTheoryQuestions(id) 
+export async function TestCourseTheoryQuestions() 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get(`theory-question/${id}`)
+          .get(`theory-question`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
@@ -147,6 +168,47 @@ export async function TestCourseTheoryQuestions(id)
     });
 }
 
+export async function ExamCourseTheoryQuestions() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`exam-theory-question`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function ExamCourseObjectiveQuestions() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`exam-questions`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
 
 // get-test-questionaires test_questions
 export async function getCourseFaq(id) 
@@ -235,6 +297,42 @@ export async function RemoveCourseFaq(id)
     });
 }
 
+export async function CourseAssessment(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`assessment`, {id : id})
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function CheckIfUserHasPaid() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`check-if-user-has-paid`)
+          .then((res) => {
+              resolve(res.data.data);
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
 
 
 // get-test-questionaires test_questions
@@ -265,7 +363,7 @@ export async function SubmitTestTheory(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .post(`submit-test-theory`, {course_id: data.course_id, question: data.question})
+          .post(`submit-test-theory`, data)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
@@ -286,7 +384,7 @@ export async function SubmitExamObjective(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .put(`submit-exam-objective`, {id: data.id, question: data.question})
+          .post(`submit-exam-objective`, data)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
@@ -304,11 +402,10 @@ export async function SubmitExamObjective(data)
 
 export async function SubmitExamTheory(data) 
 {
-  console.log(id)
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .delete("submit-exam-theory", data)
+          .post("submit-exam-theory", data)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
@@ -323,3 +420,141 @@ export async function SubmitExamTheory(data)
           });
     });
 }
+
+export async function UserCourses() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get("user-courses")
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UserTestTheoryAnswers(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`test-theory-answer/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UserExamTheoryAnswers(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`exam-theory-answer/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function DownloadDocument(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`download-document/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                // console.log(res.data)
+                console.log(res)
+              resolve(res);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+
+export async function ScoreStudentScore(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`test-theory-mark`, { score: data.score, test_theory_question_id: data.questionId, user_id: data.userId })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                // console.log(res.data)
+                console.log(res)
+              resolve(res);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function ScoreStudentScoreExam(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`exam-theory-mark`, { score: data.score,  exam_theory_id : Number(data.questionId), user_id: data.userId })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                // console.log(res.data)
+                console.log(res)
+              resolve(res);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+
+// if (res.data.success === false) {
+//   reject(res.data.message);
+// } else {
+//     console.log(res.data)
+//   resolve(res.data.data);
+// }

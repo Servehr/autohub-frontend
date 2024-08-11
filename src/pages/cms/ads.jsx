@@ -18,7 +18,7 @@ export default function Ads()
 {
     // const advertState = appStore((state) => state)
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(5)  
+    const [perPage, setPerPage] = useState(20)  
     const [searchQuery, setSearchQuery] = useState("")
     
     const { data: advertData, isLoading, isRefetching, refetch } = useQuery(["get-all-product"], () => getAdverts(currentPage, perPage, searchQuery), { cacheTime: 0 })
@@ -139,7 +139,7 @@ export default function Ads()
                                                                             console.log(e)
                                                                             setRefresh(e)
                                                                         } }
-                                                                        page={''}
+                                                                        page={'advert'}
                                                                     />
                         }
                     </div>
@@ -167,41 +167,6 @@ export default function Ads()
                               from={''}
                           />    
             }
-
-            {/* { !isLoading && 
-                <nav className="w-full items-center mb-2 flex justify-center bg-brandDarkGray space-x-1 -mt-10" aria-label="Pagination">
-                    { 
-                        advertData?.product_advert?.hasPreviousPage && 
-                            <button onClick={() => fetchRoles(parseInt(viewingPage)-1, perPage)} className="rounded-lg border bg-green-800 px-3 py-1 hover:bg-red-700" disabled={!advertData?.product_advert?.hasPreviousPage}>
-                            
-                                <span className="sr-only">Previous</span>
-                                <svg className="mt-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd">
-                                    </path>
-                                </svg>
-                            </button>
-                    }
-                    { 
-                        before
-                    }
-                    {
-                        <button className="rounded-lg border border-blue-900 bg-blue-900 px-3 py-1 text-white cursor-default">{currentPage} </button> 
-                    }
-                    { 
-                        after
-                    }
-                    {
-                        advertData?.product_advert?.hasNextPage &&
-                            <button onClick={() => fetchRoles(parseInt(viewingPage)+1, perPage)} className="rounded-lg border bg-green-800 px-3 py-1 hover:bg-red-700"  disabled={!advertData?.product_advert?.hasNextPage}>
-                                <span className="sr-only">Next</span>
-                                <svg className="mt-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
-                                </path>
-                                </svg>
-                            </button>
-                    }
-                </nav>
-            } */}
         </div>
   )
 }

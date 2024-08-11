@@ -34,15 +34,14 @@ export default function LoginPage() {
 
       <div
         className=" bg-brandGreen bg-opacity-95 min-h-screen h-full w-screen flex flex-col items-center p-10 duration-1000 ease-in-out transition"
-        onClick={() => navigate("/")}
-      >
+        >
         <div className="w-full h-10 flex justify-end mb-20">
           {/* menu */}
           <div
             className="flex items-center gap-4 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
-              navigate("/");
+              // navigate("/");
             }}
           >
             <div className="h-[50px] sm:h-[58px] aspect-square rounded-full bg-[#1B5B29] text-3xl text-white flex justify-center items-center">

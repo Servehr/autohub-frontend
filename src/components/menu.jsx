@@ -53,7 +53,7 @@ export default function Menu() {
 
               <div className="max-w-[400px] w-full -mt-24">
                 <div className="p-3 mb-3 mt-3">
-                  { 
+                  {/* { 
                     user && (
                       <img
                         src={
@@ -65,7 +65,7 @@ export default function Menu() {
                         className="object-cover w-[65px] h-[65px] rounded-full border border-green-100 border-4 -ml-3 mb-3"
                       />
                     )
-                  }
+                  } */}
                   {/* { 
                     user &&
                     <div className="w-full -ml-8 -mb-5 text-white border border-gray-400 rounded-md p-3 md:hidden lg:hidden">

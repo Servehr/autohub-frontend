@@ -56,7 +56,7 @@ import Courses from "./pages/user/courses";
 import MaceoWelcome from "./pages/maceos/welcome";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
-import TestUser from "./pages/user/test-user";
+import TestUser from "./pages/maceos/testObj/test-user";
 import ExamUser from "./pages/user/exam-user";
 import Curriculum from "./pages/user/Curriculum";
 import CourseFaq from "./pages/user/course-faq";
@@ -78,7 +78,22 @@ import Exams from "./pages/cms/exams";
 import TheoryQuestion from "./pages/cms/theoryQuestion";
 import ExamTheoryQuestion from "./pages/cms/examTheoryQuestion";
 import TestCourses from "./pages/cms/test-courses";
-import TestUserTheory from "./pages/user/test-user-theory";
+import TestUserTheory from "./pages/maceos/testTheory/test-user-theory";
+import StartObjTest from "./pages/maceos/testObj/StartObjTest";
+import ForceSubmit from "./pages/maceos/testObj/ForceSubmit";
+import StartTheoryTest from "./pages/maceos/testTheory/StartTheoryTest";
+import StartTheoryPage from "./pages/maceos/testTheory/StartTheoryPage";
+import StartExamTheoryPage from "./pages/maceos/examTheory/StartExamTheoryPage";
+import StartTheoryExam from "./pages/maceos/examTheory/StartTheoryExam";
+import ForceSubmitExamTheory from "./pages/maceos/examTheory/ForceSubmitExamTheory";
+import StartObjExam from "./pages/maceos/examObj/StartObjExam";
+import StartExamObjectivePage from "./pages/maceos/examObj/StartExamObjectivePage";
+import ForceSubmitExamObjective from "./pages/maceos/examObj/ForceSubmitExamObjective";
+import ExamObjective from "./pages/maceos/examObj/exam-user";
+import Markings from "./pages/cms/Markings";
+import AdsClassic from "./pages/cms/AdsClassic";
+import AdminRoute from "./components/adminRoute";
+import NotAllowed from "./components/notAllowed";
 
 export const Loader = ({ full }) => {
   return (
@@ -123,6 +138,7 @@ export default function App()
             {/*  */}
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
+            {/* <Route path="/home" element={<HomePage />} /> */}
             
             <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/reset" element={<ResetPassword />} />
@@ -131,38 +147,6 @@ export default function App()
             <Route path="/contact-us" element={<ContactUs />} />
             
             {/* <Route path="/dashboard" element={<RoutePath />} /> */}
-
-            <Route path="/overview" element={<Dashboard />} />
-            <Route path="/students" element={<Students />} />
-            <Route path="/courses" element={<Course />} />
-            <Route path="/dealers" element={<Dealers />} />
-            <Route path="/dealer-post" element={<DealerPost />} />
-            <Route path="/staffs" element={<Staff />} />
-            <Route path="/finance" element={<Finance />} />
-            <Route path="/expenses" element={<Expenses />} />
-            <Route path="/request-item" element={<RequestItems />} />
-            <Route path="/items" element={<Items />} />
-            <Route path="/settings" element={<Settings />} />
-
-            {/* <Route path="/course" element={<Course />} /> */}
-            <Route path="/test-questionaires/:id" element={<TestQuestionaire />} />
-            <Route path="/test-courses" element={<TestCourses />} />
-            <Route path="/exam-questionaires" element={<ExamQuestionaire />} />
-            <Route path="/exams/:id" element={<Exams />} />
-            <Route path="/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
-            <Route path="/test-thoery-question/:id" element={<TheoryQuestion />} />
-            <Route path="/questions/:id" element={<Questions />} />
-            <Route path="/result" element={<Result />} />
-            <Route path="/ads" element={<Ads />} />
-            <Route path="/faqs" element={<Faqs />} />
-            <Route path="/package" element={<Plans />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/blog" element={<Blogs />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/blog-post" element={<BlogPost />} />
-            <Route path="/create-post" element={<CreateBlog />} />
-            <Route path="/edit-post/:id" element={<EditBlog />} />
-            <Route path="/blog-detail/:post_id" element={<BlogDetail />} />
 
             {/* Category Page */}
             {categoryPaths.map((path, idx) => (
@@ -236,12 +220,69 @@ export default function App()
               <Route path="/dashboard/chat" element={<Chat />} />
               <Route path="/dashboard/summary" element={<DashboardSummary />} />
               <Route path="/dashboard/courses" element={<Courses />} />
-              <Route path="/dashboard/test-user-obj" element={<TestUser />} />
-              <Route path="/dashboard/test-user-theory" element={<TestUserTheory />} />
               <Route path="/dashboard/exam-user" element={<ExamUser />} />
               <Route path="/dashboard/curriculum" element={<Curriculum />} />
               <Route path="/dashboard/course-faq" element={<CourseFaq />} />
+
+              
+              <Route path="/dashboard/start-obj-test" element={<StartObjTest />} />
+              <Route path="/dashboard/test-user-obj" element={<TestUser />} />
+              <Route path="/dashboard/force-submit" element={<ForceSubmit />} />
+
+              <Route path="/dashboard/start-theory-test" element={<StartTheoryPage />} />
+              <Route path="/dashboard/start-test-theory" element={<StartTheoryTest />} />
+              {/* <Route path="/dashboard/test-user-theory" element={<TestUser />} /> */}
+
+              
+              <Route path="/dashboard/start-exam-theory" element={<StartExamTheoryPage />} />
+              <Route path="/dashboard/start-exam-theory-page" element={<StartTheoryExam />} />
+              <Route path="/dashboard/force-submit-exam" element={<ForceSubmitExamTheory />} />
+
+              <Route path="/dashboard/start-exam-obj" element={<StartObjExam />} />
+              <Route path="/dashboard/start-exam-obj-page" element={<StartExamObjectivePage />} /> 
+              <Route path="/dashboard/force-submit-exam-obj" element={<ForceSubmitExamObjective />} /> 
+              <Route path="/dashboard/exam-user-obj" element={<ExamObjective />} />             
             </Route>
+
+            {/* <Route element={<AdminRoute />} > */}
+                {/* <Route index element={<Dashboard />} /> */}
+                <Route path="/overview" element={<Dashboard />}/>
+                <Route path="/students" element={<Students />} />
+                <Route path="/courses" element={<Course />} />
+                <Route path="/dealers" element={<Dealers />} />
+                <Route path="/dealer-post" element={<DealerPost />} />
+                <Route path="/staffs" element={<Staff />} />
+                <Route path="/finance" element={<Finance />} />
+                <Route path="/expenses" element={<Expenses />} />
+                <Route path="/request-item" element={<RequestItems />} />
+                <Route path="/items" element={<Items />} />
+                <Route path="/settings" element={<Settings />} />
+
+                {/* <Route path="/course" element={<Course />} /> */}
+                {/* <Route path="/test-questionaires/:id" element={<TestQuestionaire />} /> */}
+                {/* <Route path="/test-courses" element={<TestCourses />} /> */}
+                <Route path="/test-courses" element={<TestQuestionaire />} />
+                <Route path="/exam-questionaires" element={<ExamQuestionaire />} />
+                <Route path="/exams/:id" element={<Exams />} />
+                <Route path="/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
+                <Route path="/test-thoery-question/:id" element={<TheoryQuestion />} />
+                <Route path="/questions/:id" element={<Questions />} />
+                <Route path="/result" element={<Result />} />
+                <Route path="/ads-classic" element={<AdsClassic />} />
+                <Route path="/markings" element={<Markings />} />
+                <Route path="/ads" element={<Ads />} />
+                <Route path="/faqs" element={<Faqs />} />
+                <Route path="/package" element={<Plans />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/blog" element={<Blogs />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/blog-post" element={<BlogPost />} />
+                <Route path="/create-post" element={<CreateBlog />} />
+                <Route path="/edit-post/:id" element={<EditBlog />} />
+                <Route path="/blog-detail/:post_id" element={<BlogDetail />} />
+            {/* </Route> */}
+            
+                <Route path="/not-allowed" element={<NotAllowed />} />
 
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />

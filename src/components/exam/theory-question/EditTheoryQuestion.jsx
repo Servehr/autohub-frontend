@@ -16,6 +16,7 @@ export const EditTheoryQuestion = ({onClick, data, editQuestion})  =>
         const [question, setQuestion] = useState(data['question'])
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
+        const [mark, setMark] = useState(data['mark'])
 
         console.log(data)
         
@@ -23,7 +24,7 @@ export const EditTheoryQuestion = ({onClick, data, editQuestion})  =>
         const updateQuestion = async () => 
         {       
                 // const theId = data['id']            
-                const data = { id: Number(id), question: question }
+                const data = { id: Number(id), question: question, mark: mark  }
                 console.log(data)
                 setIsLoading(true)
                 UpdateExamQuestionTheory(data)
@@ -58,7 +59,21 @@ export const EditTheoryQuestion = ({onClick, data, editQuestion})  =>
                                                                 placeholder="Enter Question Here"
                                                                 >
                                                                 </textarea>
-                                                        </div>
+                                                        </div>                                                      
+
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                                <div className='d-flex w-full'>
+                                                                        <span className='w-full p-3 -ml-2 font-bold text-blue-600'>Answer</span>
+                                                                        <input onChange={(e) => {
+                                                                                                    setMark(e.target.value)
+                                                                                }} 
+                                                                                type="text" id="mark" 
+                                                                                defaultValue={mark}  
+                                                                                name="mark" 
+                                                                                placeholder="Enter Mark to be assigned to this question" 
+                                                                                className="font-bold text-lg w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                                </div>
+                                                        </div> 
                                                 </div>
                                         </>
                                 </div>

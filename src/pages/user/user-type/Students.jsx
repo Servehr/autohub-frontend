@@ -62,7 +62,6 @@ export default function Students()
                           } else {            
                             setApprovalRequest(e)      
                           }
-                          refetch()
                       }} />
                   </>
               }

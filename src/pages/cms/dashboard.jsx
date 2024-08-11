@@ -24,21 +24,6 @@ const pulsates = [
     { title: "comments", figures: 650, icon: "comment" },
 ]
 
-// const pulsates = [
-//     { title: "Transactions", figures: "240,000,000", icon: "finance" },
-//     { title: "Users", figures: 4, icon: "sellers" },
-//     { title: "Managers", figures: 4, icon: "managers" },
-//     { title: "Staff", figures: 8, icon: "user" },
-//     { title: "Marketers", figures: 24, icon: "sellers" },
-//     { title: "Dealers", figures: 120, icon: "user" },
-//     { title: "Sellers", figures: 650, icon: "sellers" },
-//     { title: "Products", figures: 400, icon: "products" },
-//     { title: "Requests", figures: 43, icon: "requests" },
-//     { title: "Expenses", figures: 410, icon: "expenses" },
-//     { title: "Visitors", figures: 3573, icon: "visitors" },
-//     { title: "Ads", figures: 573, icon: "ads" },
-// ]
-
 export default function Dashboard()
 {
     const x = Math.round()

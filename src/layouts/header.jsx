@@ -66,6 +66,8 @@ export default function Header()
     "/create-post",
     "/edit-post",
     "/students",
+    "/markings",
+    "/ads-classic",
     "/result",
     `/test-questionaires/${editPost}`,
     "/exam-questionaires",
@@ -75,6 +77,7 @@ export default function Header()
     `/test-thoery-question/${ques}`,
     `/exam-thoery-question/${ques}`,
     `/courses`,
+    '/not-allowed',
     `/dealers`,
     `/dealer-post`,
     `/staffs`,
@@ -218,7 +221,7 @@ function TopHeader()
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/'>Home</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/about-us'>About Us</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/contact-us'>Contact Us</Link></li>
-                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/blog'>Blog</Link></li>
+                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Blog</li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/faq'>FAQ</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Sell Your Vehicle</li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">swap Your Vehicle</li>

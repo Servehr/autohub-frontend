@@ -16,13 +16,11 @@ import { fetchAllFaqs } from "@/apis/misc";
 import { AddFaqModal } from "@/components/faq/AddFaqModal";
 import { AddCourseModal } from "@/components/course/AddCourseModal";
 import { BeatLoader, BounceLoader } from "react-spinners";
-import { AllCourse } from "@/apis/backend/course";
+import { AllCourse, GetAllCourse } from "@/apis/backend/course";
 
 export default function Courses()
 {
-    const id = Math.round()
-    const { isMobile } = browserType();
-    const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse())
+    const { data, isLoading, refetch, isRefetching } = useQuery([`get-all-courses`], () => GetAllCourse())
 
     if(!isLoading)
     {
@@ -77,18 +75,18 @@ export default function Courses()
                             </div>
                         }
                         {
-                            !isLoading && (data.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                            !isLoading && (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                                 <h1 className="font-bold">
                                     No course created yet
                                 </h1>
                             </div>
                         }
                         {
-                            // !isLoading && (data.length > 0) &&  <DynamicTable 
-                            !isLoading && (data.length > 0) &&  <DynamicTable 
+                            // !isLoading && (data?.data?.length > 0) &&  <DynamicTable 
+                            !isLoading && (data?.data?.length > 0) &&  <DynamicTable 
                                                                 header={['Course', 'Description', 'Actions']} 
                                                                 columns={columns}
-                                                                data={data}
+                                                                data={data?.data}
                                                                 onClick={(e) =>  {
                                                                     refetch()
                                                                     console.log(e)

@@ -275,3 +275,24 @@ export async function uploadReceipt(receipt)
 }
 
 
+
+export async function ConfirmStudentAccess(id) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .post("confirm-student", { id: id})
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          console.log(res.data);
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+

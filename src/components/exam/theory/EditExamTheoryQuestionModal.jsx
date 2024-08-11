@@ -17,28 +17,6 @@ export const EditExamTheoryQuestionModal = ({onClick, data, editQuestion})  =>
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
 
-        // console.log({ question, optionA, optionB, optionC, optionD, answer })
-
-        // const advertState = appStore((state) => state)
-        // const navigate = useNavigate();
-        // const [userProductId, setUserProductId] = useState(advertState.getProductId())
-        // const [theTitle, setTitle] = useState("")
-        // const [theContent, setTheContent] = useState("")
-        // const [theIsOpened, setTheIsOpened] = useState(-1)
-        // const options = [
-        //         { key: -1, value: "- Select whether you want it published immediately or not -" },
-        //         { key: "opened", value: "Yes" },
-        //         { key: "closed", value: "No" },
-        // ]
-
-        // const cancelModal = () => 
-        // {
-        //         onClick(true)
-        // }
-
-        console.log(data)
-        
-
         const updateQuestion = async () => 
         {       
                 // const theId = data['id']            
