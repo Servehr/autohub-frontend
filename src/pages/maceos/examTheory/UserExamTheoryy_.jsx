@@ -11,7 +11,7 @@ import { useQuery } from "react-query";
 import { CheckIfUserHasPaid, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
 import PaymentPage from "@/pages/user/user-type/PaymentPage";
-import UserTakeExamTheory from "./UserTakeExamTheory";
+import UserTakeExamTheory from "./UserTakeExamTheory_";
 
 
 export default function UserExamTheoryy() 

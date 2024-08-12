@@ -6,7 +6,7 @@ import Sidebar from "../shared/sidebar";
 import AdminHeader from "@/layouts/AdminHeader";
 import { useQuery } from "react-query";
 import { getAdverts } from "@/apis/ads";
-import { UserCourses } from "@/apis/backend/course";
+import { AllStudent } from "@/apis/backend/course";
 import { AVATAR } from "@/lib/axios";
 import toast from "react-hot-toast";
 import { ConfirmStudent } from "@/components/marking/ConfirmStudent";
@@ -21,7 +21,7 @@ export default function Students()
     const [confirmAccess, setConfirmAccess] = useState("")
 
     
-    const { data, isLoading, isRefetching, refetch } = useQuery(["user-courses"], () => UserCourses(), { cacheTime: 0 })
+    const { data, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(), { cacheTime: 0 })
     
     if(!isLoading)
     {
@@ -45,6 +45,9 @@ export default function Students()
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
                                                 <div className="w-full p-2 flex bg-white">
                                                     <p className="font-bold w-2/2 text-lg text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
+                                                </div>
+                                                <div className="w-full flex bg-white">
+                                                    <p className="font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto">{ student?.payment_status }</p>
                                                 </div>
                                                 <div className="w-full p-5 flex justify-between mt-1 items-center bg-white">
                                                     <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"

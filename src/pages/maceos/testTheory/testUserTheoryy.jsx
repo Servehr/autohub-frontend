@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-query";
 import { CheckIfUserHasPaid, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
-import UserTakeTestObjective from "./UserTakeTestTheory";
+import UserTakeTestObjective from "./UserTakeTestTheory_";
 import PaymentPage from "../../user/user-type/PaymentPage";
 
 

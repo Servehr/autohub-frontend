@@ -442,6 +442,27 @@ export async function UserCourses()
     });
 }
 
+export async function AllStudent() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get("all-student")
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+                console.log(res.data)
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
 export async function UserTestTheoryAnswers(id) 
 {
     return new Promise((resolve, reject) => 

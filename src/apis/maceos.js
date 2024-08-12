@@ -44,7 +44,8 @@ export async function ExistingUser(userId, data)
       axios_instance
         .post(`maceos-registration`, data)
         .then((res) => {
-            // console.log(res.data)
+            console.log(res.data)
+            // return false
             // console.log(res.data.status) // 200
             // console.log(res.data.data)
             if(res.data.status === 200)

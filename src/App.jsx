@@ -230,8 +230,8 @@ export default function App()
               <Route path="/dashboard/test-user-obj" element={<TestUser />} />
               <Route path="/dashboard/force-submit" element={<ForceSubmit />} />
 
-              <Route path="/dashboard/start-theory-test" element={<StartTheoryPage />} />
-              <Route path="/dashboard/start-test-theory" element={<StartTheoryTest />} />
+              <Route path="/dashboard/start-theory-test" element={<StartTheoryTest />} />
+              <Route path="/dashboard/start-test-theory" element={<StartTheoryPage />} />
               {/* <Route path="/dashboard/test-user-theory" element={<TestUser />} /> */}
 
               
