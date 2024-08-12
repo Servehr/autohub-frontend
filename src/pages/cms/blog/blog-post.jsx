@@ -216,65 +216,58 @@ export default function BlogPost()
     
   return ( 
         <div className="pb-5 bg-white">
-            <div className='w-full flex'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5'>
-                    <div className="bg-white p-3 mt-5 -mb-2 text-xl font-bold flex">
-                        <span className="font-bold md:w-2/12 text-md sm:w-full items-center">
-                            All Post
-                        </span>
-                        <input
-                            type="text"
-                            required
-                            // ref={inputRef}
-                            name="search"
-                            autoComplete="off"
-                            aria-label="Search name, brand or year"
-                            // value={query}
-                            className="md:w-8/12 sm:w-full w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
-                            placeholder="Search titile, content, author"
-                            onKeyUp ={(e) => {
-                                setSearchQuery(e.target.value)
-                                console.log(searchQuery)
-                                callTheSearch(e)
-                            }}
-                        />
-                        <div className="flex justify-center items-center md:w-2/12 sm:w-full">                            
-                            <div onClick={goTo} className="font-bold text-md w-full text-sm rounded-md text-white bg-green-800 py-4 mx-4 text-center hover:text-black hover:bg-green-600 px-2 cursor-pointer">
-                                Create Post
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-full p-3 mb-3 mt-3 flex justify-center items-center">
-                        {
-                            isLoading && <div className="h-[300px]" style={{ marginTop: '50px', paddingTop: '100px' }}>
-                                <BeatLoader color="#1c9236" />
-                            </div>
-                        }
-                    </div>
-                    
-                    <div className="w-full p-3 mb-3 mt-3 flex items-center">
-                        
-                        {
-                            // !isLoading &&  <DynamicTable 
-                            //                             header={['Title', 'Manufacturer', 'Model', 'Price', 'State', 'Condition', 'Actions']} 
-                            //                             data={data} 
-                            //                         />
-                            !isLoading && (blogPost?.data?.posts.length > 0) &&  <DynamicTable 
-                                                                        header={['Title', 'Author', 'Point', 'Views', 'Comment', 'Created', 'Updated', 'Actions']} 
-                                                                        columns={columns}
-                                                                        data={blogPost?.data?.posts}
-                                                                        onClick={(e) =>  {
-                                                                            console.log(e)
-                                                                            setRefresh(e)
-                                                                        } }
-                                                                        page={'blog'}
-                                                                    />
-                        }
+            <div className="bg-white p-3 mt-5 -mb-2 text-xl font-bold flex">
+                <span className="font-bold md:w-2/12 text-md sm:w-full items-center">
+                    All Post
+                </span>
+                <input
+                    type="text"
+                    required
+                    // ref={inputRef}
+                    name="search"
+                    autoComplete="off"
+                    aria-label="Search name, brand or year"
+                    // value={query}
+                    className="md:w-8/12 sm:w-full w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
+                    placeholder="Search titile, content, author"
+                    onKeyUp ={(e) => {
+                        setSearchQuery(e.target.value)
+                        console.log(searchQuery)
+                        callTheSearch(e)
+                    }}
+                />
+                <div className="flex justify-center items-center md:w-2/12 sm:w-full">                            
+                    <div onClick={goTo} className="font-bold text-md w-full text-sm rounded-md text-white bg-green-800 py-4 mx-4 text-center hover:text-black hover:bg-green-600 px-2 cursor-pointer">
+                        Create Post
                     </div>
                 </div>
+            </div>
+            <div className="w-full p-3 mb-3 mt-3 flex justify-center items-center">
+                {
+                    isLoading && <div className="h-[300px]" style={{ marginTop: '50px', paddingTop: '100px' }}>
+                        <BeatLoader color="#1c9236" />
+                    </div>
+                }
+            </div>
+            
+            <div className="w-full p-3 mb-3 mt-3 flex items-center">
+                
+                {
+                    // !isLoading &&  <DynamicTable 
+                    //                             header={['Title', 'Manufacturer', 'Model', 'Price', 'State', 'Condition', 'Actions']} 
+                    //                             data={data} 
+                    //                         />
+                    !isLoading && (blogPost?.data?.posts.length > 0) &&  <DynamicTable 
+                                                                header={['Title', 'Author', 'Point', 'Views', 'Comment', 'Created', 'Updated', 'Actions']} 
+                                                                columns={columns}
+                                                                data={blogPost?.data?.posts}
+                                                                onClick={(e) =>  {
+                                                                    console.log(e)
+                                                                    setRefresh(e)
+                                                                } }
+                                                                page={'blog'}
+                                                            />
+                }
             </div>
             { !isLoading && 
                 <nav className="w-full items-center mb-2 flex justify-center bg-brandDarkGray space-x-1 -mt-10" aria-label="Pagination">

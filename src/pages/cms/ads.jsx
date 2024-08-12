@@ -94,12 +94,7 @@ export default function Ads()
     }
 
   return ( 
-        <div className="pb-5 bg-white">
-            <div className='w-full flex'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5'>
+            <>
                     <div className="bg-white p-3 mt-5 -mb-2 text-xl font-bold flex">
                         <span className="font-bold md:w-2/12 text-md sm:w-full items-center">All Adverts - {searchQuery} </span>
                         <input
@@ -116,7 +111,7 @@ export default function Ads()
                         />
                     </div>
                     
-                    <div className="w-full p-3 mb-3 mt-3"
+                    <div className="w-full p-3 mb-3 mt-3 pb-5"
                     >
                         {isLoading && !isRefetching && (
                             <div className="min-h-[320px] flex justify-center items-center text-brandGreen">                            
@@ -143,9 +138,7 @@ export default function Ads()
                                                                     />
                         }
                     </div>
-                </div>
-            </div>
-            { 
+                { 
                     !isLoading && !isRefetching && (advertData?.product_advert?.product.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
@@ -166,7 +159,8 @@ export default function Ads()
                               hasPreviousPage={advertData?.product_advert?.hasPreviousPage} 
                               from={''}
                           />    
-            }
-        </div>
+                }
+                <span className="p-20"></span>
+            </>
   )
 }

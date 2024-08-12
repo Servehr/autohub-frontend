@@ -36,7 +36,7 @@ export async function loginUser(email, password) {
             if(res.data.persin === 3)
             {
                 localStorage.setItem("userTypes", 'admin');
-                window.location.href = "overview";
+                window.location.href = "/a/overview";
             } else if(res.data.persin === 2) {  
                 localStorage.setItem("userTypes", 'both');
                 window.location.href = "/dashboard/summary";
@@ -268,7 +268,7 @@ export function logOut()
             localStorage.removeItem("autoHub")
             localStorage.clear()
             sessionStorage.clear();
-            window.location.href = "/"
+            window.location.href = "/home"
           }
         })
         .catch((err) => {

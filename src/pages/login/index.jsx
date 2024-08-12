@@ -41,7 +41,7 @@ export default function LoginPage() {
             className="flex items-center gap-4 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
-              // navigate("/");
+              navigate("/home");
             }}
           >
             <div className="h-[50px] sm:h-[58px] aspect-square rounded-full bg-[#1B5B29] text-3xl text-white flex justify-center items-center">

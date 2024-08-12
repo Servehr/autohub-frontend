@@ -98,7 +98,7 @@ export default function DashSidebar()
         {/*  */}
         <div className="w-full -mt-3 hidden  md:block text-white">
           <ul className="flex flex-col w-full gap-1">
-            { ((advertState.getUserServices() === '2') || advertState.getUserServices() === '1') && advertState.getLoggedInUserType() === 'market' && sidebarItems?.map((item, idx) => (
+            { ((advertState.getUserServices() === '2') || advertState.getUserServices() === '1' || advertState.getUserServices() === '3') && advertState.getLoggedInUserType() === 'market' && sidebarItems?.map((item, idx) => (
               <li key={item + idx} className="cursor-pointer">
                 <>
                   <NavLink end to={item.link}>

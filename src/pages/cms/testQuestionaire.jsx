@@ -27,18 +27,9 @@ export default function TestQuestionaire()
 
   return ( 
         <>
-            <div className='w-full flex h-full bg-blue-500'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-full lg:flex-row h-fit'>
+            <TestQuestionaireObjective />
 
-                    <TestQuestionaireObjective />
-
-                    <TestQuestionaireTheory />
-
-                </div>
-            </div>
+            <TestQuestionaireTheory />
         </>
   )
 }

@@ -24,7 +24,7 @@ const pulsates = [
     { title: "comments", figures: 650, icon: "comment" },
 ]
 
-export default function Dashboard()
+export default function Board()
 {
     const x = Math.round()
     const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
@@ -34,18 +34,21 @@ export default function Dashboard()
         console.log(data)
     }
 
-  return ( 
-        <div className='w-full flex h-full bg-blue-500'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
+  return (
+            <>
+                <div className='grid grid-cols-12 gap-5 py-2 px-3 mt-5 mb-20'>
+                        <span className="font-bold text-xl col-span-12 mb-4 text-green-600">Summary</span>
+                        {
+                            isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                <BeatLoader color="#1c9236" />
+                            </div>
+                        }
+            
+
+                        {
+                            !isLoading && data?.map((d, index) => <Pulsate titles={d.title} figures={d.figures} icons={d.icon} />)
+                        }
                 </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5 bg-blue-500'
-                >
-                    <div className='grid grid-cols-12 gap-5 py-2 pr-5 mt-2 mb-5 justify-center items-center order-5 mt-5'>
-                        <AdminHeader />
-                    </div>
-                    <Outlet />
-            </div>
-        </div>
+            </>
   )
 }

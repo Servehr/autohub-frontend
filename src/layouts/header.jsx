@@ -19,11 +19,14 @@ export default function Header()
   const advertState = appStore((state) => state)
   const [loggedInUserType, setLoggedInUserType] = useState('')
   const [userService, setUserService] = useState('')
+  const [urlParam, setUrlParameterz] = useState('')
 
   useEffect(() => 
   {
       setUserService('')      
       advertState.setUserServices(localStorage.getItem("services"))
+      setUrlParameterz('')
+      advertState.setUrlParameterz(localStorage.getItem("services"))
   }, [])
 
   useEffect(() => 
@@ -35,6 +38,10 @@ export default function Header()
       // localStorage.setItem('ux', convert.type)
       // setLoggedInUserType(convert.type)
       setUserService(useServ)
+
+      const holderingUrl = localStorage.getItem('editPost')
+      const holdUrl = holderingUrl
+      setUrlParameterz(holdUrl)
   }, [loggedInUserType, userService])
 
   // advertState.setLoggedInUserType(ux)
@@ -42,11 +49,12 @@ export default function Header()
 
   const { id } = useParams()
   console.log(id)
-  const editPost = localStorage.getItem('editPost')
+  // const editPost = localStorage.getItem('editPost')
+  // const urlParam = localStorage.getItem('editPost')
   const ques = localStorage.getItem('questions')
-  const pathToEdit = `/edit-post/${editPost}`
+  const pathToEdit = `/edit-post/${urlParam}`
   console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
-  console.log(Number(editPost))
+  console.log(Number(urlParam))
   console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
 
   const excludedPaths = [
@@ -58,35 +66,35 @@ export default function Header()
     "/forgot",
     "/reset",
     "/new-password",
-    "/overview",
-    "/ads",
-    "/package",
-    "/faqs",
-    "/blog-post",
+    "/a/overview",
+    "/a/ads",
+    "/a/package",
+    "/a/faqs",
+    "/a/blog-post",
     "/create-post",
-    "/edit-post",
-    "/students",
-    "/markings",
-    "/ads-classic",
-    "/result",
-    `/test-questionaires/${editPost}`,
-    "/exam-questionaires",
-    `/edit-post/${editPost}`,
-    `/questions/${ques}`,
-    `/exams/${ques}`,
-    `/test-thoery-question/${ques}`,
-    `/exam-thoery-question/${ques}`,
-    `/courses`,
+    "/a/edit-post",
+    "/a/students",
+    "/a/markings",
+    "/a/ads-classic",
+    "/a/result",
+    `/a/test-questionaires/${urlParam}`,
+    "/a/exam-questionaires",
+    `/a/edit-post/${urlParam}`,
+    `/a/questions/${ques}`,
+    `/a/exams/${ques}`,
+    `/a/test-thoery-question/${ques}`,
+    `/a/exam-thoery-question/${ques}`,
+    `/a/courses`,
     '/not-allowed',
-    `/dealers`,
-    `/dealer-post`,
-    `/staffs`,
-    `/finance`,  
-    `/expenses`,
-    `/items`,
-    `/request-item`,
-    `/settings`,
-    `/test-courses`,
+    `/a/dealers`,
+    `/a/dealer-post`,
+    `/a/staffs`,
+    `/a/finance`,  
+    `/a/expenses`,
+    `/a/items`,
+    `/a/request-item`,
+    `/a/settings`,
+    `/a/test-courses`,
   ];
 
   const { pathname } = useLocation();
@@ -218,7 +226,7 @@ function TopHeader()
           
         <div className="hidden md:block lg:block grid grid-col-12 pb-2 border-b-2 mb-3">
             <ul className="flex px-5 pt-3 justify-center items-center justify-between">
-                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/'>Home</Link></li>
+                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/home'>Home</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/about-us'>About Us</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/contact-us'>Contact Us</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Blog</li>
@@ -382,7 +390,7 @@ function Dash()
 export function Brand() {
   return (
     <div className="gap-2 sm:gap-4 items-center shrink-0">
-      <Link to="/">
+      <Link to="/home">
         <img
           src="/assets/logo.png"
           alt=""
@@ -464,6 +472,13 @@ function Account({ showAccount, setShowAccount })
         //  localStorage.setItem('userTypes', 'both')
          navigate('/dashboard/summary')
       }
+
+      if(whichUser === '3')
+       {
+         //  advertState.setUserServices("2")
+         //  localStorage.setItem('userTypes', 'both')
+          navigate('/a/overview')
+       }
   }
 
   if (!user) {
@@ -539,7 +554,7 @@ function Account({ showAccount, setShowAccount })
       <>
       {/* { typeof(advertState.getUserServices()) } */}
         {
-            (advertState.getUserServices() === "1") && 
+            (advertState.getUserServices() === "1" || advertState.getUserServices() === "3") && 
               <div className="flex items-center gap-1" onClick={() => {
                    advertState.setLoggedInUserType("market")
                    navigate('/dashboard/profile')
@@ -555,6 +570,20 @@ function Account({ showAccount, setShowAccount })
                   </svg>
               </div>
         }
+        
+        { ((advertState.getUserServices() === "3")) && <a
+                        onClick={() => {
+                          advertState.setLoggedInUserType("market")
+                          // advertState.setUserServices("1")
+                          whereTo("3")
+                          // navigate('/dashboard/profile')
+                        }}
+                        // to={'/dashboard/profile'}
+                        className="text-brandGreen hover:bg-green-100 font-semibold text-sm px-4 py-2 rounded-xl cursor-pointer"
+                      >
+                        Dashboard
+                      </a>
+                    }
         {
           (advertState.getUserServices() === "2" || advertState.getUserServices() === "4") && <div
               className=" hidden md:flex relative flex-col h-full"
@@ -588,7 +617,7 @@ function Account({ showAccount, setShowAccount })
                             localStorage.setItem("userTypes", "both")
                             advertState.setLoggedInUserType("both")
                             whereTo("2")
-                          }
+                          } 
                         // navigate('/dashboard/profile')
                       }}
                       // to="/dashboard/summary"
@@ -607,6 +636,19 @@ function Account({ showAccount, setShowAccount })
                         className="text-brandGreen hover:bg-green-100 font-semibold text-sm px-4 py-2 rounded-xl cursor-pointer"
                       >
                         Market Place
+                      </a>
+                    }
+                    { ((advertState.getUserServices() === "3")) && <a
+                        onClick={() => {
+                          advertState.setLoggedInUserType("market")
+                          // advertState.setUserServices("1")
+                          whereTo("3")
+                          // navigate('/dashboard/profile')
+                        }}
+                        // to={'/dashboard/profile'}
+                        className="text-brandGreen hover:bg-green-100 font-semibold text-sm px-4 py-2 rounded-xl cursor-pointer"
+                      >
+                        Dashboard
                       </a>
                     }
                   </div>

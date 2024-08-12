@@ -28,18 +28,8 @@ export default function AdsClassic()
     }
 
     return ( 
-            <div className='w-full flex h-full bg-blue-500'>
-                    <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                        <Sidebar />
-                    </div>
-                    <div className='bg-white md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5 bg-blue-500'
-                    >
-                        <div className='grid grid-cols-12 gap-5 py-2 pr-5 mt-2 mb-5 justify-center items-center order-5 mt-5'>
-                            <AdminHeader />
-                        </div>
-                        <span className="font-bold text-xl col-span-12 text-green-600 ml-3 mb-20 font-bold">PRODUCTS</span>
-                        
-                        <div className='grid grid-cols-12 gap-5 px-3 pb-5 mb-5 mt-5'
+            <>
+                <div className='grid grid-cols-12 gap-5 px-3 pb-5 mb-5 mt-5'
                         >                        
                             {
                                 isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
@@ -92,7 +82,6 @@ export default function AdsClassic()
                             }
 
                         </div>
-                </div>
-            </div>
+            </>
     )
 }

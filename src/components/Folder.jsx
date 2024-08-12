@@ -22,10 +22,10 @@ export default function Folder({id, titles, figures, type, toEdit, toDelete, ico
                 <div className="px-3 py-2 transition-shadow border border-4 bg-white hover:bg-red-100 cursor-pointer rounded-lg shadow-sm hover:shadow-lg"
                 onClick={() => {
                     localStorage.setItem('questions', id)
-                    if(type === "exam"){ navigate(`/exams/${id}`) }
-                    if(type === "test"){ navigate(`/questions/${id}`) }
-                    if(type === "test-theory"){ navigate(`/test-thoery-question/${id}`) }
-                    if(type === "exam-thoery-question"){ navigate(`/exam-thoery-question/${id}`) }
+                    if(type === "exam"){ navigate(`/a/exams/${id}`) }
+                    if(type === "test"){ navigate(`/a/questions/${id}`) }
+                    if(type === "test-theory"){ navigate(`/a/test-thoery-question/${id}`) }
+                    if(type === "exam-thoery-question"){ navigate(`/a/exam-thoery-question/${id}`) }
                 }} 
                 >
                     <div className="d-flex items-start justify-center space-y-3">

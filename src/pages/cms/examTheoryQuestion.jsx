@@ -65,11 +65,6 @@ export default function ExamTheoryQuestion()
 
   return ( 
         <>
-            <div className='w-full flex h-full bg-blue-500'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-full lg:flex-row px-5 bg-blue-500'>
 
                     <div className="w-full justify-between p-3 mt-2 flex bg-green-100 -mb-3 items-center rounded-lg">                        
                         <div className="p-3 mt-5">
@@ -133,8 +128,6 @@ export default function ExamTheoryQuestion()
                         </div>
                     </div>
 
-                </div>
-            </div>
 
             {
                 addTheoryQuestion && <AddTheoryQuestion folderName={''} addTheoryQuestion={addTheoryQuestion} onClick={() => {

@@ -75,14 +75,9 @@ export default function Dealers()
 
   return ( 
         <>
-            <div className='w-full flex'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5'>
 
-                    <div className="w-full justify-between p-3 flex space-x-10 -mb-3 items-center">                        
-                        <div className="bg-white py-3 mt-5">
+                    <div className="w-full justify-between p-3 flex space-x-10 -mt-10 items-center">                        
+                        <div className="bg-white mb-5">
                             <h1 className="font-bold text-2xl">Dealers</h1>
                         </div>
                         {/* <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenFaqModal(true)}>Add Faq</div> */}
@@ -156,8 +151,6 @@ export default function Dealers()
                         }
                     </div>
 
-                </div>
-            </div>
         </>
   )
 }

@@ -101,7 +101,7 @@ export const BasicProfile = ({onClick, data, openBasicInfo})  =>
                                                 className="mt-2 py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
                                                 onClick={() => addQuestion() }
                                         >
-                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Add" )          }
+                                                {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Update" )          }
                                         </button>
                                 </div>
                         </div>

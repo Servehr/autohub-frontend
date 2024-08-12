@@ -10,7 +10,7 @@ export default function Right()
             <div className=''
                 onClick={logOut}
             >                
-                <Icons iconName={'logout'} color='black' width={6} height={6} />
+                <Icons iconName={'logout'} color='red' width={6} height={6} />
             </div>
         </div>
   )

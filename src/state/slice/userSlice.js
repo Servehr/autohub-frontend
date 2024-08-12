@@ -48,6 +48,26 @@ const createUsertSlice  = (set, get) => (
         getUserServices()
         {
             return get().userServices
+        },
+
+        urlParameterz: -1,
+        setUrlParameterz(urlParameterz)
+        {
+            set((state) => ({urlParameterz: urlParameterz}))
+        },
+        getUrlParameterz()
+        {
+            return get().urlParameterz
+        },
+
+        assessment: -1,
+        setAssessment(assessment)
+        {
+            set((state) => ({assessment: assessment}))
+        },
+        getAssessment()
+        {
+            return get().assessment
         }
     }
 )

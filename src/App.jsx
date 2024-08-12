@@ -92,8 +92,9 @@ import ForceSubmitExamObjective from "./pages/maceos/examObj/ForceSubmitExamObje
 import ExamObjective from "./pages/maceos/examObj/exam-user";
 import Markings from "./pages/cms/Markings";
 import AdsClassic from "./pages/cms/AdsClassic";
-import AdminRoute from "./components/adminRoute";
 import NotAllowed from "./components/notAllowed";
+import AdminRoute from "./components/AdminRoute";
+import Board from "./pages/cms/board";
 
 export const Loader = ({ full }) => {
   return (
@@ -138,7 +139,7 @@ export default function App()
             {/*  */}
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
-            {/* <Route path="/home" element={<HomePage />} /> */}
+            <Route path="/home" element={<HomePage />} />
             
             <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/reset" element={<ResetPassword />} />
@@ -244,43 +245,51 @@ export default function App()
               <Route path="/dashboard/exam-user-obj" element={<ExamObjective />} />             
             </Route>
 
-            {/* <Route element={<AdminRoute />} > */}
+            <Route
+              exact
+              path="/a"
+              element={
+                <AdminRoute>
+                  <Dashboard />
+                </AdminRoute>
+              }
+            >
                 {/* <Route index element={<Dashboard />} /> */}
-                <Route path="/overview" element={<Dashboard />}/>
-                <Route path="/students" element={<Students />} />
-                <Route path="/courses" element={<Course />} />
-                <Route path="/dealers" element={<Dealers />} />
-                <Route path="/dealer-post" element={<DealerPost />} />
-                <Route path="/staffs" element={<Staff />} />
-                <Route path="/finance" element={<Finance />} />
-                <Route path="/expenses" element={<Expenses />} />
-                <Route path="/request-item" element={<RequestItems />} />
-                <Route path="/items" element={<Items />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route path="/a/overview" element={<Board />}/>
+                <Route path="/a/students" element={<Students />} />
+                <Route path="/a/courses" element={<Course />} />
+                <Route path="/a/dealers" element={<Dealers />} />
+                <Route path="/a/dealer-post" element={<DealerPost />} />
+                <Route path="/a/staffs" element={<Staff />} />
+                <Route path="/a/finance" element={<Finance />} />
+                <Route path="/a/expenses" element={<Expenses />} />
+                <Route path="/a/request-item" element={<RequestItems />} />
+                <Route path="/a/items" element={<Items />} />
+                <Route path="/a/settings" element={<Settings />} />
 
-                {/* <Route path="/course" element={<Course />} /> */}
-                {/* <Route path="/test-questionaires/:id" element={<TestQuestionaire />} /> */}
-                {/* <Route path="/test-courses" element={<TestCourses />} /> */}
-                <Route path="/test-courses" element={<TestQuestionaire />} />
-                <Route path="/exam-questionaires" element={<ExamQuestionaire />} />
-                <Route path="/exams/:id" element={<Exams />} />
-                <Route path="/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
-                <Route path="/test-thoery-question/:id" element={<TheoryQuestion />} />
-                <Route path="/questions/:id" element={<Questions />} />
-                <Route path="/result" element={<Result />} />
-                <Route path="/ads-classic" element={<AdsClassic />} />
-                <Route path="/markings" element={<Markings />} />
-                <Route path="/ads" element={<Ads />} />
-                <Route path="/faqs" element={<Faqs />} />
-                <Route path="/package" element={<Plans />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/blog" element={<Blogs />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/blog-post" element={<BlogPost />} />
-                <Route path="/create-post" element={<CreateBlog />} />
-                <Route path="/edit-post/:id" element={<EditBlog />} />
-                <Route path="/blog-detail/:post_id" element={<BlogDetail />} />
-            {/* </Route> */}
+                {/* <Route path="/a/course" element={<Course />} /> */}
+                {/* <Route path="/a/test-questionaires/:id" element={<TestQuestionaire />} /> */}
+                {/* <Route path="/a/test-courses" element={<TestCourses />} /> */}
+                <Route path="/a/test-courses" element={<TestQuestionaire />} />
+                <Route path="/a/exam-questionaires" element={<ExamQuestionaire />} />
+                <Route path="/a/exams/:id" element={<Exams />} />
+                <Route path="/a/exam-thoery-question/:id" element={<ExamTheoryQuestion />} />
+                <Route path="/a/test-thoery-question/:id" element={<TheoryQuestion />} />
+                <Route path="/a/questions/:id" element={<Questions />} />
+                <Route path="/a/result" element={<Result />} />
+                <Route path="/a/ads-classic" element={<AdsClassic />} />
+                <Route path="/a/markings" element={<Markings />} />
+                <Route path="/a/ads" element={<Ads />} />
+                <Route path="/a/faqs" element={<Faqs />} />
+                <Route path="/a/package" element={<Plans />} />
+                <Route path="/a/search" element={<SearchPage />} />
+                <Route path="/a/blog" element={<Blogs />} />
+                <Route path="/a/faq" element={<FAQ />} />
+                <Route path="/a/blog-post" element={<BlogPost />} />
+                <Route path="/a/create-post" element={<CreateBlog />} />
+                <Route path="/a/edit-post/:id" element={<EditBlog />} />
+                <Route path="/a/blog-detail/:post_id" element={<BlogDetail />} />
+            </Route>
             
                 <Route path="/not-allowed" element={<NotAllowed />} />
 

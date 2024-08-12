@@ -12,24 +12,7 @@ export default function Plans()
 {
 
   return ( 
-        <div className='w-full flex'>
-            <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                <Sidebar />
-                {/* <h1>Great</h1> */}
-            </div>
-            <div className='md:w-10/12 lg:10/12 w-12/12 lg:flex-row px-5'>
-                {/* <div className='grid md:grid-cols-12 grid-cols-6 gap-5 py-2 pr-5 mt-2 mb-5 justify-center items-center order-5 mt-5'>
-                    <AdminHeader />
-                </div> */}
-
-                {/* <div className="grid md:grid-cols-12 grid-cols-12 gap-5 md:p-3 mt-2 mb-5 justify-center items-center">
-                    <div className="col-span-12 md:col-span-1 py-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 hover:fill-current cursor-pointer hover:fill-red-900">
-                            <path d="M6 3a3 3 0 0 0-3 3v2.25a3 3 0 0 0 3 3h2.25a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H6ZM15.75 3a3 3 0 0 0-3 3v2.25a3 3 0 0 0 3 3H18a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3h-2.25ZM6 12.75a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h2.25a3 3 0 0 0 3-3v-2.25a3 3 0 0 0-3-3H6ZM17.625 13.5a.75.75 0 0 0-1.5 0v2.625H13.5a.75.75 0 0 0 0 1.5h2.625v2.625a.75.75 0 0 0 1.5 0v-2.625h2.625a.75.75 0 0 0 0-1.5h-2.625V13.5Z" />
-                        </svg>                                            
-                    </div>
-                </div> */}
-
+            <>
                 <div className="p-5">
                     <div className="w-full bg-blue-200 p-5 -mt-2">
                         <h1 className="font-bold">Choose a plan</h1>
@@ -93,8 +76,6 @@ export default function Plans()
                     </div>
                 </div>
 
-            </div>
-
-        </div>
+            </>
   )
 }
