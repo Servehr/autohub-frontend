@@ -32,19 +32,16 @@ export const AddExamQuestionModal = ({onClick, openExamQuestionaire, folderName}
         const addQuestion = () => 
         {   
                 const data = { exam_questionaire_id: Number(id), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-                console.log(data)
                 setIsLoading(true)
                 AddExam(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

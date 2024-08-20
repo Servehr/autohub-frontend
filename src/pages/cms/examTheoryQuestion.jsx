@@ -33,11 +33,6 @@ export default function ExamTheoryQuestion()
     // alert(id)
     const { data, isLoading, isRefetching, refetch } = useQuery([`all-test`, id], () => AllTheoryQuestionExam(id), { cacheTime: 0 })
 
-    if(!isLoading)
-    { 
-        console.log(data) 
-    }
-
     // const advertState = appStore((state) => state) 
     const Questions = [
         { id: 1, question: "Artificial Intelligence is about_____", options: [ 'Playing a game on Computer', 'Making a machine Intelligent', 'Programming on Machine with your Own Intelligence',
@@ -59,7 +54,6 @@ export default function ExamTheoryQuestion()
     const [clickTable, setClickTable] = useState(false)
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -105,7 +99,6 @@ export default function ExamTheoryQuestion()
                                                             <div className="flex space-x-5">
                                                                 <span onClick={() => {
                                                                     setQuestionToEdit(data[index])
-                                                                    console.log(data[index])
                                                                     setEditQuestion(true)
                                                                 }}>
                                                                     <Icons iconName={'edit'} width={6} height={6} />

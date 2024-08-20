@@ -30,18 +30,14 @@ export const AddTestQuestionaireTheoryModal = ({onClick, openTestQuestionaireThe
         {            
                 setIsLoading(true)
                 const data = { name: theTitle, description: theContent }
-                // console.log(data)
-                // return
                 AddTestQuestionaireTheory(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

@@ -22,21 +22,8 @@ export default function Courses()
 {
     const { data, isLoading, refetch, isRefetching } = useQuery([`get-all-courses`], () => GetAllCourse())
 
-    if(!isLoading)
-    {
-        console.log(data)
-    }
-
     const [loading, setIsLoading] = useState(false)
 
-    // const advertState = appStore((state) => state) 
-    // const  data  = [
-    //     {id: 1, question: 'Artificial Intelligence' },
-    //     {id: 2, question: 'Repairs and Maintenance' },
-    //     {id: 3, question: 'Car Dealings (Sales And Purchase)' },
-    //     {id: 4, question: 'General Knowledge on Automobile' },
-    //     {id: 5, question: 'Auctioning'}
-    // ]    
     const [dataTable, setDatable] = useState("")
     const columns = [
         { field: 'name' },
@@ -47,7 +34,6 @@ export default function Courses()
 
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -84,7 +70,6 @@ export default function Courses()
                                                                 data={data?.data}
                                                                 onClick={(e) =>  {
                                                                     refetch()
-                                                                    console.log(e)
                                                                     setOpenCourseModal(e) 
                                                                 } 
                                                         } 

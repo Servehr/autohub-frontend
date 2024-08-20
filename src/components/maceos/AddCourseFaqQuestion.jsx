@@ -23,23 +23,18 @@ export const AddCourseFaqQuestion = ({courseFaq, onClick, openAddCourseFaqQuesti
                 onClick(true)
         }        
 
-        console.log(courseFaq)
-
         const addQuestion = async () => 
         {            
                 setIsLoading(true)
                 const data = { course_id: theId, question: theQuestion }
-                console.log(data)
                 AddCourseFaq(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

@@ -59,7 +59,6 @@ export const sendDataWithForm = axios.create({
 //       (err.response.status === 403 || err.response.status === 401) &&
 //       !originalRequest._retry
 //     ) {
-//       console.log("Error occurred with token");
 //       window.location.href = "/login";
 
 //       // logoutAndRedirect();
@@ -79,7 +78,6 @@ export const sendDataWithForm = axios.create({
 //       } catch (_error) {
 //         // localStorage.clear();
 //         // sessionStorage.clear();
-//         // console.log("refresh token not found");
 //         // window.location.href = "/login";
 
 //         logoutAndRedirect();
@@ -93,7 +91,6 @@ export const sendDataWithForm = axios.create({
 // const logoutAndRedirect = () => {
 //   localStorage.clear();
 //   sessionStorage.clear();
-//   console.log("Token error occurred. Logging out and redirecting to login.");
 //   window.location.href = "/login";
 // };
 

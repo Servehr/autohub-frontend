@@ -17,11 +17,6 @@ export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName}
         const { id } = useParams()
         const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
       
-        if(!isLoading)
-        {
-            console.log(data)
-        }
-
         const [question, setQuestion] = useState("")
         const [courseId, setCourse] = useState(-1)
         const [loading, setIsLoading] = useState(false)
@@ -35,20 +30,16 @@ export const AddTheoryQuestionModal = ({onClick, openTheoryQuestion, folderName}
         const addTheoryQuestion = () => 
         {   
                 const data = { test_questionaire_id: Number(id), course_id: Number(courseId), question: question, mark: mark }
-                console.log(data)
-                // return false
                 setIsLoading(true)
                 AddTestTheoryQuestion(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

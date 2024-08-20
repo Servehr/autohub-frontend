@@ -7,51 +7,40 @@ import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FormCode } from "@/components/FormCode";
-import { AllCourse, SubmitTestObjective } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 import { appStore } from "@/state/appState";
+import { SubmitExamTheory } from "@/apis/backend/course";
 
 
 export default function ForceSubmitExamTheory() 
-{
-  const [isUser, setIsUser] = useState("-1")
-
-  return (
-    <>
-      <Helmet>
-        <title>Force Submit | Autohub</title>
-        <meta name="description" content="Sell Faster, Buy Smarter" />
-      </Helmet>
-
-      
-      <SubmitExamTheory />
-    </>
-  );
-}
-
-function SubmitExamTheory() 
 {  
     const advertState = appStore((state) => state)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
     const navigate = useNavigate()
 
-    const SubmitObjectiveTest = () => 
+    useEffect(() => 
     {
-      setIsSubmitting(true)
-      const userAnswers = advertState.getSelectedExamTheoryOption()
-      // if(userAnswers.length === 0)
-      // {
-      //     setErrorMsg("Answer at least one question")
-      //     setTimeout(() => {
-      //         setIsSubmitting(false)
-      //         setErrorMsg("")
-      //     }, 2000)
-      // } else {
-         SubmitTestObjective(userAnswers)
+        if(advertState.getSelectedExamTheoryOption().length === 0)
+        {
+            const optionId = localStorage.getItem("text-exam-thoeory-ques")          
+            const answers = { user_id: Number(localStorage.getItem("authenticatedId")), answer: 'xxx', exam_theory_id: optionId, position: -1 }
+            const systemAnswer = { userSubmitted : 'no', answers: answers }
+            advertState.setDefaultExamTheoryAnswer(systemAnswer)
+        } else {
+            const systemAnswer = { userSubmitted : 'yes', answers: advertState.getSelectedExamTheoryOption() }
+            advertState.setDefaultExamTheoryAnswer(systemAnswer)
+        }
+    }, [])
+
+    const SubmitExamTheoryQuestion = () => 
+    {
+        setIsSubmitting(true)
+        SubmitExamTheory(advertState.getDefaultExamTheoryAnswer())
         .then((res) => {
             if(res === "submitted")
             {
+                advertState.setForceExamTheory('no')
                 navigate('/dashboard/summary')
                 // return false
             } else {
@@ -82,7 +71,7 @@ function SubmitExamTheory()
                 <button type="sumbit" 
                 disabled={isSubmitting}
                 className={`p-3 text-white text-md font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'cursor-pointer bg-green-600 hover:text-red-300 hover:bg-red-900'}`}
-                onClick={SubmitObjectiveTest}
+                onClick={SubmitExamTheoryQuestion}
                 >
                     Submit
                 </button>

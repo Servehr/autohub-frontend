@@ -8,7 +8,6 @@ export async function AuthenticatedUser(userId)
           axios_instance
             .get(`maceos-registration/${userId}`)
             .then((res) => {
-                console.log(res)
                 resolve(res.data);
             })
             .catch(() => {
@@ -44,10 +43,6 @@ export async function ExistingUser(userId, data)
       axios_instance
         .post(`maceos-registration`, data)
         .then((res) => {
-            console.log(res.data)
-            // return false
-            // console.log(res.data.status) // 200
-            // console.log(res.data.data)
             if(res.data.status === 200)
             {
                 resolve(res.data.data);               

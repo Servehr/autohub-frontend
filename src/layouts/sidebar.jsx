@@ -23,8 +23,6 @@ export default function DashSidebar()
   const [ imageOpenModal, setImageOpenModal] = useState(false)   
   const { data } = useUser();
   const [profilePicture, setProfilePicture] = useState(`${AVATAR}${data.data.avatar}`)
-  console.log(data)
-  console.log(data.followers)
   const uType = advertState.getUserServices()
 
   useEffect(() => 
@@ -65,7 +63,7 @@ export default function DashSidebar()
                   src={
                     (profilePicture != "")
                       ? profilePicture
-                      : `${AVATAR}${data.data.avatar}`
+                      : `${AVATAR}${data?.data?.avatar}`
                   }
                   alt=""
                   className="object-cover w-full h-full"
@@ -85,7 +83,8 @@ export default function DashSidebar()
               { data && data.data?.name}
             </p>
             { (advertState.getLoggedInUserType()) === "market" && <p className="font-medium text-md md:text-base">
-              {data && data.data?.phoneno}            
+              {data && data.data?.phoneno}           
+                {advertState.getLoggedInUserType()}+{advertState.getUserServices()} 
             </p>}
             { (advertState.getLoggedInUserType()) === "market" && <p className="text-blue-800 p-2 text-lg">
                 Followers: <strong style={{ color: 'red' }}>{ data.followers }</strong>
@@ -98,7 +97,7 @@ export default function DashSidebar()
         {/*  */}
         <div className="w-full -mt-3 hidden  md:block text-white">
           <ul className="flex flex-col w-full gap-1">
-            { ((advertState.getUserServices() === '2') || advertState.getUserServices() === '1' || advertState.getUserServices() === '3') && advertState.getLoggedInUserType() === 'market' && sidebarItems?.map((item, idx) => (
+            { ((advertState.getUserServices() === '2') || (advertState.getUserServices() === '1' || advertState.getUserServices() === '3')) && ((advertState.getLoggedInUserType() === 'market') || advertState.getLoggedInUserType() === 'admin') && sidebarItems?.map((item, idx) => (
               <li key={item + idx} className="cursor-pointer">
                 <>
                   <NavLink end to={item.link}>
@@ -271,9 +270,7 @@ export default function DashSidebar()
               if(e != true)
                 {   
                     setProfilePicture(`${AVATAR}${e}`)
-                    console.log(e)
                 }
-              console.log(e)
               setImageOpenModal(false)
           } } imageModal={imageOpenModal} />
       }

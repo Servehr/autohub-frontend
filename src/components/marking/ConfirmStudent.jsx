@@ -31,14 +31,12 @@ export const ConfirmStudent = ({onClick, confirmAccess, student})  =>
                 ConfirmStudentAccess(userId)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

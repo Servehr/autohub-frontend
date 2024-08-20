@@ -22,16 +22,8 @@ export const AdminCourseFaqQuestion = ({ courseId, openTheCourseFaq, onClick }) 
         const [editAddCourseFaqQuestion, setOpenEditCourseFaqQuestion] = useState("")
         const [deleteAddCourseFaqQuestion, setOpenDeleteCourseFaqQuestion] = useState("")
         const [courseFaq, setCourseFaq] = useState("")
-        // alert(courseId.id)
-
-        console.log(courseId)
 
         const { data, isLoading, refetch, isRefetching } = useQuery([`get-course-faq`], () => getCourseFaq(courseId.id), { cacheTime: 0 })
-
-        if(!isLoading)
-        {
-                console.log(data)
-        }
 
         // const deleteProduct = async (deleteUrl) => 
         // {
@@ -42,11 +34,9 @@ export const AdminCourseFaqQuestion = ({ courseId, openTheCourseFaq, onClick }) 
         //                 }
         //         }).then((response) => 
         //         {  
-        //                 console.log(response)
         //                 navigate(returnTo);
         //                 return onClick(false)
-        //         }).catch((error) => { 
-        //                 console.log(error)                      
+        //         }).catch((error) => {                       
         //                 return false
         //         })
         // }
@@ -84,7 +74,6 @@ export const AdminCourseFaqQuestion = ({ courseId, openTheCourseFaq, onClick }) 
                                                                         <div className='flex w-full justify-between gap-1 border border-2 mb-2 pr-3 hover:bg-green-100 cursor-pointer'>
                                                                                 <div className="md:w-10/12 w-10/12 h-fit flex rounded-md mb-2 justify-left items-left p-3 items-center">{question.question}</div>
                                                                                 <div className="flex justify-center text-sm items-center" onClick={() => {
-                                                                                        console.log(question)
                                                                                         setCourseFaq(question)
                                                                                         setOpenEditCourseFaqQuestion(true)
                                                                                 }}>

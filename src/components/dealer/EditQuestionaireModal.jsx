@@ -32,7 +32,6 @@ export const EditQuestionModal = ({onClick, editQuestion})  =>
         // {
             
         //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         console.log(data)
         //         if(theIsOpened === -1)
         //         {
         //              alert("Select whether you want it published immediately or not")   
@@ -40,12 +39,10 @@ export const EditQuestionModal = ({onClick, editQuestion})  =>
         //         CreateFaq(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
-        //                 console.log(err)
         //         })    
         // }
 

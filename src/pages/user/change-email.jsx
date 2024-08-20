@@ -59,17 +59,14 @@ function NewPasswordContainer() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(data)
     setLoading(true);
     setError("");
     let passwordd = data.password
     let emaill = data.email
     let credentilas = { email: emaill, password: passwordd}
-    console.log(credentilas)
     setUserNewEmail(credentilas)
       .then((res) => {
           setLoading(false);
-          console.log(res)
           setSuccessMessage(res.message)
           setTimeout(() => {
               setSuccessMessage("")

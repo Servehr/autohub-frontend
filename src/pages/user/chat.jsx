@@ -17,11 +17,6 @@ import { BASE_URL, axios_instance, sendDataWithForm } from "@/lib/axios";
 export default function Chat() 
 {
   const { data, isLoading } = useQuery([`user-chat`], ChatList, { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
-  if(!isLoading)
-  {
-     console.log(data)
-  }
-
 
   const navigate = useNavigate();
   const [isUser, setIsUser] = useState("-1")
@@ -57,36 +52,11 @@ function ChatController({ users })
   {
       if(userId != -1)
       {
-          // setTimeout(() => {
-          //     fetchUserConversation(userId)
-          //     console.log("Great ++++++++")
-          //     setRefresh(Math.random()*userId)
-          // }, 2000)
 
-          // paragraphRef.current.scrollIntoView({
-          //   behavior: "smooth",
-          //   block: "end"
-          // })
-          console.log(userId)
       }
   }, [userId, refresh])
 
 
-  // const fetchUserConversation = async (userId) => 
-  // {
-  //     console.log(userId)
-  //     Conversations(userId)
-  //     .then((res) => 
-  //     {
-  //         console.log("Trying to fetch user information")
-  //         console.log(res)
-  //         setConversations(res)
-  //     })
-  //     .catch((err) => 
-  //     {
-  //             console.log(err)
-  //     })
-  // }
 
   return (
     <>
@@ -94,9 +64,6 @@ function ChatController({ users })
               <div className="grid grid-cols-12 gap-5 py-3 mt-5">
                     <div className="col-span-8 flex flex-col h-[550px] pr-5">
 
-                      {/* <p ref={paragraphRef}>
-                          Lorem ipsum…
-                      </p> */}
                       {
                          (userId === -1) && 
                             <div className="flex flex-col justify-center items-center w-full h-full">                              
@@ -115,7 +82,6 @@ function ChatController({ users })
                     <div className="col-span-4 border border-1 overflow-auto overflow-y-scroll justify-center h-[550px] item-center">
                         <Chatting onClick={ 
                                 (e) => {
-                                  console.log(e)
                                   setUserId(e)
                                 }
                           }  users={users} />

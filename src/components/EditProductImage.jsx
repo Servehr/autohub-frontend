@@ -12,9 +12,6 @@ export default function EditProductImage({data})
     const [imageOpenModal, setImageOpenModal] = useState(false)
     const [ imageId, setImageId] = useState("") 
     const [ imageUrl, setImageUrl] = useState("") 
-
-    // console.log(data)
-
     
     return (
         <>

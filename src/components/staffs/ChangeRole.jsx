@@ -32,7 +32,6 @@ export const ChangeRole = ({onClick, openChangeRole, userId})  =>
         // {
             
         //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         console.log(data)
         //         if(theIsOpened === -1)
         //         {
         //              alert("Select whether you want it published immediately or not")   
@@ -40,12 +39,11 @@ export const ChangeRole = ({onClick, openChangeRole, userId})  =>
         //         CreateFaq(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
-        //                 console.log(err)
+
         //         })    
         // }
 
@@ -99,7 +97,6 @@ export const ChangeRole = ({onClick, openChangeRole, userId})  =>
                                 </button>
                                 <button
                                         className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                        onClick={() => console.log('') }
                                 >
                                    Change 
                                 </button>

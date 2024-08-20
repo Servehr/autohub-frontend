@@ -12,17 +12,15 @@ import { CheckIfUserHasPaid, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
 import PaymentPage from "@/pages/user/user-type/PaymentPage";
 import UserExamTheory from "./user-exam-theory";
+import StartExamTheoryPage from "./StartExamTheoryPage";
 
 
 export default function StartTheoryExam() 
 {
 
   const advertState = appStore((state) => state)
-  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid())
-  if(!isLoading)
-  {
-      console.log(data)
-  }
+  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid('exam-theory'))
+
   const [approvalRequest, setApprovalRequest] = useState("")
 
   return (
@@ -40,7 +38,7 @@ export default function StartTheoryExam()
                   </div>
                 }
                 {
-                    !isLoading && (data === "not-paid") && <>
+                    !isLoading && (data?.data === "not-paid") && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -52,8 +50,8 @@ export default function StartTheoryExam()
                     </>
                 }
                 {
-                     !isLoading && (data === "paid") && <>
-                          <UserExamTheory />
+                     !isLoading && data?.data && (data?.data === "paid") && <>
+                          <StartExamTheoryPage option={data?.message} /> 
                      </>
                 }
                     

@@ -27,7 +27,7 @@ export const DeleteCountryModal = ({onClick, deleteCountryModal, countryId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                      
                 })       
         }
         

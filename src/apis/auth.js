@@ -17,22 +17,9 @@ export async function loginUser(email, password) {
             localStorage.setItem("admin", res.data.admin);
             localStorage.setItem("user", res.data);
             localStorage.setItem("users", JSON.stringify(res.data.data));
-            console.log(res.data)
+            localStorage.setItem("kindOfUser", JSON.stringify(res.data.resource));
             localStorage.setItem("services", res.data.persin)
-            // alert(res.data.persin)
-            // console.log(res.data.data.id)
-            const theUser = localStorage.getItem('user')
-            // const theUsers = localStorage.getItem('users')
-            // const convert = JSON.parse(theUsers)
-            // console.log(convert)
-            // console.log(theUser)
-            // console.log(theUsers)
-            // console.log(theUsers.message)
-            // console.log(JSON.stringify(theUser))
-            // console.log(JSON.parse(theUser))
-            // return
-            // resolve(res);   
-            // alert(typeof res.data.persin)         
+            const theUser = localStorage.getItem('user')       
             if(res.data.persin === 3)
             {
                 localStorage.setItem("userTypes", 'admin');
@@ -63,7 +50,6 @@ export async function setUserNewPassword(email, password) {
     axios
       .post(`${BASE_URL}new-password`, requestData)
       .then((res) => {
-        console.log(res)
         if (res.data.success === false) {
           reject(res.data.message);
         } else {
@@ -83,7 +69,6 @@ export async function userOffline()
     axios_instance
       .post(`${BASE_URL}login-out`)
       .then((res) => {
-        console.log(res)
         if (res.data.success === false) {
           reject(res.data.message);
         } else {
@@ -108,7 +93,6 @@ export async function forgotPassword(email) {
       .then((res) => 
       {
           if (res.data.success == false){
-            console.log(res);
             reject(res.data.message);
           } else {
             localStorage.setItem("userId", res.data.user.id);
@@ -118,9 +102,8 @@ export async function forgotPassword(email) {
           }
       })
       .catch((err) => {
-        console.log(err);
-        // let message = err.response.data.message || err.message;
-        // reject(message);
+        let message = err.response.data.message || err.message;
+        reject(message);
       });
   });
 }
@@ -132,10 +115,8 @@ export async function forgotPasswordComplete(code)
       .post(`${BASE_URL}forget-password-complete`, {code: code})
       .then((res) => {
         if (res.data.success === false) {
-          console.log(res.data);
           reject(res.data.message);
         } else {
-          console.log(res.data)
           localStorage.setItem("user", localStorage.getItem("userId"));
           localStorage.setItem("userId", "");
           // resolve(res);
@@ -143,7 +124,6 @@ export async function forgotPasswordComplete(code)
         }
       })
       .catch((err) => {
-        console.log(err);
         let message = err.response.data.message || err.message;
         reject(message);
       });
@@ -261,7 +241,6 @@ export function logOut()
       axios_instance
         .post(`${BASE_URL}login-out`)
         .then((res) => {
-          console.log(res.data)
           if (res.data.success === false) {
             reject(res.data.message);
           } else {
@@ -277,9 +256,6 @@ export function logOut()
           reject(new Error(message));
         });
   });
-//   localStorage.removeItem("autoHub")
-//   localStorage.clear()
-//   window.location.href = "/"
 }
 
 
@@ -289,7 +265,6 @@ export function logItOut()
       axios_instance
         .post(`${BASE_URL}login-out`)
         .then((res) => {
-          console.log(res.data)
           if (res.data.success === false) {
             reject(res.data.message);
           } else {
@@ -304,30 +279,24 @@ export function logItOut()
           reject(new Error(message));
         });
   });
-//   localStorage.removeItem("autoHub")
-//   localStorage.clear()
-//   window.location.href = "/"
 }
 
-// prettier-ignore
-// export function registerVendor( name, email, password, phoneno, avatar, year_of_experience, id_card_back, id_card_front, avatar, service_id, company_nata, company_cac, company_address, company_name ) {
-//   const requestData = { email, password, phoneno, avatar, name, company_cac, company_address, company_name, service_id, company_nata, year_of_experience, id_card_back, id_card_front, };
 
-//   return new Promise((resolve, reject) => {
-//     axios
-//       .post(`${BASE_URL}buyer/register`, requestData)
-//       .then((res) => {
-//         if (res.data.success === 0) {
-//           reject(res.data.message);
-//         } else {
-//           localStorage.setItem("token", res.data.token);
-//           resolve(res);
-//           window.location.href = "/user";
-//         }
-//       })
-//       .catch((err) => {
-//         let message = err.response.data.message || err.message;
-//         reject(message);
-//       });
-//   });
-// }
+export function staffs()
+{
+    return new Promise((resolve, reject) => {
+      axios_instance
+        .get(`${BASE_URL}all-staff`)
+        .then((res) => {
+          if (res.data.success === false) {
+            reject(res.data.message);
+          } else {
+            resolve(res.data.data);
+          }
+        })
+        .catch((err) => {
+          let message = "Something went wrong";
+          reject(new Error(message));
+        });
+    });    
+}

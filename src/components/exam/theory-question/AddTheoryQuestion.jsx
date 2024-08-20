@@ -28,19 +28,16 @@ export const AddTheoryQuestion = ({onClick, addTheoryQuestion, folderName})  =>
         const addTheoryQuestionn = () => 
         {   
                 const data = { exam_questionaire_id: Number(id), question: question, mark: mark }
-                console.log(data)
                 setIsLoading(true)
                 AddExamTheoryQuestion(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

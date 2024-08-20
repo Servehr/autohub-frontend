@@ -28,17 +28,14 @@ export const EditCourseFaqQuestion  = ({courseFaq, onClick, editAddCourseFaqQues
         {            
                 setIsLoading(true)
                 const data = { id: courseFaqId, question: courseFaqQuestion }
-                console.log(data)
                 UpdateCourseFaq(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

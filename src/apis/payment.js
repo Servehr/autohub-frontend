@@ -14,7 +14,6 @@ export async function requestPayment(requestData) {
           }
         })
         .catch((err) => {
-          // console.log(err);
           let message = err.response.data.message || err.message;
           reject(message);
         });

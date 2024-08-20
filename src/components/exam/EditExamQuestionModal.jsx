@@ -22,8 +22,6 @@ export const EditExamQuestionModal = ({onClick, data, editExamQuestion})  =>
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
 
-        console.log({ question, optionA, optionB, optionC, optionD, answer })
-
         // const advertState = appStore((state) => state)
         // const navigate = useNavigate();
         // const [userProductId, setUserProductId] = useState(advertState.getProductId())
@@ -41,24 +39,18 @@ export const EditExamQuestionModal = ({onClick, data, editExamQuestion})  =>
         //         onClick(true)
         // }
 
-        console.log(data)
-        
-
         const updateQuestion = async () => 
         {       
                 // const theId = data['id']            
                 const data = { id: Number(id), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-                console.log(data)
                 setIsLoading(true)
                 UpdateExamQuestion(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                         setIsLoading(false)
                 })    
         }

@@ -16,7 +16,7 @@ export function CreateAd() {
   const { step } = useContext(PostAdContext);
 
   useEffect(() => {
-      console.log(advertState.getStates())
+    
   }, [])
 
   const render = () => {

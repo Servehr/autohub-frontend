@@ -1,4 +1,3 @@
-
 import { useEffect, useReducer, useState } from "react";
 import { setUserNewEmail } from "@/apis/auth";
 import { useForm } from "react-hook-form";
@@ -10,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-query";
 import { SubmitTestObjective, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
-import Timer from "@/components/Timer";
+import CountDownTimer from "@/components/CountDownTimer";
 
 
 export default function UserTakeTestObjective() 
@@ -18,11 +17,6 @@ export default function UserTakeTestObjective()
   const advertState = appStore((state) => state)
   const navigate = useNavigate()
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestQuestions(), { cacheTime: 0 })
-
-  if(!isLoading)
-  {
-      console.log(data)
-  }
 
   const [selectedOptions, setSelectedOptions] = useState([])
   const [courseId, setCourseId] = useState('')
@@ -35,23 +29,22 @@ export default function UserTakeTestObjective()
   const [loading, setIsLoading] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [fakeRefresh, setFakeRefresh] = useState(-1)
+  const [thePlus, setThePlus] = useState(0)
   const [choosen, setChoosen] = useState(advertState.getSelectedOption())
-
-  useEffect(() => {
-
-  }, [fakeRefresh])
 
   const SubmitObjectiveTest = () => 
     {
-      setIsSubmitting(true)
-      const userAnswers = advertState.getSelectedOption()
-      if(userAnswers.length === 0)
+      setIsSubmitting(true) 
+      // return false
+      const userAnswers = { userSubmitted : 'yes', answers: advertState.getSelectedOption() }
+      if(userAnswers.answers.length === 0)
       {
           setErrorMsg("Answer at least one question")
           setTimeout(() => {
               setIsSubmitting(false)
               setErrorMsg("")
           }, 2000)
+          return false
       } else {
         SubmitTestObjective(userAnswers)
         .then((res) => {
@@ -73,11 +66,7 @@ export default function UserTakeTestObjective()
         })
       }
   }
-
-  useEffect(() => {
-      console.log(advertState.getSelectedOption())
-  }, [])
-  
+ 
   useEffect(() => 
   {      
       isChecked()
@@ -97,7 +86,7 @@ export default function UserTakeTestObjective()
   }
 
   useEffect(() => {
-      console.log(selectedOptions)
+    
   }, [selectedOptions, answer, courseId])
 
 
@@ -111,12 +100,10 @@ export default function UserTakeTestObjective()
           // id, user_id, course_id, option_id, selected
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
           advertState.setSelectedOption(answer)     
-          console.log(advertState.getSelectedOption())
       } else {        
           advertState.getSelectedOption().splice(checkIfPresent, 1);
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
-          advertState.setSelectedOption(answer)     
-          console.log(advertState.getSelectedOption())          
+          advertState.setSelectedOption(answer)              
       }
       setCurrentQuestion(position)
       setFakeRefresh(Math.random() * position)
@@ -125,8 +112,6 @@ export default function UserTakeTestObjective()
 
   const isSelected = (id) => 
   {
-      // const selectedOptions = selectedOptions.filter((item) => Number(item.make_id) === Number(x))
-      // console.log(advertState.getSelectedOption())
       const answeredOption = advertState.getSelectedOption()
       const numbers = answeredOption.map((x) => x.position)
        if(numbers.includes(id))
@@ -137,20 +122,6 @@ export default function UserTakeTestObjective()
        }
   }
 
-  const callThePeople = (x) => 
-  {
-      // const someone = people.find((p) => p.position === x)
-      const someone = people.filter((p) => {
-          return p.position !== x
-      })
-      if(someone === undefined)
-      {
-         alert("Undefined")
-      } else {        
-        // alert(someone.selected)
-      }
-      console.log(someone)
-  }
 
   const isChecked = () => 
   {
@@ -185,8 +156,9 @@ export default function UserTakeTestObjective()
                     <BeatLoader color="#1c9236" />
                 </div>
               }
+              
               {
-                !isLoading && (data?.plus > 0) &&                   
+                !isLoading && (data?.message > 0) &&   <>                                      
                     <div className="d-flex justify-center text-center items-center text-lg h-[300px] pt-52 mb-20">
                         <div className="font-bold text-blue-700 pr-5 text-md mb-5 text-green-700" style={{ fontSize: '26px' }}>You Already Had This Test</div>
                         <Link
@@ -196,6 +168,7 @@ export default function UserTakeTestObjective()
                           Go Dashboard
                         </Link>
                     </div>
+                </>
               }
               {
                 !isLoading && isRefetching && (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
@@ -235,7 +208,7 @@ export default function UserTakeTestObjective()
                       <div className="w-full flex justify-between items-center">
                           <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.data?.length}</span> 
                           <span className="w-fit">
-                              <Timer type={'test-objective'} seconds={310} />
+                              <CountDownTimer type={'test-objective'} seconds={5} />
                           </span>
                           <button type="sumbit" 
                               disabled={isSubmitting}
@@ -315,6 +288,8 @@ export default function UserTakeTestObjective()
                       </div>          
                 </div>
               }
+
+              
           {  data?.data &&               
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-1">
               <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination">
@@ -323,8 +298,6 @@ export default function UserTakeTestObjective()
                   
                   data?.data &&  (data?.plus < 1) &&            
                     data?.data.map((num, index) => {
-                      // console.log(index)
-                      // console.log(advertState.getSelectedOption())
                       const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                       const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
                       const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 

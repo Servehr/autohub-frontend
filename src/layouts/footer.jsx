@@ -26,7 +26,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="w-full min-h-[300px] md:h-[300px] h-full bg-black py-10 px-3 sm:px-6 md:px-10 mt-10">
+      <footer className="w-full bottom-0 left-0 min-h-[300px] md:h-[300px] h-full bg-black py-10 px-3 sm:px-6 md:px-10 mt-10">
         <MaxWidthWrapper>
           <div className="flex flex-col gap-10 justify-center items-center">
             <div className="flex flex-col md:flex-row gap-10 md:gap-30 items-center">

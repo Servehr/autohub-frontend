@@ -15,7 +15,6 @@ export const DeleteExamTheoryQuestionModal = ({onClick, data, deleteQuestion})  
         const [theId, setTheId] = useState(data.id)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-        console.log(data)
 
         const cancelModal = () => 
         {
@@ -26,7 +25,6 @@ export const DeleteExamTheoryQuestionModal = ({onClick, data, deleteQuestion})  
         {
                 setIsLoading(true)
                 const data = { id: theId }
-                console.log(data.id)
                 DeleteTestQuestionTheory(Number(data.id))
                 .then((res) => 
                 {
@@ -35,7 +33,6 @@ export const DeleteExamTheoryQuestionModal = ({onClick, data, deleteQuestion})  
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })       
         }
         

@@ -44,9 +44,29 @@ const createTestTheorySlice  = (set, get) => (
         {
             set((state) => ({selectedTestTheoryOption: selectedTestTheoryOption}))
         },
-        setEmptyTestTheory()
+        getEmptyTestTheory()
         {
             return get().selectedTestTheoryOption
+        },        
+
+        forceTestTheory: 'no',
+        setForceTestTheory(forceTestTheory)
+        {
+            set((state) => ({forceTestTheory: forceTestTheory}))
+        },
+        getForceTestTheory()
+        {
+            return get().forceTestTheory
+        },
+
+        defaultTestTheoryAnswer: [],
+        setDefaultTestTheoryAnswer(defaultTestTheoryAnswer)
+        {
+            set((state) => ({defaultTestTheoryAnswer: defaultTestTheoryAnswer}))
+        },
+        getDefaultTestTheoryAnswer()
+        {
+            return get().defaultTestTheoryAnswer
         },
     }
 )

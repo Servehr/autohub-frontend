@@ -22,14 +22,33 @@ import { AddTestQuestionaireTheoryModal } from "@/components/questionaire/theory
 import TestQuestionaireTheory from "./testQuestionaireTheory";
 import TestQuestionaireObjective from "./testQuestionaireObjective";
 
-export default function TestQuestionaire()
+const courseYear = () => 
 {
+
+    const years = [];
+    const currentYear = new Date().getFullYear()
+    for (let year = 2023; year <= currentYear; year++) 
+    {
+      years.push(year);
+    }
+    return years.toReversed();
+}
+
+export default function TestQuestionaire()
+{  
+  const currentYear = new Date().getFullYear()
+  const [selectedYear, setSelectedYear] = useState(currentYear)
+  const years = courseYear()
 
   return ( 
         <>
             <TestQuestionaireObjective />
 
             <TestQuestionaireTheory />
+
+            {/* <TestQuestionaireObjective year={selectedYear} />
+
+            <TestQuestionaireTheory year={selectedYear} /> */}
         </>
   )
 }

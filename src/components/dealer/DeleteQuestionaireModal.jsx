@@ -27,7 +27,7 @@ export const DeleteQuestionModal = ({onClick, deleteQuestion, courseId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })       
         }
         

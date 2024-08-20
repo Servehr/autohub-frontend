@@ -11,25 +11,7 @@ export const StudentMessage = ({onClick, studentMessage, message, path})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-
-        // const deleteProduct = async (deleteUrl) => 
-        // {
-        //         let token = localStorage.getItem("token")   
-        //         await axios.delete(`${BASE_URL}${deleteUrl}`, {
-        //                 headers: {
-        //                         'Authorization': token ? `Bearer ${token}` : "",
-        //                 }
-        //         }).then((response) => 
-        //         {  
-        //                 console.log(response)
-        //                 navigate(returnTo);
-        //                 return onClick(false)
-        //         }).catch((error) => { 
-        //                 console.log(error)                      
-        //                 return false
-        //         })
-        // }
-
+        
         return (
                 <Modal onClick={onClick} isOpen={studentMessage} wrapperWidth={800} margin={'150px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll justify-center item-center'>

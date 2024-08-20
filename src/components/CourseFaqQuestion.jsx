@@ -19,29 +19,6 @@ export const CourseFaqQuestion = ({ currentCourse, openQuestion, onClick })  =>
 
         const { data, isLoading, refetch, isRefetching } = useQuery([`get-course-faq`], () => getCourseFaq(theId), { cacheTime: 0 })
 
-        if(!isLoading)
-        {
-                console.log(data)
-        }
-
-        // const deleteProduct = async (deleteUrl) => 
-        // {
-        //         let token = localStorage.getItem("token")   
-        //         await axios.delete(`${BASE_URL}${deleteUrl}`, {
-        //                 headers: {
-        //                         'Authorization': token ? `Bearer ${token}` : "",
-        //                 }
-        //         }).then((response) => 
-        //         {  
-        //                 console.log(response)
-        //                 navigate(returnTo);
-        //                 return onClick(false)
-        //         }).catch((error) => { 
-        //                 console.log(error)                      
-        //                 return false
-        //         })
-        // }
-
         return (
                 <Modal onClick={onClick} isOpen={openQuestion} wrapperWidth={1050} margin={'120px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 h-[500px] overflow-y-auto xm:overflow-y-scroll justify-center item-center'>

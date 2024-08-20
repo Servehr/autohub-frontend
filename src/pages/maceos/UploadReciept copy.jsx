@@ -39,7 +39,6 @@ export default function UploadReciept()
 
     const onChange = (imageList) => {
         setImage(imageList);
-        console.log(imageList)
         let data = "";
         let x = ''
         imageList.map((image) => {
@@ -48,9 +47,6 @@ export default function UploadReciept()
           x = base64
           data += `${data && "<=>"}${base64}`;
         });
-        console.log(data)
-        console.log(typeof x)
-        console.log(typeof data)
         setFromattedImage(x);
     }
 

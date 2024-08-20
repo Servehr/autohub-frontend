@@ -23,28 +23,19 @@ export const ChangeExamTheoryQuestion = ({onClick, question, openExamTheoryAnswe
 
         const addQuestion = async () => 
         {  
-                // setTempSave(true)
-                console.log({ studentValue, courseId, questionId, currentPage })
-                // return false
                 const checkIfPresent = advertState.getSelectedExamTheoryOption().findIndex(x => {
                   return x.position === currentPage;
                 });      
                 if(checkIfPresent === -1)
                 {          
-                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: editedAnswer, position: currentPage }
+                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: editedAnswer, position: currentPage }
                     advertState.setSelectedExamTheoryOption(answer)     
                 } else {        
                     advertState.getSelectedExamTheoryOption().splice(checkIfPresent, 1);
-                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: editedAnswer, position: currentPage }
+                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: editedAnswer, position: currentPage }
                     advertState.setSelectedExamTheoryOption(answer)             
                 }
-                onClick()
-                // setSuccess('Saved')
-                // setTimeout(() => {
-                //   setTempSave(false)
-                //   setSuccess('')
-                // }, 2000)
-                // console.log(advertState.getSelectedExamTheoryOption())   
+                onClick()   
         }
 
         return (

@@ -36,28 +36,12 @@ export default function Blogs()
     const [searchQuery, setSearchQuery] = useState("")
     const [refresh, setRefresh] = useState(-1)
 
-    const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-post"], () => viewPosts(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+    const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-post"], () => viewPosts(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true, cacheTime: 0 })
     const { data: faqProduct, isLoading: faqAndProductLoading } = useQuery("faq-and-product", faqAndProduct, { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
-    if(!isLoading)
-    {
-        console.log(data?.data?.currentPage)
-        // setCurrentPage(data?.data?.currentPage)
-    }
-    if(!faqAndProductLoading)
-    {
-        console.log(faqProduct)
-    }
-    if(!isRefetching)
-    {
-        console.log(data?.data)
-        // setCurrentPage(data?.data?.currentPage)
-    }
+
 
     useEffect(() => {
-        // console.log(currentPage)
-        // setCurrentPage(refresh)
-        // console.log("+++++++++++++++++++++++")
-        // refetch()
+        
     }, [])
 
     const products = [
@@ -147,8 +131,6 @@ export default function Blogs()
                                     !isLoading && !isRefetching && (data?.data.posts.length > 0) && 
                                                                                         <Pagination onClick={(data) => {
                                                                                                         setCurrentPage(data)
-                                                                                                        console.log(data)
-                                                                                                        console.log(currentPage)
                                                                                                         // setRefresh(data)
                                                                                                         // setPerPage(data.perPage)
                                                                                                         setTimeout(() => {

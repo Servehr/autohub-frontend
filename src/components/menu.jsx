@@ -14,7 +14,6 @@ export default function Menu() {
   const navigate = useNavigate()
   const { data: user } = useUser()
   const [profilePicture, setProfilePicture] = useState(user?.data?.avatar)
-  console.log(user)
 
   const menuStyle = {
     transform: menu ? "translateX(0)" : "translateX(-100%)",

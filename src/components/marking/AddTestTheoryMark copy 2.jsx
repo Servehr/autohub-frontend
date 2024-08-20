@@ -19,11 +19,6 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, userId})  =>
 
         const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => UserTestTheoryAnswers(userId), { staleTime: Infinity })
       
-        if(!isLoading)
-        {
-            console.log(data)
-        }
-
         const cancelModal = () => 
         {
                 onClick(true)
@@ -32,19 +27,16 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, userId})  =>
         // const addQuestion = () => 
         // {   
         //         const data = { test_questionaire_id: Number(id), course_id: course, question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-        //         console.log(data)
         //         setIsLoading(true)
         //         AddTest(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 setIsLoading(false)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
         //                 setIsLoading(false)
-        //                 console.log(err)
         //         })    
         // }
 

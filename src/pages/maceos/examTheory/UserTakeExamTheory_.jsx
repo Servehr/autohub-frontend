@@ -18,11 +18,6 @@ export default function UserTakeExamTheory()
   const navigate = useNavigate()
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestQuestions(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-
   const [selectedOptions, setSelectedOptions] = useState([])
   const [courseId, setCourseId] = useState('')
   const [answer, setAnswer] = useState('')
@@ -44,9 +39,7 @@ export default function UserTakeExamTheory()
     {
       setIsSubmitting(true)
       const userAnswers = advertState.setSelectedExamTheoryOption()
-      console.log(userAnswers)
       setIsSubmitting(false)
-      // return false
       if(userAnswers.length === 0)
       {
           setErrorMsg("Answer at least one question")
@@ -78,7 +71,7 @@ export default function UserTakeExamTheory()
   }
 
   useEffect(() => {
-      console.log(advertState.setSelectedExamTheoryOption())
+    
   }, [])
   
   useEffect(() => 
@@ -100,7 +93,6 @@ export default function UserTakeExamTheory()
   }
 
   useEffect(() => {
-      console.log(selectedOptions)
   }, [selectedOptions, answer, courseId])
 
 
@@ -114,12 +106,10 @@ export default function UserTakeExamTheory()
           // id, user_id, course_id, option_id, selected
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
           advertState.setSelectedOption(answer)     
-          console.log(advertState.setSelectedExamTheoryOption())
       } else {        
           advertState.setSelectedExamTheoryOption().splice(checkIfPresent, 1);
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
-          advertState.setSelectedOption(answer)     
-          console.log(advertState.setSelectedExamTheoryOption())          
+          advertState.setSelectedOption(answer)            
       }
       setCurrentQuestion(position)
       setFakeRefresh(Math.random() * position)
@@ -299,8 +289,6 @@ export default function UserTakeExamTheory()
                   
                   data?.data &&  (data?.plus < 1) &&            
                     data?.data.map((num, index) => {
-                      // console.log(index)
-                      // console.log(advertState.setSelectedExamTheoryOption())
                       const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                       const currentAnswer = (currentQuestion === index) ? "bg-green-400 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
                       const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 

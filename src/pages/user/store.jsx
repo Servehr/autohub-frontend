@@ -94,13 +94,7 @@ export function Moderation() {
   const [currentPage, setCurrentPage] = useState(1)  
   const [perPage, setPerPage] = useState(10) 
   const { data, isLoading, refetch, isRefetching, isError }= useQuery(['pending-product'], () => pendingProduct(currentPage, perPage), { cacheTime: 0 })
-  // { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 }
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-  
   const [refresh, setRefresh] = useState(0)
   const navigate = useNavigate();
   const [product, setProduct] = useState([])  
@@ -119,7 +113,6 @@ export function Moderation() {
   useEffect(() => {
     setProduct(data)
     setRefresh(advertState.getRefresh())
-    console.log(deleteOpenModal)
     refetch()
 }, [data, refresh, productId, productImages, deleteOpenModal])
 
@@ -130,17 +123,10 @@ useEffect(() => {
 
 
 useEffect(() => {
-    console.log(advertState.getProductComments())
 }, [productMessages])
 
 const { isMobile } = browserType();
 
-if(!isLoading)
-{
-   console.log(data)
-   console.log(data?.product_advert?.noOfPages)
-}
-  
 const populateProductStore = (item) => 
 {      
         advertState.setCountry(item?.country_id)
@@ -160,17 +146,12 @@ const populateProductStore = (item) =>
         advertState.setOthers(item?.others)
         advertState.setAvatar(item?.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(advertState.getStates())
-        console.log("=======================")
         advertState.setMileAge(item?.mileage)
         advertState.setFuelType(item?.fuel)
   }
 
   return (
     <>
-      {/* {console.log(data)} */}
-
       <div className="md:mt-0 lg:mt-0 mt-10">
 
         {isLoading && !isRefetching && (
@@ -182,16 +163,6 @@ const populateProductStore = (item) =>
             )}
           </div>
         )}
-
-        {/* {!isLoading && isRefetching && (
-          <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-            {isMobile ? (
-              <BeatLoader color="#1c9236" />
-            ) : (
-              <BounceLoader color="#1c9236" />
-            )}
-          </div>
-        )} */}
 
           {!isLoading && !isError && data?.product_advert?.product?.length === 0 && (
             <div className="rounded-lg py-2 min-h-[320px] h-full">
@@ -238,8 +209,6 @@ const populateProductStore = (item) =>
                     !isLoading && !isRefetching && (data?.product_advert?.product.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
-                                      console.log(data)
-                                      console.log(currentPage)
                                       // setRefresh(data)
                                       // setPerPage(data.perPage)
                                       setTimeout(() => {
@@ -301,7 +270,6 @@ const populateProductStore = (item) =>
       )}
 
 
-      {/* <CreateOfficeTool onClick={() => setOpenModal(false) } openOfficeToolModal={openModal} /> */}
       {
           deleteOpenModal && <DeleteModal onClick={() => setDeleteModal(false) } deleteModal={deleteOpenModal} deleteUrl={deleteUrl} returnTo={'/dashboard/store'} imageProductUrl={productImages} message={productToDeleteMessage} />
       }
@@ -310,9 +278,7 @@ const populateProductStore = (item) =>
          imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => 
           { 
               setRefreshIt(e)
-              console.log(e)
               setImageOpenModal(false) 
-              console.log("Greater Things")
          }
           } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="" productId={productId} />
       }
@@ -336,8 +302,6 @@ export function Sold() {
   const navigate = useNavigate();
   return (
     <>
-      {/* {console.log(data)} */}
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {data &&
           data.length !== 0 &&
@@ -432,12 +396,6 @@ export function Unposted()  {
   const [perPage, setPerPage] = useState(10) 
   const { data, isLoading, refetch, isRefetching, isError }= useQuery(['draft-product'], () => draftProduct(currentPage, perPage), { cacheTime: 0 })
 
-
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-  
   const [refresh, setRefresh] = useState(0)
   const navigate = useNavigate();
   const [product, setProduct] = useState([])  
@@ -456,7 +414,6 @@ export function Unposted()  {
   useEffect(() => {
     setProduct(data)
     setRefresh(advertState.getRefresh())
-    console.log(deleteOpenModal)
     refetch()
 }, [data, refresh, productId, productImages, deleteOpenModal])
 
@@ -467,16 +424,10 @@ useEffect(() => {
 
 
 useEffect(() => {
-    console.log(advertState.getProductComments())
 }, [productMessages])
 
 const { isMobile } = browserType();
 
-if(!isLoading)
-{
-   console.log(data)
-   console.log(data.product_advert?.noOfPages)
-}
   
 const populateProductStore = (item) => 
 {      
@@ -496,16 +447,11 @@ const populateProductStore = (item) =>
         advertState.setOthers(item.others)
         advertState.setAvatar(item.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(advertState.getStates())
-        console.log("=======================")
         advertState.setLocation(item?.location)
   }
 
   return (
     <>
-      {/* {console.log(data)} */}
-
         <div className="md:mt-0 lg:mt-0 mt-10">
 
           {isLoading && !isRefetching && (
@@ -577,8 +523,6 @@ const populateProductStore = (item) =>
                     !isLoading && !isRefetching && (data?.product_advert?.product.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
-                                      console.log(data)
-                                      console.log(currentPage)
                                       // setRefresh(data)
                                       // setPerPage(data.perPage)
                                       setTimeout(() => {
@@ -598,27 +542,8 @@ const populateProductStore = (item) =>
          </div>
                             
         
-
-          {/* { closeCommentDialog && <ProductComments onClick={ (e) => setCloseCommentDialog(false) } messages={productMessages} productName={selectedProductName} /> } */}
-          
       </div>
       
-      {/* {!isLoading && !isError && data?.length === 0 && (
-        <div className="rounded-lg py-2 min-h-[320px] h-full">
-          <div className="flex justify-center min-h-[320px] h-full items-center w-full ">
-            <div className="text-center">
-              <p className="mt-4 text-gray-500">Nothing Here</p>
-
-              <Link
-                to="/"
-                className="inline-block px-5 py-2 mt-4 text-sm font-medium text-white bg-brandGreen/90 rounded hover:bg-brandGreen focus:outline-none focus:ring"
-              >
-                Continue Shopping
-              </Link>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {isError && (
         <>
@@ -639,8 +564,6 @@ const populateProductStore = (item) =>
         </>
       )}
 
-
-      {/* <CreateOfficeTool onClick={() => setOpenModal(false) } openOfficeToolModal={openModal} /> */}
       {
           deleteOpenModal && <DeleteModal onClick={() => setDeleteModal(false) } deleteModal={deleteOpenModal} deleteUrl={deleteUrl} returnTo={'/dashboard/store'} imageProductUrl={productImages} message={productToDeleteMessage} />
       }
@@ -649,9 +572,7 @@ const populateProductStore = (item) =>
          imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => 
           { 
               setRefreshIt(e)
-              console.log(e)
               setImageOpenModal(false) 
-              console.log("Greater Things")
          }
           } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="" productId={productId} />
       }
@@ -695,7 +616,6 @@ export function Active()
   useEffect(() => {
       setProduct(data)
       setRefresh(advertState.getRefresh())
-      console.log(deleteOpenModal)
       refetch()
   }, [data, refresh, productId, productImages, deleteOpenModal])
 
@@ -706,16 +626,9 @@ export function Active()
 
   
   useEffect(() => {
-      console.log(advertState.getProductComments())
   }, [productMessages])
 
   const { isMobile } = browserType();
-
-  if(!isLoading)
-  {
-     console.log(data)
-     console.log(data.product_advert?.noOfPages)
-  }
 
   const populateProductStore = (item) => 
   {      
@@ -735,16 +648,11 @@ export function Active()
         advertState.setOthers(item.others)
         advertState.setAvatar(item.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(advertState.getTheMakerModels())
-        console.log("=======================")
   }
 
 
   return (
     <>
-      {/* {console.log(data)} */}
-
         <div className="md:mt-0 lg:mt-0 -mb-5">
 
           {isLoading && !isRefetching && (
@@ -817,10 +725,6 @@ export function Active()
                     !isLoading && !isRefetching && (data?.product_advert?.product.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
-                                      console.log(data)
-                                      console.log(currentPage)
-                                      // setRefresh(data)
-                                      // setPerPage(data.perPage)
                                       setTimeout(() => {
                                           refetch()   
                                       }, 1000)
@@ -837,51 +741,9 @@ export function Active()
                 }
          </div>
                             
-        
-
-          {/* { closeCommentDialog && <ProductComments onClick={ (e) => setCloseCommentDialog(false) } messages={productMessages} productName={selectedProductName} /> } */}
-          
       </div>
 
       
-      {/* {!isLoading && !isError && data?.length === 0 && (
-        <div className="rounded-lg py-2 min-h-[320px] h-full">
-          <div className="flex justify-center min-h-[320px] h-full items-center w-full ">
-            <div className="text-center">
-              <p className="mt-4 text-gray-500">Nothing Here</p>
-
-              <Link
-                to="/"
-                className="inline-block px-5 py-2 mt-4 text-sm font-medium text-white bg-brandGreen/90 rounded hover:bg-brandGreen focus:outline-none focus:ring"
-              >
-                Continue Shopping
-              </Link>
-            </div>
-          </div>
-        </div>
-      )} */}
-
-      {/* {isError && (
-        <>
-          <div className="rounded-lg py-2 min-h-[320px] h-full">
-            <div className="flex justify-center min-h-[320px] h-full items-center w-full ">
-              <div className="text-center">
-                <p className="mt-4 text-gray-500">Nothing Here</p>
-
-                <Link
-                  to="/"
-                  className="inline-block px-5 py-2 mt-4 text-sm font-medium text-white bg-brandGreen/90 rounded hover:bg-brandGreen focus:outline-none focus:ring"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
-            </div>
-          </div>
-        </>
-      )} */}
-
-
-      {/* <CreateOfficeTool onClick={() => setOpenModal(false) } openOfficeToolModal={openModal} /> */}
       {
           deleteOpenModal && <DeleteModal onClick={() => setDeleteModal(false) } deleteModal={deleteOpenModal} deleteUrl={deleteUrl} returnTo={'/dashboard/store'} imageProductUrl={productImages} message={productToDeleteMessage} />
       }
@@ -890,9 +752,7 @@ export function Active()
          imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => 
           { 
               setRefreshIt(e)
-              console.log(e)
               setImageOpenModal(false) 
-              console.log("Greater Things")
          }
           } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="" productId={productId} />
       }
@@ -920,12 +780,6 @@ export function WatchList()
   
   const navigate = useNavigate();
   
-  // const [refresh, setRefresh] = useState(0)
-  // const navigate = useNavigate();
-  // const [product, setProduct] = useState([])  
-  // const [deleteOpenModal, setDeleteModal] = useState(false)
-  // const [ deleteUrl, setDeleteUrl] = useState("") 
-  // const [ productToDeleteMessage, setProductToDeleteMessage] = useState("") 
   const [imageOpenModal, setImageOpenModal] = useState(false)
   const [productTitle, setProductTitile] = useState(false)
   const [productImages, setProductImages] = useState("")
@@ -934,26 +788,10 @@ export function WatchList()
   const [deleteUrl, setDeleteUrl] = useState("") 
   const [productToDeleteMessage, setProductToDeleteMessage] = useState("")
 
-  if(!isLoading)
-  {
-     console.log(data)
-  }
-    
-  
-    // useEffect(() => {
-        // setProduct(data)
-        // setRefresh(advertState.getRefresh())
-        // console.log(advertState.chasis_no)
-    // }, [data, refresh])
-  
     const { isMobile } = browserType();
   
     return (
       <>
-        {/* {console.log(data)} */}
-
-        
-  
         <div className="md:mt-0 lg:mt-0 mt-10">
 
               {isLoading && !isRefetching && (
@@ -1022,14 +860,7 @@ export function WatchList()
                                 <p className="text-sm md:text-base text-blue-500 font-bold">
                                     {item?.price && currencyFormatter(item.price)}
                                 </p>
-                                {/* <p className="text-brandGreen font-bold">
-                                  {item?.price && currencyFormatter(item.price)}
-                                </p> */}
                                 <p className="text-xs text-brandRed mb-2">{item?.state?.name}</p>
-                                {/* <p className="text-xs text-brandRed">{ item.status}</p> */}
-                                {/* <span  class="px-2 leading-loose bg-green-700 font-bold text-white rounded-lg mt-3 p-2" style={{ fontSize: '12px' }}>
-                                  <b>{ (item?.status === "active") ? 'Unpublish' : 'Publish' }</b>
-                                </span> */}
                             </div>                                      
                             <div className="col-span-5 p-1 flex flex-row md:flex-cols gap-10">
                             
@@ -1038,7 +869,6 @@ export function WatchList()
                                     <Icons iconName='eye' color="green"/>
                                     <div className="absolute flex justify-center items-center mt-12 text-black">                                                  
                                         <span className="font-semibold" style={{ fontSize: '14px' }}>{item.views}</span>
-                                        {/* <span className="font-semibold" style={{ fontSize: '10px' }}>&nbsp;Product</span> */}
                                     </div>
                                 </div> 
                             </div>
@@ -1051,8 +881,6 @@ export function WatchList()
                                               setProductMessages(item.messages)
                                               advertState.setProductComments(item)
                                               advertState.setProductTitle(item.title)
-                                              console.log(advertState.getProductTitle())
-                                              console.log(advertState.getProductComments())
                                               setCloseCommentDialog(true)
                                             }  
                                         }>                                   
@@ -1110,14 +938,9 @@ export function WatchList()
                     !isLoading && !isRefetching && (data.product_advert?.wishList.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
-                                      console.log(data)
-                                      console.log(currentPage)
-                                      // setRefresh(data)
-                                      // setPerPage(data.perPage)
                                       setTimeout(() => {
                                           refetch()   
                                       }, 1000)
-                                      // do all the setting here and then refresh for new set of data rows
                                   } 
                               } 
                               perPageNo={perPage} 
@@ -1129,58 +952,8 @@ export function WatchList()
                           />    
                 }
          </div>
-  
-        {/* {isLoading && (
-          <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-            {isMobile ? (
-              <BeatLoader color="#1c9236" />
-            ) : (
-              <BounceLoader color="#1c9236" />
-            )}
-          </div>
-        )} */}
-  
-        {/* {!isLoading && !isError && data?.length === 0 && (
-          <div className="rounded-lg py-2 min-h-[320px] h-full">
-            <div className="flex justify-center min-h-[320px] h-full items-center w-full ">
-              <div className="text-center">
-                <p className="mt-4 text-gray-500">Nothing Here</p>
-  
-                <Link
-                  to="/"
-                  className="inline-block px-5 py-2 mt-4 text-sm font-medium text-white bg-brandGreen/90 rounded hover:bg-brandGreen focus:outline-none focus:ring"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
-            </div>
-          </div>
-        )} */}
-  
-        {/* {isError && (
-          <>
-            <div className="rounded-lg py-2 min-h-[320px] h-full">
-              <div className="flex justify-center min-h-[320px] h-full items-center w-full ">
-                <div className="text-center">
-                  <p className="mt-4 text-gray-500">Nothing Here</p>
-  
-                  <Link
-                    to="/"
-                    className="inline-block px-5 py-2 mt-4 text-sm font-medium text-white bg-brandGreen/90 rounded hover:bg-brandGreen focus:outline-none focus:ring"
-                  >
-                    Continue Shopping
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </>
-        )} */}
-  
-  
-        {/* <CreateOfficeTool onClick={() => setOpenModal(false) } openOfficeToolModal={openModal} /> */}
-        {/* <DeleteModal onClick={() => setDeleteModal(false) } deleteModal={deleteOpenModal} deleteUrl={deleteUrl} returnTo={'activities'} message={productToDeleteMessage} /> */}
-        {/* <ChangeProductImage onClick={() => setImageOpenModal(false) } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="view" productId={productId}/>  */}
-        {
+
+   {
           imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => {
                 setImageOpenModal(false)
                 refetch()

@@ -67,7 +67,6 @@ export default function MaceoWelcome()
     const theSubCourse = (course) => {
         const subCourse = subCourses.filter((x) => x.courseId === course)
         setSubCourseList(subCourse[0].name)
-        console.log(subCourse[0].name)
     }
 
     const modules= {

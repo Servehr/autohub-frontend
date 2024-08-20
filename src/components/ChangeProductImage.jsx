@@ -17,8 +17,7 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
 {
         const pId = localStorage.getItem("theProductId")
         const nos = Number(pId)
-        console.log(nos)
-        // const { data, isLoading, isError } = useQuery(["user-pd", nos], () => UserProductAdverts(nos));
+
         const advertState = appStore((state) => state)
         const navigate = useNavigate()        
         const [deleteOpenModal, setDeleteModal] = useState(false)
@@ -30,11 +29,8 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
         
         const [ imageOpenModal, setImageOpenModal] = useState(false)   
         let token = localStorage.getItem("token") 
-        console.log(imageUrl)
-        console.log(productId)
 
         useEffect(() => {
-            console.log(userProductId)
             if(imageOpenModal === false)
             {
                 getImages()
@@ -43,7 +39,6 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
 
         const getImages = async (x = 0) => 
         {
-                console.log(userProductId)
                 await axios.get(`${BASE_URL}ad/user-product-ads/${userProductId}`, {
                         headers: {
                                 'Authorization': token ? `Bearer ${token}` : "",
@@ -51,30 +46,26 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                 }).then((response) => 
                 {  
                         advertState.setProductId("")
-                        setImageToDisplay(response.data.data)
-                        console.log(response.data.data)
-                        console.log("I reach here oooo")
+                        setImageToDisplay(response?.data?.data)
                         if(x === 3)
                         {  
-                                console.log("Am returning")
                                 onClick(Math.random()) 
                         }
-                }).catch((error) => {                        
-                        console.log(error)
+                }).catch((error) => {      
+                        
                 })
         }
 
         const setImageFaceAdvert = async (image) => 
         {         
-                console.log(image)
                 await setProductAdvert({imageId: image.id, productId: image.product_id,})
                 .then((res) => {
-                        console.log(res)
+                        
                         getImages(Math.random())
                         onClick(true)
                 })
                 .catch((err) => {
-                console.log(err)
+
                 }
                 )      
         }
@@ -87,12 +78,11 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                                         {
                                                 (mode != 'view') && 
                                                 <button className='md:col-span-2 col-span-12 cursor-pointer rounded-lg text-sm p-3 bg-green-800 hover:bg-blue-900 text-white' onClick={() => { 
-                                                        // setProductId(1)
                                                         setImageOpenModal(true)
                                                 }}>Add Image</button>
                                         }
                                 </div>
-                                {/* { !isLoading && */}
+                             
                                         <div className="grid md:grid-cols-12 grid-cols-12 gap-5 mt-5 overflow-auto overflow-y-scroll justify-center item-center h-[550px]">
                                                 {
                                                         imageToDisplay &&
@@ -103,10 +93,6 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                                                                 return (
                                                                         <>
                                                                            <div className="relative d-flex col-span-12 md:col-span-3 border border-2" key={index}>
-                                                                                {/* <div className='top-20 right-10 px-5 py-2 text-white absolute'>
-                                                                                        <div className='w-full text-xs font-bold text-red-700'>AutoHub</div>
-                                                                                        <div className='text-xs font-bold text-green-800 -mt-15'>www.autohub.ng</div>
-                                                                                </div> */}
                                                                                 <img src={`${PRODUCT_FACE}${image.image_url}`} alt="product images" className={selected} />
                                                                                 <div className={`${faceAdvert}`}>
                                                                                         {
@@ -114,8 +100,7 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                                                                                                 <span className={""} onClick={() => { 
                                                                                                                 setDeleteUrl(`ad/remove-user-product-ads/${image.id}/${image.product_id}`)
                                                                                                                 setProductToDeleteMessage(`You are about to delete an image associated to product: ${imageId}`)
-                                                                                                                console.log(image)
-                                                                                                                setImageProductUrl(image.image_url)
+                                                                                                               setImageProductUrl(image.image_url)
                                                                                                                 setDeleteModal(true)
                                                                                                         }}
                                                                                                 >
@@ -128,15 +113,8 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                                                                                                 (mode != 'view') && 
                                                                                                 <span className="rounded-sm border border-1 right-0 border-green-900 p-1 bg-blue-200 delete cursor-pointer hover:bg-orange-200" onClick={() => { 
                                                                                                                 setImageFaceAdvert(image)
-                                                                                                                console.log(image)
                                                                                                         }}
                                                                                                 >
-                                                                                                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" class="w-5 h-5 md:w-5 md:h-5 my-2">
-                                                                                                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
-                                                                                                        </svg> */}
-                                                                                                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="blue" className="w-5 h-5 md:w-5 md:h-5 my-2 cursor-pointer">
-                                                                                                                <path d="M6 3a3 3 0 0 0-3 3v1.5a.75.75 0 0 0 1.5 0V6A1.5 1.5 0 0 1 6 4.5h1.5a.75.75 0 0 0 0-1.5H6ZM16.5 3a.75.75 0 0 0 0 1.5H18A1.5 1.5 0 0 1 19.5 6v1.5a.75.75 0 0 0 1.5 0V6a3 3 0 0 0-3-3h-1.5ZM12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5ZM4.5 16.5a.75.75 0 0 0-1.5 0V18a3 3 0 0 0 3 3h1.5a.75.75 0 0 0 0-1.5H6A1.5 1.5 0 0 1 4.5 18v-1.5ZM21 16.5a.75.75 0 0 0-1.5 0V18a1.5 1.5 0 0 1-1.5 1.5h-1.5a.75.75 0 0 0 0 1.5H18a3 3 0 0 0 3-3v-1.5Z" />
-                                                                                                        </svg> */}
                                                                                                         <div 
                                                                                                         className="p-1 bg-blue-700 hover:bg-blue-900 text-white hover:font-bold" 
                                                                                                         style={{ fontSize: "9px" }}

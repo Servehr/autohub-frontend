@@ -10,7 +10,6 @@ export async function AddCourse(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -31,7 +30,25 @@ export async function AllCourse()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+              resolve(res.data);
+            }
+          })
+          .catch(() => {
+            let message = "Something went wrong!";
+            reject(new Error(message));
+          });
+    });
+}
+export async function AllCourses() 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get('get-all-course')
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
               resolve(res.data);
             }
           })
@@ -52,7 +69,6 @@ export async function GetAllCourse()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data);
             }
           })
@@ -73,7 +89,6 @@ export async function UpdateCourse(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -94,7 +109,6 @@ export async function DeleteCourse(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -115,7 +129,6 @@ export async function RemoveCourse(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -136,7 +149,6 @@ export async function TestQuestions()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data);
             }
           })
@@ -157,7 +169,6 @@ export async function TestCourseTheoryQuestions()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data);
             }
           })
@@ -178,7 +189,6 @@ export async function ExamCourseTheoryQuestions()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data);
             }
           })
@@ -199,7 +209,6 @@ export async function ExamCourseObjectiveQuestions()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data);
             }
           })
@@ -221,7 +230,6 @@ export async function getCourseFaq(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -234,7 +242,6 @@ export async function getCourseFaq(id)
 
 export async function AddCourseFaq(data) 
 {
-  console.log(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -243,7 +250,6 @@ export async function AddCourseFaq(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -264,7 +270,6 @@ export async function UpdateCourseFaq(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -277,7 +282,6 @@ export async function UpdateCourseFaq(data)
 
 export async function RemoveCourseFaq(id) 
 {
-  console.log(id)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -286,7 +290,6 @@ export async function RemoveCourseFaq(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -307,7 +310,6 @@ export async function CourseAssessment(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -318,14 +320,14 @@ export async function CourseAssessment(id)
     });
 }
 
-export async function CheckIfUserHasPaid() 
+export async function CheckIfUserHasPaid(from) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get(`check-if-user-has-paid`)
+          .get(`check-if-user-has-paid/${from}`)
           .then((res) => {
-              resolve(res.data.data);
+              resolve(res.data);
           })
           .catch((err) => {
             let message = "Something went wrong!";
@@ -346,7 +348,6 @@ export async function SubmitTestObjective(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -359,7 +360,6 @@ export async function SubmitTestObjective(data)
 
 export async function SubmitTestTheory(data) 
 {
-  console.log(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -368,7 +368,6 @@ export async function SubmitTestTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -380,7 +379,7 @@ export async function SubmitTestTheory(data)
 }
 
 export async function SubmitExamObjective(data) 
-{
+{alert("Hey")
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -389,7 +388,6 @@ export async function SubmitExamObjective(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -410,7 +408,6 @@ export async function SubmitExamTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -431,7 +428,6 @@ export async function UserCourses()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -452,7 +448,6 @@ export async function AllStudent()
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -473,7 +468,6 @@ export async function UserTestTheoryAnswers(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -494,7 +488,6 @@ export async function UserExamTheoryAnswers(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -515,8 +508,6 @@ export async function DownloadDocument(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                // console.log(res.data)
-                console.log(res)
               resolve(res);
             }
           })
@@ -538,8 +529,6 @@ export async function ScoreStudentScore(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                // console.log(res.data)
-                console.log(res)
               resolve(res);
             }
           })
@@ -560,8 +549,6 @@ export async function ScoreStudentScoreExam(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                // console.log(res.data)
-                console.log(res)
               resolve(res);
             }
           })
@@ -571,11 +558,3 @@ export async function ScoreStudentScoreExam(data)
           });
     });
 }
-
-
-// if (res.data.success === false) {
-//   reject(res.data.message);
-// } else {
-//     console.log(res.data)
-//   resolve(res.data.data);
-// }

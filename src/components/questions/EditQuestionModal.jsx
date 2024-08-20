@@ -17,12 +17,7 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
         const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
-      
-        if(!isLoading)
-        {
-        //     console.log(datax)
-        }
-
+     
         const [question, setQuestion] = useState(datax['question'])
         const [optionA, setOptionA] = useState(datax['option_a'])
         const [optionB, setOptionB] = useState(datax['option_b'])
@@ -31,26 +26,19 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
         const [answer, setAnswer] = useState(datax['answer'])
         const [id, setId] = useState(datax['id'])
         const [loading, setIsLoading] = useState(false)
-        const [course, setCourse] = useState("")
-
-        console.log({ question, optionA, optionB, optionC, optionD, answer })
-        console.log(everyCourse)
-        
+        const [course, setCourse] = useState("")        
 
         const updateQuestion = async () => 
         {                  
                 const data = { id: Number(id), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-                console.log(data)
                 setIsLoading(true)
                 UpdateTestQuestion(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                         setIsLoading(false)
                 })    
         }

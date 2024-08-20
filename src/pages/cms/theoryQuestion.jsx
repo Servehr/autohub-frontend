@@ -29,11 +29,6 @@ export default function TheoryQuestion()
     // alert(id)
     const { data, isLoading, isRefetching, refetch } = useQuery([`all-test`, id], () => AllTestTheory(id), { cacheTime: 0 })
 
-    if(!isLoading)
-    { 
-        console.log(data) 
-    }
-
     const [openTheoryQuestion, setOpenTheoryQuestion] = useState(false)
     const [editQuestion, setEditQuestion] = useState(false)
     const [deleteQuestion, setDeleteQuestion] = useState(false)
@@ -43,7 +38,6 @@ export default function TheoryQuestion()
     const [clickTable, setClickTable] = useState(false)
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -89,7 +83,6 @@ export default function TheoryQuestion()
                                                             <div className="flex space-x-5">
                                                                 <span onClick={() => {
                                                                     setQuestionToEdit(data[index])
-                                                                    console.log(data[index])
                                                                     setEditQuestion(true)
                                                                 }}>
                                                                     <Icons iconName={'edit'} width={6} height={6} />

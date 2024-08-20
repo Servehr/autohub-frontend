@@ -11,7 +11,6 @@ export async function AddTestQuestionaire(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -22,17 +21,16 @@ export async function AddTestQuestionaire(data)
     });
 }
 
-export async function AllTestQuestionaires() 
+export async function AllTestQuestionaires(year) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get("all-test-questionaires")
+          .get(`all-test-questionaires/${year}`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -53,7 +51,6 @@ export async function UpdateTestQuestionaires(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -74,7 +71,6 @@ export async function DeleteTestQuestionaires(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -99,7 +95,6 @@ export async function AddTestQuestionaireTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -110,17 +105,16 @@ export async function AddTestQuestionaireTheory(data)
     });
 }
 
-export async function AllTestQuestionairesTheory() 
+export async function AllTestQuestionairesTheory(year) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get("all-test-theory-questionaire")
+          .get(`all-test-theory-questionaire/${year}`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -141,7 +135,6 @@ export async function UpdateTestQuestionairesTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -162,7 +155,6 @@ export async function DeleteTestQuestionairesTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -184,7 +176,6 @@ export async function AddExamQuestionaire(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -195,17 +186,16 @@ export async function AddExamQuestionaire(data)
     });
 }
 
-export async function AllExamQuestionaires() 
+export async function AllExamQuestionaires(year) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get("all-exam-questionaires")
+          .get(`all-exam-questionaires/${year}`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -226,7 +216,6 @@ export async function UpdateExamQuestionaires(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -247,7 +236,6 @@ export async function DeleteExamQuestionaires(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -269,7 +257,6 @@ export async function AddExamQuestionaireTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -280,17 +267,16 @@ export async function AddExamQuestionaireTheory(data)
     });
 }
 
-export async function AllExamQuestionairesTheory() 
+export async function AllExamQuestionairesTheory(year) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get("all-exam-theory-questionaires")
+          .get(`all-exam-theory-questionaires/${year}`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -311,7 +297,6 @@ export async function UpdateExamQuestionairesTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -332,7 +317,6 @@ export async function DeleteExamQuestionairesTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })

@@ -70,7 +70,6 @@ export const MakePayment = ({onClick, openCourseModal})  =>
         const onChange = (imageList) => 
         {
             setImage(imageList);
-            console.log(imageList)
             let data = "";
             let x = ''
             imageList.map((image) => {
@@ -84,17 +83,12 @@ export const MakePayment = ({onClick, openCourseModal})  =>
             var blob = new Blob([binary], {type: 'image/jpeg'});
             var url = URL.createObjectURL(blob);
             setUrl(url)
-            console.log('Created a png blob of size: ' + blob.size);
             if(blob.size > 1000000)
             {
                 setError("Attachment must not be more than 1 MB")
-                // setIsAllow(false)
                 setProcessAdvert(false)
                 binary = ''
             } else {
-                console.log(data)
-                console.log(typeof x)
-                console.log(typeof data)
                 setFromattedImage(x);
                 setError("")
                 // setIsAllow(true)
@@ -133,7 +127,6 @@ export const MakePayment = ({onClick, openCourseModal})  =>
                                                         </p>
                                                         </div>
                                                 </div>
-                                                {/* <div className="rounded-full h-[150px] w-[150px] border flex justify-center items-center"> */}
                                                 <ImageUploading
                                                 // multiple
                                                 value={image}

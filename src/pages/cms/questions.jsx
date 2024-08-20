@@ -26,15 +26,8 @@ export default function Questions()
     const { isMobile } = browserType();
     let x = Math.round()
     const { id } = useParams()
-    // alert(id)
     const { data, isLoading, isRefetching, refetch } = useQuery([`${x}/all-test`, id], () => AllTest(id), { refetchOnWindowFocus: false, cacheTime: 0, retry: 2 })
 
-    if(!isLoading)
-    { 
-        console.log(data) 
-    }
-
-    // const advertState = appStore((state) => state) 
     const Questions = [
         { id: 1, question: "Artificial Intelligence is about_____", options: [ 'Playing a game on Computer', 'Making a machine Intelligent', 'Programming on Machine with your Own Intelligence',
                                                                                 'Putting your intelligence in Machine',
@@ -55,7 +48,6 @@ export default function Questions()
     const [clickTable, setClickTable] = useState(false)
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -116,7 +108,6 @@ export default function Questions()
                                                             <div className="flex space-x-5">
                                                                 <span onClick={() => {
                                                                     setQuestionToEdit(data[index])
-                                                                    console.log(data[index])
                                                                     setEditQuestion(true)
                                                                 }}>
                                                                     <Icons iconName={'edit'} width={6} height={6} />

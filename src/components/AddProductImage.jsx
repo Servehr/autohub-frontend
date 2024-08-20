@@ -10,7 +10,6 @@ import { BASE_URL } from "@/lib/axios";
 
 export const AddProductImage = ({onClick, imageModal, imageId, adverProductId})  =>
 {
-        console.log(adverProductId)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();        
         const [imageToUpload, setImageToUpload] = useState(false)
@@ -18,12 +17,9 @@ export const AddProductImage = ({onClick, imageModal, imageId, adverProductId}) 
         const [imgeUrl, setUrl] = useState(false)
         const [loading, setIsLoading] = useState(false)
         const [productId, setProductId] = useState(adverProductId)
-        // const [deleteOpenModal, setDeleteModal] = useState(false)
-        // const [ deleteUrl, setDeleteUrl] = useState("") 
-        // const [ productToDeleteMessage, setProductToDeleteMessage] = useState("") 
+        
         const uploadImage = async () =>
         {
-                // addProductAds(imageToUpload)
                 setIsLoading(true)
                 let token = localStorage.getItem("token")           
                 let imgTo = new FormData();
@@ -39,8 +35,7 @@ export const AddProductImage = ({onClick, imageModal, imageId, adverProductId}) 
                         setIsLoading(false)
                         setUrl("")
                         onClick(true)
-                }).catch((error) => { 
-                        console.log(error)                      
+                }).catch((error) => {                       
                         return false
                 })
         }

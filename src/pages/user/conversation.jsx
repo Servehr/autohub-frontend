@@ -24,11 +24,7 @@ export default function Conversation({ theUserId, advertiserProductId })
                                             retry: 2,
                                             refetchInterval: 1000
                                       })
-    
-    if(!isLoading)
-    {
-       console.log(data)
-    }
+  
     const [loading, setLoading] = useState(false);  
     const [serverError, setServerError] = useState("");
     const paragraphRef = useRef(null);    
@@ -55,8 +51,6 @@ export default function Conversation({ theUserId, advertiserProductId })
 
     const onSubmit = (msg) => 
     {
-        // console.log({"MSG" : msg.conversation, theUserId, advertiserProductId})
-        // return
         setLoading(true);
         sendConversationMessage(msg.conversation, theUserId, advertiserProductId)
         .then(() => {
@@ -74,16 +68,6 @@ export default function Conversation({ theUserId, advertiserProductId })
         });
     };
 
-    // const userId = Number(localStorage.getItem("authenticatedId"))
-    // if(!isLoading)
-    // {
-    //   console.log(data)
-    //   paragraphRef?.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "end"
-    //   })
-    //   // this.messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    // }
 
   return (
     <>
@@ -219,22 +203,8 @@ export default function Conversation({ theUserId, advertiserProductId })
                         </form>
                         <p className="text-sm font-bold text-brandRed -mt-2 mb-3 ml-6">{errors?.conversation?.message || serverError}</p>
 
-                      {/* <form
-                                onSubmit={handleSubmit(onSubmit)}
-                                className="px-6 my-4 flex flex-col gap-2"
-                              >                                     
-                          <input defaultValue={messageToSend} onBlur={(e) => {
-                                              console.log(e)
-                                              setMessageTosend(e.target.value)
-                                  }} type="text" id="content"  name="content" rows={1}   
-                                  className="absolulte w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          /> 
-                      </form>*/}
                 </div>              
-                <div className="text-sm font-bold text-green-900 mt-2 mb-3 rounded-md col-span-12">{data?.length} Messages</div>        
-                {/* <div className="col-span-2">                   
-                      <button className="p-3 w-full bg-green-900 rounded-lg text-white" onClick={sendMessage}>Send</button>
-                </div> */}
+                <div className="text-sm font-bold text-green-900 mt-2 mb-3 rounded-md col-span-12">{data?.length} Messages</div> 
         </div>
 
     </>

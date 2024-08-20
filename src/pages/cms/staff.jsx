@@ -39,39 +39,9 @@ export default function Staff()
     const [openStaff, setOpenStaff] = useState(false)
     const [clickTable, setClickTable] = useState(false)
 
-    // if(!isLoading)
-    // {
-    //     console.log(data)
-    // }
-
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
-
-
-    // const [isLoading, setIsLoading] = useState(false)
-    // useEffect(() => {
-    //     getProducts()
-    // }, [isLoading])
-
-    // const getProducts = async () => 
-    // {
-    //     let token = localStorage.getItem("token")  
-    //     await axios.get(`${BASE_URL}ad/all-product`, {
-    //             headers: { 'Authorization': token ? `Bearer ${token}` : ""}
-    //             }).then((response) => 
-    //             {  
-    //                 if(response.data.data)
-    //                 {
-    //                     setIsLoading(true)
-    //                     setDatable(response.data.data)
-    //                 }
-    //             }).catch((error) => {                        
-    //                     console.log(error)
-    //             })
-    // }
-
 
   return ( 
         <>
@@ -90,25 +60,6 @@ export default function Staff()
                     </div>
                     
                     <div className="w-full p-3 mb-10" style={{ marginBottom: '100px' }}>
-                        {/* {isLoading && (
-                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-                            {isMobile ? (
-                                <BeatLoader color="#1c9236" />
-                            ) : (
-                                <BounceLoader color="#1c9236" />
-                            )}
-                            </div>
-                        )} */}
-
-                        {/* {!isLoading && isRefetching && (
-                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-                            {isMobile ? (
-                                <BeatLoader color="#1c9236" />
-                            ) : (
-                                <BounceLoader color="#1c9236" />
-                            )}
-                            </div>
-                        )} */}
                         {
                             // !isLoading && !isRefetching && (data.length > 0) &&  <DynamicTable 
                             (data.length > 0) &&  <DynamicTable 
@@ -116,7 +67,6 @@ export default function Staff()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setClickTable(e) 
                                                                                 } } 
                                                                                 page={'staffs'}

@@ -22,12 +22,7 @@ export default function Students()
 {
     const advertState = appStore((state) => state)
     const { data, isLoading, refetch, isRefetching } = useQuery([`is-paid-and-student-summary`], () => isPaidAndStudentSummary(), { cacheTime: 0 })
-    if(!isLoading)
-    {
-      console.log(data)
-      console.log(data?.payment_status)
-    }
-
+  
     const [loggedInUserType, setLoggedInUserType] = useState('')
     const [theService, setTheService] = useState(-1)
     const [isUser, setIsUser] = useState("-1")

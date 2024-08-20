@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal } from '../Modal';
+import { Modal } from '../../Modal';
 import { Link, useNavigate } from "react-router-dom";
 import { deleteAdProduct } from '@/apis/ads';
 import { appStore } from "@/state/appState";
@@ -8,7 +8,7 @@ import { BASE_URL } from "@/lib/axios";
 import { UpdateFaq } from '@/apis/misc';
 
 
-export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
+export const EditStateModal = ({onClick, editCountryModal, coutryId})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
@@ -27,7 +27,6 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
         const updateFaqData = () => 
         {
                 const data = {coutryId: coutryId }
-                console.log(data)
                 UpdateFaq(data)
                 .then((res) => 
                 {
@@ -35,7 +34,7 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })                 
         }
 
@@ -51,13 +50,13 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
                                 <div className='col-span-12 pb-2 overflow-auto justify-center h-fit py-2 item-center'>
                                         <>                                                
                                                 <div className="p-1 mt-1">
-                                                        <h1 className='font-bold text-lg mb-10'>Edit Country</h1>                                           
-                                                        <div className="w-1/2 p-2 relative">
-                                                                <span className="w-full font-bold text-sm">Country<strong className="text-red-500"></strong></span> 
+                                                        <h1 className='font-bold text-lg mb-10'>Edit State</h1>                                           
+                                                        <div className="w-2/2 p-2 relative">
+                                                                {/* <span className="w-full font-bold text-sm">Country<strong className="text-red-500"></strong></span>  */}
                                                                 <select onChange={(e) => {    
                                                                                         
                                                                                         }
-                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-4 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                         <option value={-1}> - Select Country? -  </option>
                                                                         <option value={-1}> Country A  </option>
                                                                         <option value={-1}> Country B  </option>
@@ -66,12 +65,12 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
                                                                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                                                 </div>
                                                         </div> 
-                                                        <div className="w-full d-flex-row md:flex mt-1 gap-5 mb-5">
+                                                        <div className="w-full d-flex-row md:flex mt-1 gap-5 p-2">
                                                                 {/* <span className="font-bold text-sm">Title</span> */}
-                                                                <input onBlur={(e) => {
+                                                                <input onChange={(e) => {
                                                                         
-                                                                }} type="text" id="stateName" defaultValue={'stateName'}  name="stateName" 
-                                                                placeholder='Great' 
+                                                                }} type="text" id="stateName" defaultValue={''}  name="stateName" 
+                                                                placeholder='' 
                                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>
                                                 </div>

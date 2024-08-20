@@ -89,7 +89,6 @@ const createAdvertSlice  = (set, get) => (
         country: -1,
         setCountry(country)
         {
-            console.log(country)
             set((state) => ({country: country}))
         },
         getCountry()
@@ -100,7 +99,6 @@ const createAdvertSlice  = (set, get) => (
         states: -1,
         setStates(states)
         {
-            console.log(states)
             set((state) => ({states: states}))
         },
         getStates()
@@ -261,7 +259,6 @@ const createAdvertSlice  = (set, get) => (
         theManufacturerName: "",
         setTheManufacturerName(theManufacturerName)
         {
-            console.log(theManufacturerName)
             set((state) => ({theManufacturerName: theManufacturerName}))
         },
         getTheManufacturerName()
@@ -272,7 +269,6 @@ const createAdvertSlice  = (set, get) => (
         theModelName: "",
         setTheModelName(theModelName)
         {
-            console.log(theModelName)
             set((state) => ({theModelName: theModelName}))
         },
         getTheModelName()
@@ -283,7 +279,6 @@ const createAdvertSlice  = (set, get) => (
         makerModels: [],
         setTheMakerModels(makerModels)
         {
-            console.log(makerModels)
             set((state) => ({makerModels: makerModels}))
         },
         getTheMakerModels()
@@ -294,7 +289,6 @@ const createAdvertSlice  = (set, get) => (
         modelTrim: [],
         setTheModelTrim(modelTrim)
         {
-            console.log(modelTrim)
             set((state) => ({modelTrim: modelTrim}))
         },
         getTheModelTrim()
@@ -305,7 +299,6 @@ const createAdvertSlice  = (set, get) => (
         statesModels: [],
         setStateModel(statesModels)
         {
-            console.log(statesModels)
             set((state) => ({statesModels: statesModels}))
         },
         getStateModel()
@@ -316,7 +309,6 @@ const createAdvertSlice  = (set, get) => (
         imageOnEdit: "",
         setImageOnEdit(images)
         {
-            console.log(images)
             set((state) => ({images: images}))
         },
         getImageOnEdit()
@@ -416,23 +408,15 @@ const createAdvertSlice  = (set, get) => (
         avatar: [],
         setAvatar(avatar)
         {
-            console.log(avatar)
             set((state) => (
                 {
                     ...state,
                     avatar: [...state.avatar, avatar]
                 }
             ))
-            console.log(avatar)
-            // set((state) => (
-            //     {
-            //         avatar: avatar
-            //     }
-            // ))
         },
         getAvatar()
         {
-            console.log(this.advert)
             return get().avatar
         },    
         removeImage(id)

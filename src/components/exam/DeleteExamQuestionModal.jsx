@@ -25,7 +25,6 @@ export const DeleteExamQuestionModal = ({onClick, data, deleteExamQuestion})  =>
         {
                 setIsLoading(true)
                 const data = { id: theId }
-                console.log(data.id)
                 DeleteExamQuestion(Number(data.id))
                 .then((res) => 
                 {
@@ -34,7 +33,6 @@ export const DeleteExamQuestionModal = ({onClick, data, deleteExamQuestion})  =>
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })       
         }
         

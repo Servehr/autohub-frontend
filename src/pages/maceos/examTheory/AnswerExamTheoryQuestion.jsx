@@ -28,11 +28,11 @@ export const AnswerExamTheoryQuestion = ({onClick, question, OpenAnswerExamTheor
                 });      
                 if(checkIfPresent === -1)
                 {          
-                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: answerQuestion, position: currentPage }
+                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: answerQuestion, position: currentPage }
                     advertState.setSelectedExamTheoryOption(answer)     
                 } else {        
                     advertState.getSelectedExamTheoryOption().splice(checkIfPresent, 1);
-                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: answerQuestion, position: currentPage }
+                    let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: answerQuestion, position: currentPage }
                     advertState.setSelectedExamTheoryOption(answer)             
                 }
                 onClick()   

@@ -26,13 +26,10 @@ export const EditExamTheoryQuestionaireModal = ({onClick, editFolder, descriptio
                 onClick(true)
         }
 
-        // alert("Great")
-
         const updateExamFolder = () => 
         {
                 setIsLoading(true)
                 const data = { id: id, name: theTitle, description: theContent }
-                console.log(data)
                 UpdateExamQuestionairesTheory(data)
                 .then((res) => 
                 {
@@ -41,7 +38,6 @@ export const EditExamTheoryQuestionaireModal = ({onClick, editFolder, descriptio
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })                 
         }
         

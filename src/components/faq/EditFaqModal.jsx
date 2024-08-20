@@ -27,7 +27,6 @@ export const EditFaqModal = ({onClick, editFaqModal, productId, title, content, 
         const updateFaqData = () => 
         {
                 const data = {faqId: theProductId, title: theTitle, content: theContent, isOpened: theIsOpened }
-                console.log(data)
                 UpdateFaq(data)
                 .then((res) => 
                 {
@@ -35,7 +34,7 @@ export const EditFaqModal = ({onClick, editFaqModal, productId, title, content, 
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })                 
         }
 

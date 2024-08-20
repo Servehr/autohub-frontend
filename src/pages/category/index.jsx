@@ -15,15 +15,10 @@ import { IoReload } from "react-icons/io5";
 
 export default function CategoryPage() 
 {
-  
-  console.log("+++++++++++++++++++++++")
   const { pathname } = useLocation();
   const { ref, inView } = useInView();
   const categoryData = categories.filter((item) => item.link === pathname)[0];
   const categoryName = pathname.split("/")[1];
-  // console.log(categoryData)
-  // console.log(categoryName)
-  // console.log(pathname)
 
   if (!categoryData || categoryData.length == 0) {
     return <NotFound />;
@@ -43,7 +38,6 @@ export default function CategoryPage()
     queryKey: categoryName,
     queryFn: ({ pageParam = 1 }) => fetchByCategory(categoryData.id, pageParam),
     getNextPageParam: (lastPage, allPages) => {
-      console.log(allPages)
       const nextPageParam =
         lastPage?.current_page !== lastPage?.last_page
           ? allPages.length + 1

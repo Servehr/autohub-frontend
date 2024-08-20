@@ -4,7 +4,6 @@ import { Modal } from './Modal';
 
 export const ProductComments = ({ onClick, closeCommentDialog, messages, productName })  =>
 {
-        console.log(messages)
         return (
                 <>
                         <Modal onClick={onClick} isOpen={closeCommentDialog} wrapperWidth={900} margin={'90px auto 0px auto'} color='green'>

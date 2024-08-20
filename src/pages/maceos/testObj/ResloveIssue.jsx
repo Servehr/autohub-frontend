@@ -1,4 +1,3 @@
-
 import { useEffect, useReducer, useState } from "react";
 import { setUserNewEmail } from "@/apis/auth";
 import { useForm } from "react-hook-form";
@@ -8,22 +7,18 @@ import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-query";
-import { ExamCourseObjectiveQuestions, SubmitExamObjective } from "@/apis/backend/course";
+import { SubmitTestObjective, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
+import CountDownTimer from "@/components/CountDownTimer";
 
 
-export default function UserTakeExamObjective() 
+export default function ResolveIssue() 
 {
   const advertState = appStore((state) => state)
   const navigate = useNavigate()
-  const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => ExamCourseObjectiveQuestions(), { cacheTime: 0 })
+  const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-test-theory-question"], () => TestQuestions(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-
-  const [selectedOptions, setSelectedExamObjectiveOptions] = useState([])
+  const [selectedOptions, setSelectedOptions] = useState([])
   const [courseId, setCourseId] = useState('')
   const [answer, setAnswer] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -34,33 +29,36 @@ export default function UserTakeExamObjective()
   const [loading, setIsLoading] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [fakeRefresh, setFakeRefresh] = useState(-1)
-  const [choosen, setChoosen] = useState(advertState.getSelectedExamObjectiveOption())
+  const [thePlus, setThePlus] = useState(0)
+  const [choosen, setChoosen] = useState(advertState.getSelectedOption())
 
   useEffect(() => {
-
-  }, [fakeRefresh])
+      const checkIfForcedToSubmit = advertState.getForce()
+      if(checkIfForcedToSubmit === "yes")
+      {
+          navigate('/dashboard/force-submit', { replace: true })
+      }
+  }, [])
 
   const SubmitObjectiveTest = () => 
-    {
-      setIsSubmitting(true)
-      const userAnswers = advertState.getSelectedExamObjectiveOption()
-      console.log(userAnswers)
+  {
+      setIsSubmitting(true) 
       // return false
-      if(userAnswers.length === 0)
+      const userAnswers = { userSubmitted : 'yes', answers: advertState.getSelectedOption() }
+      if(userAnswers.answers.length === 0)
       {
           setErrorMsg("Answer at least one question")
           setTimeout(() => {
               setIsSubmitting(false)
               setErrorMsg("")
           }, 2000)
+          return false
       } else {
-        SubmitExamObjective(userAnswers)
+        SubmitTestObjective(userAnswers)
         .then((res) => {
-            if(res === "submitted")
-            {
-                advertState.setEmptyExamObjective([])
+            if(res === "submitted"){                
+                advertState.setEmptyTestObjective([])
                 navigate('/dashboard/summary')
-                // return false
             } else {
                 setErrorMsg("Submitting Result Failed")
                 setIsSubmitting(false)
@@ -76,11 +74,7 @@ export default function UserTakeExamObjective()
         })
       }
   }
-
-  useEffect(() => {
-      // console.log(advertState.getSelectedExamObjectiveOption())
-  }, [])
-  
+ 
   useEffect(() => 
   {      
       isChecked()
@@ -90,39 +84,33 @@ export default function UserTakeExamObjective()
   {
       deselectAll()
       setCurrentQuestion(position)
-      console.log(position)      
-      console.log(choosen)
-      console.log(advertState.getSelectedExamObjectiveOption())
   }
 
   const deselectAll = () => 
   {
-      setChoosen(advertState.getSelectedExamObjectiveOption())
+      setChoosen(advertState.getSelectedOption())
       let allOptions = document.querySelectorAll('.theOption')
       allOptions.forEach(value => value.checked = false)
   }
 
   useEffect(() => {
-      console.log(selectedOptions)
   }, [selectedOptions, answer, courseId])
 
 
   const selectOption = (option, course, question, position) => 
   {
-      const checkIfPresent = advertState.getSelectedExamObjectiveOption().findIndex(x => {
+      const checkIfPresent = advertState.getSelectedOption().findIndex(x => {
         return x.position === position;
       });      
       if(checkIfPresent === -1)
       {          
           // id, user_id, course_id, option_id, selected
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
-          advertState.setSelectedExamObjectiveOption(answer)     
-          console.log(advertState.getSelectedExamObjectiveOption())
+          advertState.setSelectedOption(answer)     
       } else {        
-          advertState.getSelectedExamObjectiveOption().splice(checkIfPresent, 1);
+          advertState.getSelectedOption().splice(checkIfPresent, 1);
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
-          advertState.setSelectedExamObjectiveOption(answer)     
-          console.log(advertState.getSelectedExamObjectiveOption())          
+          advertState.setSelectedOption(answer)               
       }
       setCurrentQuestion(position)
       setFakeRefresh(Math.random() * position)
@@ -131,7 +119,7 @@ export default function UserTakeExamObjective()
 
   const isSelected = (id) => 
   {
-      const answeredOption = advertState.getSelectedExamObjectiveOption()
+      const answeredOption = advertState.getSelectedOption()
       const numbers = answeredOption.map((x) => x.position)
        if(numbers.includes(id))
        {
@@ -141,24 +129,11 @@ export default function UserTakeExamObjective()
        }
   }
 
-  const callThePeople = (x) => 
-  {
-      const someone = people.filter((p) => {
-          return p.position !== x
-      })
-      if(someone === undefined)
-      {
-         alert("Undefined")
-      } else {        
-        // alert(someone.selected)
-      }
-      console.log(someone)
-  }
 
   const isChecked = () => 
   {
       let checkedValue;
-      const theChoosen = advertState.getSelectedExamObjectiveOption()
+      const theChoosen = advertState.getSelectedOption()
       if(theChoosen.length === 0)
       {
          checkedValue = false
@@ -189,11 +164,10 @@ export default function UserTakeExamObjective()
                 </div>
               }
               
-              
               {
-                !isLoading && (data?.plus > 0) &&                   
+                !isLoading && (data?.message > 0) &&   <>                                      
                     <div className="d-flex justify-center text-center items-center text-lg h-[300px] pt-52 mb-20">
-                        <div className="font-bold text-blue-700 pr-5 text-md mb-5 text-green-700" style={{ fontSize: '26px' }}>You Already Had This Objective Exam</div>
+                        <div className="font-bold text-blue-700 pr-5 text-md mb-5 text-green-700" style={{ fontSize: '26px' }}>You Already Had This Test</div>
                         <Link
                           to="/dashboard/summary"
                           className="inline-block px-5 py-3 mt-6 text-sm font-semibold text-white bg-brandGreen rounded cursor-pointer"
@@ -201,11 +175,12 @@ export default function UserTakeExamObjective()
                           Go Dashboard
                         </Link>
                     </div>
+                </>
               }
               {
                 !isLoading && isRefetching && (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                     <h1 className="font-bold">
-                        Exam Objective Question Not Yet Prepared
+                        No course created yet
                     </h1>
                 </div>
               }
@@ -216,13 +191,16 @@ export default function UserTakeExamObjective()
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '15px' }}>Loading Questions ...</span>
                   </div>
               }
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) &&
-                 <div className="w-full mb-1">
-                      <div className="mb-2 text-white cursor-pointer grid grid-cols-12 justify-between rounded-lg"
-                      >          
-                          <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100 col-span-12">Course:  Artificial Intelligence</div>
-                      </div>
 
+              { !isLoading && (data?.data?.length === 0) &&
+                  
+                  <div className="col-span-12 flex justify-center items-center text-lg h-[400px]">
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Test Objective Question Not Yet Prepared</span>
+                  </div>
+              }
+              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.message < 1) &&
+                 <div className="w-full mb-1">
+                      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div> 
                       { 
                           errorMsg &&  
                           <div className="w-full text-lg font-md text-white bg-red-600 rounded-md mb-5 p-3">
@@ -230,8 +208,11 @@ export default function UserTakeExamObjective()
                           </div>
                       }
 
-                      <div className="w-full flex justify-between">
+                      <div className="w-full flex justify-between items-center">
                           <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.data?.length}</span> 
+                          <span className="w-fit">
+                              <CountDownTimer type={'test-objective'} seconds={data?.addition} />
+                          </span>
                           <button type="sumbit" 
                               disabled={isSubmitting}
                               className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900'}`}
@@ -310,13 +291,15 @@ export default function UserTakeExamObjective()
                       </div>          
                 </div>
               }
+
+              
           {  data?.data &&               
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-1">
               <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination">
                  
                 {
                   
-                  data?.data &&  (data?.plus < 1) &&            
+                  data?.data &&  (data?.message < 1) &&            
                     data?.data.map((num, index) => {
                       const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                       const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
@@ -333,7 +316,7 @@ export default function UserTakeExamObjective()
             </div>
           }
           {  
-            data?.data && (data?.data.length > 0) && (data?.plus < 1) &&
+            data?.data && (data?.data.length > 0) && (data?.message < 1) &&
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-3">
                 <button type="sumbit" 
                 disabled={isSubmitting}

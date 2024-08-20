@@ -34,9 +34,29 @@ const createExamObjectiveSlice  = (set, get) => (
         {
             set((state) => ({selectedExamOption: selectedExamOption}))
         },
-        setEmptyExamObjective()
+        getEmptyExamObjective()
         {
             return get().selectedExamOption
+        },
+
+        forceExamObj: 'no',
+        setForceExamObj(forceExamObj)
+        {
+            set((state) => ({forceExamObj: forceExamObj}))
+        },
+        getForceExamObj()
+        {
+            return get().forceExamObj
+        },
+
+        defaultExamObjectiveAnswer: [],
+        setDefaultExamObjectiveAnswer(defaultExamObjectiveAnswer)
+        {
+            set((state) => ({defaultExamObjectiveAnswer: defaultExamObjectiveAnswer}))
+        },
+        getDefaultExamObjectiveAnswer()
+        {
+            return get().defaultExamObjectiveAnswer
         },
     }
 )

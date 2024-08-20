@@ -32,11 +32,8 @@ export default function Header()
   useEffect(() => 
   {
       const loggedInUser = localStorage.getItem('users')
-      // console.log(loggedInUser)
       const useServ = userService
       const convert = JSON.parse(loggedInUser)
-      // localStorage.setItem('ux', convert.type)
-      // setLoggedInUserType(convert.type)
       setUserService(useServ)
 
       const holderingUrl = localStorage.getItem('editPost')
@@ -44,18 +41,10 @@ export default function Header()
       setUrlParameterz(holdUrl)
   }, [loggedInUserType, userService])
 
-  // advertState.setLoggedInUserType(ux)
-  // alert(loggedInUserType)
-
   const { id } = useParams()
-  console.log(id)
-  // const editPost = localStorage.getItem('editPost')
-  // const urlParam = localStorage.getItem('editPost')
+  const editPost = localStorage.getItem('editPost')
   const ques = localStorage.getItem('questions')
   const pathToEdit = `/edit-post/${urlParam}`
-  console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
-  console.log(Number(urlParam))
-  console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
 
   const excludedPaths = [
     "/login",
@@ -70,9 +59,10 @@ export default function Header()
     "/a/ads",
     "/a/package",
     "/a/faqs",
+    "/a/test-courses",
     "/a/blog-post",
-    "/create-post",
-    "/a/edit-post",
+    "/a/create-post",
+    `/a/edit-post/${editPost}`,
     "/a/students",
     "/a/markings",
     "/a/ads-classic",
@@ -94,7 +84,9 @@ export default function Header()
     `/a/items`,
     `/a/request-item`,
     `/a/settings`,
-    `/a/test-courses`,
+    `/a/users`,
+    `/a/product-entry`,
+    `/a/location`,
   ];
 
   const { pathname } = useLocation();
@@ -137,11 +129,8 @@ function Main() {
   useEffect(() => 
   {
       const loggedInUser = localStorage.getItem('users')
-      // console.log(loggedInUser)
       const useServ = userService
       const convert = JSON.parse(loggedInUser)
-      // localStorage.setItem('ux', convert.type)
-      // setLoggedInUserType(convert.type)
       setUserService(useServ)
   }, [loggedInUserType, userService])
 
@@ -229,7 +218,7 @@ function TopHeader()
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/home'>Home</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/about-us'>About Us</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/contact-us'>Contact Us</Link></li>
-                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Blog</li>
+                <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/blog'>Blog</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md"><Link to='/faq'>FAQ</Link></li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Sell Your Vehicle</li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">swap Your Vehicle</li>
@@ -302,11 +291,8 @@ function Dash()
   useEffect(() => 
   {
       const loggedInUser = localStorage.getItem('users')
-      // console.log(loggedInUser)
       const useServ = userService
       const convert = JSON.parse(loggedInUser)
-      // localStorage.setItem('ux', convert.type)
-      // setLoggedInUserType(convert.type)
       setUserService(useServ)
   }, [loggedInUserType, userService])
 
@@ -422,8 +408,6 @@ function Account({ showAccount, setShowAccount })
   const j = advertState.getLoggedInUser()
   const navigate = useNavigate();
   const { data: user } = useUser();
-  console.log(user)
-
   
   const [loggedInUserType, setLoggedInUserType] = useState('')
   const [userService, setUserService] = useState('')
@@ -436,11 +420,8 @@ function Account({ showAccount, setShowAccount })
   useEffect(() => 
   {
       const loggedInUser = localStorage.getItem('users')
-      // console.log(loggedInUser)
       const useServ = userService
       const convert = JSON.parse(loggedInUser)
-      // localStorage.setItem('ux', convert.type)
-      // setLoggedInUserType(convert.type)
       setUserService(useServ)
   }, [loggedInUserType, userService])
   

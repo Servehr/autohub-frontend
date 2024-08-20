@@ -11,6 +11,7 @@ import { ExamCourseTheoryQuestions, SubmitExamTheory } from "@/apis/backend/cour
 import { appStore } from "@/state/appState";
 import { ChangeExamTheoryQuestion } from "./ChangeExamTheoryQuestion";
 import { AnswerExamTheoryQuestion } from "./AnswerExamTheoryQuestion";
+import CountDownTimerExamTheory from "@/components/CountDownTimerExamTheory";
 
 
 export default function UserExamTheory() 
@@ -35,10 +36,6 @@ function ExamTheory()
   const navigate = useNavigate();
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => ExamCourseTheoryQuestions(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data?.data[0]['question'])
-  }
   const advertState = appStore((state) => state)
   const [selectedOptions, selectedTestTheoryOptions] = useState([])
   const [answer, setAnswer] = useState('')
@@ -62,27 +59,32 @@ function ExamTheory()
   const [fakeRefresh, setFakeRefresh] = useState(-1)
   const [choosen, setChoosen] = useState(advertState.getSelectedExamTheoryOption())
 
-  useEffect(() => {      
-
+  useEffect(() => {
+    const checkIfForcedToSubmit = advertState.getForceExamTheory()
+    if(checkIfForcedToSubmit === "yes")
+    {
+        navigate('/dashboard/force-submit-exam', { replace: true })
+    }
   }, [])
 
-  const SubmitObjectiveTest = () => 
+  const SubmitExamTheoryQuestionn = () => 
   {
       setIsSubmitting(true)
-      const userAnswers = advertState.getSelectedExamTheoryOption()
-      if(userAnswers.length === 0)
+      const userTheoryAnswers = { userSubmitted : 'yes', answers: advertState.getSelectedExamTheoryOption() }
+      if(userTheoryAnswers.answers.length === 0)
       {
           setErrorMsg("Answer at least one question")
           setTimeout(() => {
               setIsSubmitting(false)
               setErrorMsg("")
-          }, 2000)
+          }, 7000)
+          return false
       } else {
-        SubmitExamTheory(userAnswers)
+        SubmitExamTheory(userTheoryAnswers)
         .then((res) => {
             if(res === "submitted")
             {
-                advertState.selectedExamTheoryOption([])
+                advertState.setEmptyExamTheory([])
                 navigate('/dashboard/summary')
                 // return false
             } else {
@@ -102,7 +104,7 @@ function ExamTheory()
   }
 
   useEffect(() => {
-      // console.log(advertState.getSelectedExamTheoryOption())
+    
   }, [])
   
   useEffect(() => 
@@ -111,7 +113,6 @@ function ExamTheory()
 
   const showQuestion = (pst) => 
   {
-      console.log(advertState.getSelectedExamTheoryOption())
       setCurrentPage(pst)
       const checkIfPresent = advertState.getSelectedExamTheoryOption().find((x) => x.position === currentPage); 
       if(checkIfPresent)
@@ -129,19 +130,18 @@ function ExamTheory()
       });      
       if(checkIfPresent === -1)
       {          
-          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: studentValue, position: currentPage }
-          advertState.setSelectedExamTheoryOption(answer)     
+          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: studentValue, position: currentPage }
+          advertState.setSelectedExamTheoryOption(answerz)     
       } else {        
           advertState.getSelectedExamTheoryOption().splice(checkIfPresent, 1);
-          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, exam_theory_id: questionId, answer: studentValue, position: currentPage }
-          advertState.setSelectedExamTheoryOption(answer)             
+          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: studentValue, position: currentPage }
+          advertState.setSelectedExamTheoryOption(answerz)             
       }
       setSuccess('Saved')
       setTimeout(() => {
         setTempSave(false)
         setSuccess('')
       }, 2000)
-      console.log(advertState.getSelectedExamTheoryOption())
   }
 
   const isSelected = (id) => 
@@ -212,27 +212,47 @@ function ExamTheory()
                     </div>
               }
 
-              { !isLoading && (data?.data === undefined) &&
+              { !isLoading && (data?.data?.length > 0) && (data?.message === 'closed') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
-                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '15px' }}>Loading Questions ...</span>
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
                   </div>
               }
 
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) &&
+              { !isLoading && (data?.data?.length === 0) && (data?.message === 'closed') &&
+                  
+                  <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
+                  </div>
+              }
+
+              { !isLoading && (data?.data === undefined) &&
+                  
+                  <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
+                      {/* <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '15px' }}>Loading Questions ...</span> */}
+                  </div>
+              }
+
+              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message === 'open') && 
                  <div className="w-full mb-5">
                       {/* <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div>  */}
 
-                      <div className="d-flex -mb-3 col-span-12 p-3">
-                            <div className="w-full flex justify-between">
-                              <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
-                              <button type="sumbit" 
-                                  disabled={isSubmitting}
-                                  className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900'}`}
-                                  onClick={SubmitObjectiveTest}
+                      <div className="d-flex -mb-3 col-span-12 p-3"
+                      >
+                            <div className="w-full flex justify-between items-center">
+                                <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
+                                <span className="w-fit">
+                                    <CountDownTimerExamTheory seconds={data?.addition} />
+                                </span>
+                                <button type="sumbit" 
+                                  disabled={!isSubmitting}
+                                  className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900 cursor-pointer'}`}
+                                  onClick={() => {
+                                      SubmitExamTheoryQuestionn()
+                                  }}
                                   >
-                                      SUBMIT
-                              </button> 
+                                      {   isSubmitting ? ( <BeatLoader size={9} color="#fff" className="" />) : ( "Sumbit" )     }
+                              </button>
                             </div>
                              
                             <h1 className="w-full font-bold text-blue-900 mt-10 shadow-md px-2 py-4 border border-3 text-lg border-gray-300 bg-white">{data?.data[currentPage]['question']}</h1>
@@ -245,7 +265,6 @@ function ExamTheory()
                                       id="answering"
                                       onChange={ (e) => {
                                           setStudentValue(e.target.value)
-                                          setCourseId(data?.data?.[currentPage]['course_id'])
                                           setQuestionId(data?.data[currentPage]['id'])
                                           setCurrentPage(currentPage)
                                       } } 
@@ -292,7 +311,7 @@ function ExamTheory()
                 <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination"
                 >
                   {
-                    data?.data &&  (data?.plus < 1) &&             
+                    data?.data &&  (data?.plus < 1) && (data?.message === 'open') &&              
                       data?.data.map((num, index) => {
                         const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                         const currentAnswer = (currentPage === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
@@ -309,12 +328,12 @@ function ExamTheory()
 
               
           {  
-            data?.data &&  (data?.plus < 1) &&  
+            data?.data &&  (data?.plus < 1) && (data?.message === 'open') &&  
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 md:mt-3 mt-10">
                 <button type="sumbit" 
                         disabled={isSubmitting}
                         className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900'}`}
-                        onClick={SubmitObjectiveTest}
+                        onClick={SubmitExamTheoryQuestionn}
                       >
                         SUBMIT
                       </button> 
@@ -325,13 +344,13 @@ function ExamTheory()
 
           <div className="p-5"></div>
           {
-              openExamTheoryAnswerToEdit && <ChangeExamTheoryQuestion question={data?.data[currentPage]['question']} courseId={data?.data?.[currentPage]['course_id']} questionId={data?.data?.[currentPage]['id']} studentValue={theTypedAnswer()} currentPage={currentPage} openExamTheoryAnswerToEdit={openExamTheoryAnswerToEdit} onClick={() => {
+              openExamTheoryAnswerToEdit && <ChangeExamTheoryQuestion question={data?.data[currentPage]['question']} courseId={''} questionId={data?.data?.[currentPage]['id']} studentValue={theTypedAnswer()} currentPage={currentPage} openExamTheoryAnswerToEdit={openExamTheoryAnswerToEdit} onClick={() => {
                   // refetch()
                   setOpenExamTheoryAnswerToEdit(false)
               }} />
           }
           {
-              OpenAnswerExamTheoryQuestion && <AnswerExamTheoryQuestion question={data?.data[currentPage]['question']} courseId={data?.data?.[currentPage]['course_id']} questionId={data?.data?.[currentPage]['id']} currentPage={currentPage} OpenAnswerExamTheoryQuestion={OpenAnswerExamTheoryQuestion} onClick={() => {
+              OpenAnswerExamTheoryQuestion && <AnswerExamTheoryQuestion question={data?.data[currentPage]['question']} courseId={''} questionId={data?.data?.[currentPage]['id']} currentPage={currentPage} OpenAnswerExamTheoryQuestion={OpenAnswerExamTheoryQuestion} onClick={() => {
                   // refetch()
                   setOpenAnswerExamTheoryQuestion(false)
               }} />

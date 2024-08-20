@@ -28,14 +28,9 @@ function PostAdProvider({ children })
     title: ''
   });
 
-  // localStorage.clear('autoHub')
-  console.log(data)
-  // console.log(advertState.getAvatar())
-
   const title = {
     title: `${data.year_of_production} ${getColor(data.colour)} ${getMaker(data.maker)} ${getModel(data.model)}`,
   };
-  console.log(data.state)
 
   const [productId, setProductId] = useState(null);
 

@@ -12,6 +12,7 @@ export default function MobileNavMenu()
     const [open, setOpen] = useState(false)
     const [flyer, setFlyer] = useState(false)
     const [flyerTwo, setFlyerTwo] = useState(false)
+    const [kindOfUser, setKindOfUser] = useState(localStorage.getItem("kindOfUser"))
     const navigate = useNavigate()  
     const { data: user } = useUser();    
 
@@ -76,11 +77,11 @@ export default function MobileNavMenu()
                 >
                   <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden -mt-4 -ml-48"
                   >
-                    { ((advertState.getUserServices() === "1")  ||  (advertState.getUserServices() === "2")) &&
+                    { ((advertState.getUserServices() === "1")  ||  (advertState.getUserServices() === "2")  ||  (advertState.getUserServices() === "3")) &&
                       <div className="relative grid gap-6 bg-white px-5 py-2 sm:gap-8 sm:p-8">
                         <a
                           href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600"
                           onClick={() => {
                             setFlyer(false)
                             navigate('/dashboard/store')
@@ -100,7 +101,7 @@ export default function MobileNavMenu()
                         </a>
                         <a
                           href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600"
                           onClick={() => {
                             setFlyer(false)
                             navigate('/dashboard/create-advert')
@@ -120,7 +121,7 @@ export default function MobileNavMenu()
                         </a>
                         <a
                           href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600"
                           onClick={() => {
                             setFlyer(false)
                             navigate('/dashboard/profile')
@@ -140,7 +141,7 @@ export default function MobileNavMenu()
                         </a>
                         <a
                           href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600"
                           onClick={() => {
                             setFlyer(false)
                             navigate('/dashboard/change-email')
@@ -160,7 +161,7 @@ export default function MobileNavMenu()
                         </a>
                         <a
                           href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 mb-1"
                           onClick={() => {
                             setFlyer(false)
                             navigate('/dashboard/change-phone-number')
@@ -180,14 +181,15 @@ export default function MobileNavMenu()
                         </a>
                       </div>
                     }
+                    
                     { ((advertState.getUserServices() === "2")  ||  (advertState.getUserServices() === "4")) &&
-                      <div className="relative grid gap-6 bg-white px-5 py-2 sm:gap-8 sm:p-8 -mt-8">
+                      <div className="relative grid gap-6 bg-white px-5 py-2 sm:gap-8 sm:p-8 -mt-10">
+                          <span className="p-1 w-full bg-blue-600 text-white rounded-full px-3">Student</span>
                         <a
-                          href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 cursor-pointer"
                           onClick={() => {
                             setFlyer(false)
-                            navigate('/dashboard/courses')
+                            navigate('/dashboard/summary')
                           }}
                         >
                           {/* Heroicon name: outline/chart-bar */}
@@ -203,11 +205,10 @@ export default function MobileNavMenu()
                           </div>
                         </a>
                         <a
-                          href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 cursor-pointer"
                           onClick={() => {
                             setFlyer(false)
-                            navigate('/dashboard/create-advert')
+                            navigate('/dashboard/courses')
                           }}
                         >
                           {/* Heroicon name: outline/cursor-click */}
@@ -218,17 +219,12 @@ export default function MobileNavMenu()
                           <div className="ml-4">
                               <p className="text-sm font-medium text-gray-900">
                                 {/* <Link to={'/dashboard/create-advert'}>Create Advert</Link> */}
-                                Create Advert
+                                Course
                               </p>
                           </div>
                         </a>
                         <a
-                          href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
-                          onClick={() => {
-                            setFlyer(false)
-                            navigate('/dashboard/profile')
-                          }}
+                          className="-m-3 p-2 flex items-start rounded-lg"
                         >
                           {/* Heroicon name: outline/shield-check */}
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mt-1 w-4 h-4">
@@ -238,39 +234,61 @@ export default function MobileNavMenu()
                           <div className="ml-4">
                               <p className="text-sm font-medium text-gray-900">
                                 {/* <Link to={'/dashboard'}>Account</Link> */}
-                                Profile
+                                TEST
                               </p>
+                              <ul className="d-flex gap-4 w-2/2 py-3">
+                                  <li className="mb-1 p-1 hover:text-green-800 hover:font-bold cursor-pointer rounded-full col-span-12 cursor-pointer"
+                                    onClick={() => {
+                                      setFlyer(false)
+                                      navigate('/dashboard/start-obj-test')
+                                    }}
+                                  >Objective</li>
+                                  <li className="mb-1 p-1 hover:text-green-800 hover:font-bold cursor-pointer rounded-full w-full cursor-pointer"
+                                    onClick={() => {
+                                      setFlyer(false)
+                                      navigate('/dashboard/start-theory-test')
+                                    }}
+                                  >Exam</li>
+                              </ul>
                           </div>
                         </a>
                         <a
-                          href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
-                          onClick={() => {
-                            setFlyer(false)
-                            navigate('/dashboard/change-email')
-                          }}
+                          className="-m-3 p-2 flex items-start rounded-lg -mt-10"
                         >
-                          {/* Heroicon name: outline/view-grid */}
+                          {/* Heroicon name: outline/shield-check */}
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mt-1 w-4 h-4">
-                            <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
-                            <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+                            <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
                           </svg>
+
                           <div className="ml-4">
                               <p className="text-sm font-medium text-gray-900">
-                                {/* <Link to={'/dashboard/change-email'}>Change Email</Link> */}
-                                Change Email
+                                {/* <Link to={'/dashboard'}>Account</Link> */}
+                                Exam
                               </p>
+                              <ul className="d-flex gap-4 w-2/2 py-3">
+                                  <li className="mb-1 p-1 hover:text-green-800 hover:font-bold cursor-pointer rounded-full col-span-12 cursor-pointer"
+                                    onClick={() => {
+                                      setFlyer(false)
+                                      navigate('/dashboard/start-exam-obj')
+                                    }}
+                                  >Objective</li>
+                                  <li className="mb-1 p-1 hover:text-green-800 hover:font-bold cursor-pointer rounded-full w-full cursor-pointer"
+                                    onClick={() => {
+                                      setFlyer(false)
+                                      navigate('/dashboard/start-exam-theory')
+                                    }}
+                                  >Exam</li>
+                              </ul>
                           </div>
                         </a>
                         <a
-                          href="#"
-                          className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600"
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 -mt-10 mb-10 cursor-pointer"
                           onClick={() => {
                             setFlyer(false)
-                            navigate('/dashboard/change-phone-number')
+                            navigate('/dashboard/course-faq')
                           }}
                         >
-                          {/* Heroicon name: outline/refresh */}
+                          {/* Heroicon name: outline/chart-bar */}
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mt-1 w-4 h-4">
                             <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
                           </svg>
@@ -278,7 +296,26 @@ export default function MobileNavMenu()
                           <div className="ml-4">
                               <p className="text-sm font-medium text-gray-900">
                                 {/* <Link to={'/dashboard/change-phone-number'}>Change Phone Number</Link> */}
-                                Change Phone Number
+                                FAQ
+                              </p>
+                          </div>
+                        </a>
+                        <a
+                          className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 -mt-14 cursor-pointer"
+                          onClick={() => {
+                            setFlyer(false)
+                            navigate('/dashboard/profile')
+                          }}
+                        >
+                          {/* Heroicon name: outline/chart-bar */}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mt-1 w-4 h-4">
+                            <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
+                          </svg>
+
+                          <div className="ml-4">
+                              <p className="text-sm font-medium text-gray-900">
+                                {/* <Link to={'/dashboard/change-phone-number'}>Change Phone Number</Link> */}
+                                Profile
                               </p>
                           </div>
                         </a>
@@ -321,7 +358,7 @@ export default function MobileNavMenu()
                  >
                    <div className="relative grid gap-6 bg-white px-5 py-2 sm:gap-8 sm:p-8">
                      <a
-                       className="-m-3 p-2 flex items-start rounded-sm hover:bg-green-600 cursor-pointer"
+                       className="-m-3 p-2 flex items-start rounded-lg hover:bg-green-600 cursor-pointer"
                        onClick={() => {
                           setFlyer(false)
                           navigate('login')
@@ -340,7 +377,7 @@ export default function MobileNavMenu()
                        </div>
                      </a>
                      <a
-                       className="-m-3 p-1 flex items-start rounded-sm hover:bg-green-600 cursor-pointer"
+                       className="-m-3 p-1 flex items-start rounded-lg hover:bg-green-600 cursor-pointer"
                        onClick={() => {
                           setFlyer(false)
                           navigate('register')

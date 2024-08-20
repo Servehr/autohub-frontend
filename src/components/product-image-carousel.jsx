@@ -11,8 +11,6 @@ export default function ProductImageCarousel({ data = productImages, waterMark }
   const thumbnailRef = useRef(null);
   const [slideIndex, setSlideIndex] = useState(1);
 
-  console.log(data)
-
   const [width, setWidth] = useState(0);
 
   const handleSlide = (direction) => {
@@ -41,35 +39,9 @@ export default function ProductImageCarousel({ data = productImages, waterMark }
   return (
     <>
       <div className="flex flex-col items-center mt-10">
-        {/* <div className="w-full aspect-video md:min-h-[200px] md:max-h-[400px] min-h-[300px] h-full  bg-white rounded-lg relative flex justify-center items-center overflow-hidden select-none"> */}
-        {/* <div className="md:min-h-[200px] md:max-h-[400px] min-h-[300px] bg-white overflow-hidden select-none"> */}
         <div className="w-full h-full relative rounded-2xl flex justify-center items-center aspect-video select-none bg-white p-2">
           {
               data?.map((image, idx) => (
-                // <Img
-                //   key={idx}
-                //   src={image}
-                //   loader={
-                //     <p className={idx + 1 === slideIndex ? "block" : "hidden"}>
-                //       Loading...
-                //     </p>
-                //   }
-                //   unloader={
-                //     <p
-                //       className={
-                //         idx + 1 === slideIndex
-                //           ? "block text-sm text-brandDarkGray italic"
-                //           : "hidden"
-                //       }
-                //     >
-                //       Couldn't not load Image
-                //     </p>
-                //   }
-                //   alt=""
-                //   className={`w-full h-full object-contain ${
-                //     idx + 1 === slideIndex ? "block" : "hidden"
-                //   }`}
-                // />
                   <ProgressiveImage key={idx} src={`${PRODUCT_FACE}${image}`}>
                     {(src) => (
                       <img

@@ -40,7 +40,6 @@ export default function Items()
 
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -88,7 +87,6 @@ export default function Items()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setOpenItemModal(e) 
                                                                                 } } 
                                                                                 page={'items'}

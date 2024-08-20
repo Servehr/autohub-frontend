@@ -41,14 +41,10 @@ const SlideShow = () => {
               { 
                 setSlide(1)
               }
-              console.log(slide)
-              console.log(data?.length)
-              console.log("It`s Zero")
           } else if(sliderSize === 1) {
                 setSlide(0)
           } else if(slide < Number(data?.length)-1) {
               setSlide(slide+1)
-              console.log("It`s the last number")
           } else {
               setSlide(0)
           }
@@ -73,23 +69,6 @@ const SlideShow = () => {
       setSlide(position)
   }
 
-  if(!isLoading)
-  {
-     console.log(data?.length)
-     console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-     console.log(data)
-     console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-    // for (let index = 0; index < data.length; index++) 
-    //   {
-    //       console.log(data?.)
-    //   }
-  }
-
-  if(!isFetching)
-  {
-     console.log(data?.length)
-     console.log(data)
-  }
 
   return (
       <>

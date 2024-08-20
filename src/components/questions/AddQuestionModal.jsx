@@ -8,7 +8,7 @@ import { BASE_URL } from "@/lib/axios";
 import { CreateFaq } from '@/apis/misc';
 import { BeatLoader } from "react-spinners";
 import { AddTest } from '@/apis/backend/questions';
-import { AllCourse } from '@/apis/backend/course';
+import { AllCourses } from '@/apis/backend/course';
 import { useQuery } from 'react-query';
 
 
@@ -17,13 +17,8 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
         const { id } = useParams()
-        const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
-      
-        if(!isLoading)
-        {
-            console.log(data)
-        }
-
+        const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourses(), { staleTime: Infinity })
+ 
         const [question, setQuestion] = useState("")
         const [optionA, setOptionA] = useState("")
         const [optionB, setOptionB] = useState("")
@@ -41,19 +36,16 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
         const addQuestion = () => 
         {   
                 const dataz = { test_questionaire_id: Number(id), course_id: Number(course), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
-                console.log(dataz)
-                setIsLoading(true)
+               setIsLoading(true)
                 AddTest(dataz)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

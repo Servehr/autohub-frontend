@@ -76,24 +76,9 @@ export default function ProductDetailsPage() {
     resolver: yupResolver(schema),
   });
 
-  if(!isLoading)
-  {
-    console.log(data)
-  }
-
-  if(!isFetching)
-  {
-    console.log("loaded") 
-    console.log(isFetching)   
-    console.log(data?.product?.vendor_followers)
-    console.log("loaded")
-  } else {
-     console.log("Am still loading")
-  }
 
   const onSubmit = (adMsg) => {
     setLoading(true);
-    console.log(adMsg)
     addMessage(adMsg)
       .then(() => {
         setLoading(false);
@@ -117,7 +102,6 @@ export default function ProductDetailsPage() {
         commentsSection.scrollIntoView({ behavior: "smooth" });
       }
     }
-    console.log(data)
   }, [data]);
 
   const checkSubmit = () => 
@@ -129,7 +113,6 @@ export default function ProductDetailsPage() {
   {
      followUser({vendor: data?.product?.detail?.user_id})
      .then((res) => {
-          console.log(res)
           refetch();
      })
      .catch((res) => {
@@ -233,18 +216,7 @@ export default function ProductDetailsPage() {
                           </div>
                       </div>
 
-                      {/* Product Image */}
-
-                      {/* <div className="w-full rounded-xl bg-gray-200 h-[300px] lg:h-[400px] overflow-hidden"> */}
-                      {/* <img
-                          src={imgUrl}
-                          alt=""
-                          className="w-full h-full object-cover"
-                        /> */}
-                      {/* {console.log(data.avatar)} */}
-                      {/* {console.log(JSON.parse(data.avatar))} */}
                       <ProductImageCarousel data={data.product.images} />
-                      {/* </div> */}
 
                       {/* Description */}
                       <div className="w-full rounded-xl bg-white p-4 min-h-[150px] h-max flex flex-col gap-2">

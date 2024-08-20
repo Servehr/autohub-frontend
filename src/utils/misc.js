@@ -13,6 +13,18 @@ export function getYearsArray() {
   return years.toReversed();
 }
 
+export function courseYear() {
+  const currentYear = new Date().getFullYear();
+  const endYear = Math.max(currentYear, 2023); // Ensure the start year is 2023 or greater
+  const years = [];
+
+  for (let year = 1995; year <= endYear; year++) {
+    years.push(year);
+  }
+
+  return years.toReversed();
+}
+
 export function getColor(id) {
   const { data } = useQuery("colur", fetchColour, {
     refetchOnWindowFocus: false,

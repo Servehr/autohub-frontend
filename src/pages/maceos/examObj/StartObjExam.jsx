@@ -10,20 +10,18 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-query";
 import { CheckIfUserHasPaid, TestQuestions } from "@/apis/backend/course";
 import { appStore } from "@/state/appState";
-import UserTakeTestObjective from "./UserTakeExamObjective";
+import UserTakeTestObjective from "./UserTakeExamObjective_";
 import PaymentPage from "../../user/user-type/PaymentPage";
-import StartPage from "./StartExamObjectivePage";
+import StartExamObjectivePage from "./StartExamObjectivePage_";
+import StartExamObjectiveExam from "./StartObjectiveExam";
 
 
 export default function StartObjExam() 
 {
 
   const advertState = appStore((state) => state)
-  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid())
-  if(!isLoading)
-  {
-      console.log(data)
-  }
+  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid('exam-objective'))
+
   const [approvalRequest, setApprovalRequest] = useState("")
 
   return (
@@ -33,15 +31,13 @@ export default function StartObjExam()
           >
 
               { approvalRequest && <p className={`font-bold text-lg text-white rounded-md col-span-12 ${(approvalRequest === "") ? " " : "p-3 bg-blue-600"}`}>{approvalRequest}</p> }
-              {/* <span className="col-span-12 font-bold text-green-800 mb-3">MACEOS ACADEMY COURSES: </span> */}
-              {/* <p className="mb-4 col-span-12 ">Below are the courses we offer. Browse through for your kind perusal; from the main courses to sub-courses and modules.</p> */}
-                {
+               {
                   isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <BeatLoader color="#1c9236" />
                   </div>
                 }
                 {
-                    !isLoading && (data === "not-paid") && <>
+                    !isLoading && (data?.data === "not-paid") && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -52,11 +48,7 @@ export default function StartObjExam()
                         }} />
                     </>
                 }
-                {
-                     !isLoading && (data === "paid") && <>
-                          <StartPage />
-                     </>
-                }
+                { !isLoading && data?.data && (data?.data === "paid") && <StartExamObjectiveExam option={data?.message} /> }
                     
         </div>
         <div className="p-5"></div>

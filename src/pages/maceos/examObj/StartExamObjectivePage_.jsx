@@ -11,9 +11,9 @@ import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 
 
-export default function StartExamObjectivePage() 
+export default function StartExamObjectivePage({ option })
 {
-  const [isUser, setIsUser] = useState("-1")
+  localStorage.setItem("text-exam-theory-option", option)
 
   return (
     <>
@@ -43,7 +43,7 @@ function StartExam()
             >                
                 <a className="p-3 bg-green-600 hover:bg-green-900 text-white col-span-12 mx-auto rounded-lg cursor-pointer w-fit"
                   onClick={() => {
-                      navigate('/dashboard/exam-user-obj')
+                      navigate('/dashboard/take-exam')
                   }}
                 >
                     Start Exam Objective

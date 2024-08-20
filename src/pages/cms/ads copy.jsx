@@ -36,10 +36,8 @@ export default function Ads()
 
     useEffect(() => {
         setTheUserStates(advertState.getStates())
-        console.log(advertState.getStates())
     }, [])
 
-    console.log(theUserState)
     const selectFiles = () => 
     {
         // fileInputRef.current.click()
@@ -48,15 +46,12 @@ export default function Ads()
     const selectMultipleFiles = (event) => 
     {
         const selectedFiles = event.target.files;
-        console.log(selectedFiles)
         const selectedFilesArray = Array.from(selectedFiles)
 
         const imagesArray = selectedFilesArray.map((file) => {
             return URL.createObjectURL(file)
         })
         // setImages((previousImages) => previousImages.concat(imagesArray))
-
-        // console.log(thumbnail)
         
         imagesArray.forEach((image, index) => {
             setImages((previousImages) => previousImages.concat(image))
@@ -67,9 +62,7 @@ export default function Ads()
         //                 }
         //         ])
 
-        // console.log("I came here")
         // const files = event.target.files;
-        // console.log(files.length)
         // if(files.length === 0) return;
         // for (let index = 0; index < files.length; index++) 
         // {

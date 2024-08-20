@@ -37,18 +37,15 @@ export const AddCourseModal = ({onClick, openCourseModal})  =>
         {
             
                 const data = { name: theTitle, description: theContent }
-                console.log(data)
                 setIsLoading(true)
                 AddCourse(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

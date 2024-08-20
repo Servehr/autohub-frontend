@@ -13,14 +13,6 @@ export const VerifyProduct = ({onClick, verifyProduct, productId})  =>
         // const advertState = appStore((state) => state)
         const { data, isLoading, refetch } = useQuery([`single-product/${productId}`], () => singelProduct(productId), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
 
-        if(!isLoading)
-        {
-        }
-
-        // useEffect(() => {
-        //     refetch()
-        // }, [refresh])
-
         const activateProduct = async () => 
         {
                 ActivateProduct(productId)
@@ -31,7 +23,7 @@ export const VerifyProduct = ({onClick, verifyProduct, productId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 }
            )
         }
@@ -46,7 +38,7 @@ export const VerifyProduct = ({onClick, verifyProduct, productId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 }
            )
         }

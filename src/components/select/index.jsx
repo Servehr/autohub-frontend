@@ -17,7 +17,7 @@ export default function Select({
   title = "Select",
   name,
   setValue = (value) => {
-    // console.log(value);
+    
   },
   options = [
     { name: "Option 1", value: "option1" },
@@ -58,7 +58,7 @@ export function Select2({
   title = "",
   name,
   setValue = (value) => {
-    // console.log(value);
+    
   },
   options = [],
 }) {
@@ -89,7 +89,6 @@ export function StateSelect({ value, setValue, customStyle = "" })
 {
   const advertState = appStore((state) => state)
   const selectedState = advertState.getStates()
-  // console.log(selectedState)
   const { data, isLoading } = useQuery("state", fetchState, {
     refetchOnWindowFocus: false,
     staleTime: Infinity,
@@ -166,8 +165,6 @@ export function MakeAndModelSelect({ value, setValue })
   const filteredModel =
     modelData && modelData?.filter((item) => item.make_id == maker);
 
-  // console.log(data);
-
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
 
@@ -177,19 +174,14 @@ export function MakeAndModelSelect({ value, setValue })
         onChange={(e) => {
           if(e.target.value === "others")
           {   
-            console.log("Equal Others")
             advertState.setOthers(e.target.value)
             advertState.setMaker("Enter Manufacturer")
-            // advertState.setModel("Enter Model")
             setOthers(e.target.value)
-            console.log("Equal Others")
-            console.log(advertState.getOthers())
             advertState.setMaker("")  
           } else {
             setMaker(e.target.value)
             advertState.setOthers("")
-            advertState.setMaker(e.target.value)      
-            console.log(advertState.getMaker())          
+            advertState.setMaker(e.target.value)          
           }
           setModel("");
         }}
@@ -265,8 +257,6 @@ export function CategorySelect({ value, setValue, customStyle = "" })
     // retry: 2,
   });
 
-  // console.log(data);
-
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
       <select
@@ -302,8 +292,6 @@ export function MakerSelect({ setValue, customStyle = "" }) {
     staleTime: Infinity,
     retry: 2,
   });
-
-  // console.log(data);
 
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
@@ -345,14 +333,6 @@ export function TransmissionSelect({ value, setValue })
     staleTime: Infinity,
     retry: 2,
   });
-
-  if(!isLoading)
-  {
-    console.log(data);
-  } else {
-    console.log(isLoading)
-    console.log("Trying to access db")
-  }
 
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
@@ -397,14 +377,6 @@ export function TrimSelect({ value, setValue })
     retry: 2,
   });
 
-  // console.log(typeof parseInt(selectedTrim))
-
-  // console.log(data);
-
-  // data.map((option) => (
-  //     console.log(option)
-  // ))
-
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
       <select
@@ -447,8 +419,6 @@ export function ConditionSelect({ value, setValue })
     retry: 2,
   });
 
-  // console.log(data);
-
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">
       <select
@@ -490,8 +460,6 @@ export function ColourSelect({ value, setValue })
     staleTime: Infinity,
     retry: 2,
   });
-
-  // console.log(data);
 
   return (
     <div className="w-full flex flex-col items-center text-center gap-2">

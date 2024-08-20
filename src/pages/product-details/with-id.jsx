@@ -65,11 +65,6 @@ export default function ProductDetailsPageWithID()
     () => fetchProductDetails(id)
   );
 
-  if(!loading)
-    {
-      console.log(data)
-    }
-
   const {
     register,
     handleSubmit,
@@ -103,7 +98,6 @@ export default function ProductDetailsPageWithID()
         commentsSection.scrollIntoView({ behavior: "smooth" });
       }
     }
-    console.log(data)
   }, [data]);
 
   return (
@@ -206,8 +200,6 @@ export default function ProductDetailsPageWithID()
                           alt=""
                           className="w-full h-full object-cover"
                         /> */}
-                      {/* {console.log(data.avatar)} */}
-                      {/* {console.log(JSON.parse(data.avatar))} */}
                       {/* <ProductImageCarousel data={`${AVATAR}${data?.product.detail.user?.avatar}`} /> */}
                       <ProductImageCarousel data={data.product.images} waterMark={`${WATER_MARK}${data?.product.detail.watermark}`} />
                       {/* </div> */}

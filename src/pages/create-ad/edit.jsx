@@ -109,35 +109,12 @@ export default function EditProduct()
   const [chooseAnotherTrim, setChooseAnotherTrim] = useState(false)
   const [changingTrim, setChangingTrim] = useState(0)
 
-  console.log({id, country_id, make_id, model_id})
   
   const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery([`required-data-${id}${country_id}${make_id}${model_id}`], () => fetchAllRequiredDataForEdit(id, country_id, make_id, model_id), { refetchOnWindowFocus: false, retry: 2 });
 
-  if(!isRequiredDataLoading)
-  {
-     console.log(allRequiredData)
-  }
-  console.log(advertState.getStateModel())
   useEffect(() => 
   {
-        // clearProductStore()
-        // save data to session
-            // advertState.setCountry(localStorage.getItem("country"))
-            // advertState.setStates(localStorage.getItem("state"))
-            // advertState.setCateg(localStorage.getItem("category"))
-            // advertState.setMaker(localStorage.getItem("maker"))
-            // advertState.setModel(localStorage.getItem("model"))
-            // advertState.setTrim(localStorage.getItem("trim"))
-            // advertState.setFuelType(localStorage.getItem("fuelType"))
-            // advertState.setYearOfPoduction(localStorage.getItem("productionYear"))
-            // advertState.setColour(localStorage.getItem("colour"))
-            // advertState.setTransmission(localStorage.getItem("transmission"))
-            // advertState.setCondition(localStorage.getItem("condition"))
-            // advertState.setDescription(localStorage.getItem("description"))
-            // advertState.setChasisNumber(localStorage.getItem("chasisNo"))
-            // advertState.setPrice(localStorage.getItem("price"))
-            // advertState.setMileAge(localStorage.getItem("mileage"))
-        // data saved to session    
+       
   }, []) 
   
   const [value, setValue] = useState(advertState.getDescription())
@@ -173,16 +150,13 @@ export default function EditProduct()
   const callTellData = (x) => 
   {
         const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
-        console.log(filteredTrim)
-        console.log(filteredTrim.length)
-        if(filteredTrim.length > 0)
+       if(filteredTrim.length > 0)
         {
             setChangingTrim(filteredTrim.length)
         } else {
             setChangingTrim(0)
         }
         advertState.setTheModelTrim(filteredTrim)
-        console.log(advertState.getTheModelTrim())
   }
   // country
   const callData = (x) => 
@@ -190,8 +164,6 @@ export default function EditProduct()
       const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
       // sorting
       let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      console.log(allRequiredData?.state)
-      console.log(filteredModel)
       setSelectedStates(sortedProducts)
       advertState.setStateModel(sortedProducts)
       setSelectedTrim([])
@@ -204,13 +176,8 @@ export default function EditProduct()
       const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
       // sorting
       let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      console.log(allRequiredData?.model)
-      console.log(sortedProducts)
       setSelectedModel(sortedProducts)
       advertState.setTheMakerModels(sortedProducts)
-      console.log(sortedProducts)
-      console.log(advertState.getTheMakerModels())
-      console.log(selectedModel)
   }
 
   const populateProductStore = () => 
@@ -235,9 +202,6 @@ export default function EditProduct()
      advertState.setCountry(-1)
      advertState.setMileAge("")
      advertState.setFuelType("")
-     console.log("=======================")
-     console.log(advertState.getStates())
-     console.log("=======================")
   }
 
   const clearProductStore = () => 
@@ -290,12 +254,12 @@ export default function EditProduct()
        submitForm = true;
     }
 
-    if(theTrim === -1 || theTrim === "")
-    {
-        setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
-    } else {
-        setTrimErrorMsg(""); submitForm = true;
-    }
+    // if(theTrim === -1 || theTrim === "")
+    // {
+    //     setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
+    // } else {
+    //     setTrimErrorMsg(""); submitForm = true;
+    // }
 
       setLoading(true)
       const advertDetail = { 
@@ -304,18 +268,13 @@ export default function EditProduct()
                                 chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: Number(theFuelType), 
                                 country: theCountry
                             }   
-    
-    console.log(advertDetail)
-    // setLoading(false)
-    // return false
-
+  
     if(submitForm === true)
     {
         updateAds(advertDetail)
         .then((res) => {
               setError(false)
               setLoading(false);
-              console.log(res)
               setIsSuccess(res.message)
               clearProductStore()
               setSuccessModal(true)            
@@ -327,12 +286,10 @@ export default function EditProduct()
         })
         .catch((err) => {
           setIsSuccess("")
-          console.log(err)
           setLoading(false);
           setError(`${err}`);
         });
     } else {
-        console.log("Something went wrong")
     }
     
   }
@@ -413,9 +370,7 @@ export default function EditProduct()
                                                                                     advertState.setStates(-1)                                                                                    
                                                                                     setStateErrorMsg("Kindly Select State")
                                                                                 } else {
-                                                                                    console.log(e.target.value)
                                                                                     advertState.setStates(Number(e.target.value))
-                                                                                    console.log(advertState.getStates())
                                                                                     setTheState(Number(e.target.value))                                                                                    
                                                                                     setStateErrorMsg("")
                                                                                 }
@@ -589,7 +544,6 @@ export default function EditProduct()
                                                                                 advertState.setModel(Number(e.target.value))
                                                                                 setTheModel(Number(e.target.value))
                                                                                 callTellData(e.target.value)
-                                                                                console.log(Number(e.target.value))
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             <option key={-1} value={-1}> - Select Model - </option>
@@ -616,7 +570,6 @@ export default function EditProduct()
                                                                                     advertState.setModel(Number(e.target.value))
                                                                                     setTheModel(Number(e.target.value))
                                                                                     callTellData(e.target.value)
-                                                                                    console.log(Number(e.target.value))
                                                                                     setChooseAnotherTrim(true)
                                                                                 }
                                                                             }

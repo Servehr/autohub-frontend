@@ -1,4 +1,6 @@
+import { appStore } from "@/state/appState";
 import { useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 const formatTime = (time) => 
 {
@@ -15,15 +17,18 @@ const DisplayTime = () => {
 
 }
 
-export default function CountDown({ seconds, type })
+export default function CountDownTimer({ seconds })
 {
+    const advertState = appStore((state) => state)
     const [countdown, setCountDown] = useState(seconds)
     const [theTime, setTheTime] = useState(0)
     const timerId = useRef()    
+    const navigate = useNavigate()
 
-    useEffect(() => {
-
-        timerId.current = setInterval(() => {
+    useEffect(() => 
+    {
+        timerId.current = setInterval(() => 
+        {
             setCountDown(prev => prev -1)
         }, 1000)
         return () => clearInterval(timerId.current)
@@ -33,7 +38,8 @@ export default function CountDown({ seconds, type })
         if(countdown <= 0)
         {
             clearInterval(timerId.current)
-            // alert("End")
+            advertState.setForce('yes')
+            navigate('/dashboard/force-submit', { replace: true })
         }
     }, [countdown])
 
@@ -42,7 +48,7 @@ export default function CountDown({ seconds, type })
     return (
         <div className="w-full flex jsutify-center items-center center">
             <h1 className={`font-bold md:text-lg text-sm text-white px-5 py-2 w-fit rounded-full ${runningOut}`}> { formatTime(countdown) }</h1>
-            { (countdown < 300) && <span className="text-red-600 font-bold md:text-md text-md px-3">Upon Time Elapsed, Application Shall self submit</span> }
+            { (countdown < 300) && <span className="text-red-600 font-bold md:text-md text-md px-3">Upon Time Elapsed, Application will ask you to submit</span> }
         </div>
     )
 }

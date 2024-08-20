@@ -16,13 +16,10 @@ const schema = yup.object().shape({
 export default function LoginPage() {
   const navigate = useNavigate();  
   const { data: user } = useUser();
-  console.log(user)
 
-  // if((user?.data?.id !=-1) || (user?.data?.id !=null) ||  (user?.data?.id !=''))
   if(!user)
     {
         navigate('/login')
-        // window.location.href = '/'
     }
 
   return (

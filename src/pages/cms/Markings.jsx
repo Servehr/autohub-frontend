@@ -24,11 +24,6 @@ export default function Markings()
 
     
     const { data, isLoading, isRefetching, refetch } = useQuery(["user-courses"], () => UserCourses(), { cacheTime: 0 })
-    
-    if(!isLoading)
-    {
-        console.log(data)
-    }
 
     return ( 
             <>

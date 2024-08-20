@@ -1,5 +1,4 @@
 // import { fetchMaker, fetchModel } from "apis/misc";
-import { createAd } from "@/apis/ads";
 import { fetchPlans } from "@/apis/misc";
 import {
   CategorySelect,
@@ -19,6 +18,7 @@ import currencyFormatter from "@/utils/currency-formatter";
 import { checkPayment, requestPayment } from "@/apis/payment";
 import ImageUploading from "react-images-uploading";
 import { appStore } from "@/state/appState";
+import CreateAd from "./createAd";
 
 const FirstStep = () => 
 {  
@@ -31,16 +31,14 @@ const FirstStep = () =>
   const maxFileSize = 3000000;
 
   useEffect(() => {
-      console.log(advertState.getStates())
+    
   }, [])
 
   const onChange = (imageList) => {
-    console.log(imageList)
     setImages(imageList);
     let data = "";
     imageList.map((image) => {
       let base64 = image.data_url.split(",")[1];
-      // advertState.setAvatar(base64)
       data += `${data && "<=>"}${base64}`;
     });
     setFromattedImage(data);
@@ -231,8 +229,6 @@ const SecondStep = () => {
                     onBlur={(e) => {
                       e.preventDefault()
                       advertState.setMaker(e.target.value)
-                      // advertState.setModel("")
-                      console.log(e.target.value)
                       handleData({ maker: e.target.value })
                     }}
                     className="mt-1.5 w-full p-3 rounded-lg border outline-none border-brandGreen/50 focus:border-brandGreen text-gray-700 text-sm md:text-base bg-transparent"
@@ -246,8 +242,6 @@ const SecondStep = () => {
                     onKeyUp={(e) => {
                       e.preventDefault()
                       advertState.setModel(e.target.value)
-                      // advertState.setModel("")
-                      console.log(e.target.value)
                       handleData({ model: e.target.value })
                     }}
                     className="mt-1.5 w-full p-3 rounded-lg border outline-none border-brandGreen/50 focus:border-brandGreen text-gray-700 text-sm md:text-base bg-transparent"
@@ -288,7 +282,6 @@ const ThirdStep = () => {
   };
   const handleData = (newData) => {
     setData((data) => {
-        // console.log(newData)
       return { ...data, ...newData };
     });
   };
@@ -367,7 +360,6 @@ const FourthStep = () => {
       return { ...data, ...newData };
     });
   };
-  // console.log(title);
 
   const handleSubmit = () => {
     setLoading(true);
@@ -375,9 +367,8 @@ const FourthStep = () => {
 
     const requestData = { ...data, ...title }; // remove trim
 
-    console.log(requestData);
 
-    createAd(requestData)
+    CreateAd(requestData)
       .then((res) => {
         setLoading(false);
         setProductId(res.data);
@@ -480,8 +471,6 @@ const FourthStep = () => {
 const FifthStep = () => {
   const { productId, data } = useContext(PostAdContext);
 
-  // console.log(productId, data.plan_id);
-
   const [refreshing, setRefreshing] = useState(false);
 
   const [status, setStatus] = useState(null);
@@ -506,15 +495,11 @@ const FifthStep = () => {
       .then((res) => {
         setRefreshing(false);
         setStatus(true);
-        // console.log(res);
       })
       .catch((err) => {
         setRefreshing(false);
-        // console.log(`${err}`);
       });
   };
-
-  // console.log(paymentInfo);
 
   return (
     <>
@@ -621,7 +606,7 @@ function ClipboardToCopy({ copyText }) {
         }, 1500);
       })
       .catch((err) => {
-        console.log(err);
+        
       });
   };
 

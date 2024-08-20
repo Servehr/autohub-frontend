@@ -15,11 +15,6 @@ export const SuccessModal = ({onClick, successModal, returnTo, message})  =>
         const isSuccessful = () => 
         {
                 return onClick(true)
-        //     console.log(returnTo)
-        //     window.location.href = returnTo  
-        //     setTimeout(() => {
-        //         navigate(returnTo)
-        //     }, 2000)
         }
 
         return (

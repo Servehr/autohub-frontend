@@ -29,12 +29,7 @@ export default function Board()
     const x = Math.round()
     const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
 
-    if(!isLoading)
-    {
-        console.log(data)
-    }
-
-  return (
+    return (
             <>
                 <div className='grid grid-cols-12 gap-5 py-2 px-3 mt-5 mb-20'>
                         <span className="font-bold text-xl col-span-12 mb-4 text-green-600">Summary</span>

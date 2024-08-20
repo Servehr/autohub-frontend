@@ -9,8 +9,6 @@ export default function SupvervisorDashboard()
   const [ imageOpenModal, setImageOpenModal] = useState(false)   
   const { data } = useUser();
   const [profilePicture, setProfilePicture] = useState(data.data.avatar)
-  console.log(data)
-  console.log(data.followers)
 
   useEffect(() => {
 
@@ -83,9 +81,7 @@ export default function SupvervisorDashboard()
       </div>
       {
           imageOpenModal && <ChangeProfilePicture onClick={(e) => {
-              // useUser();
               setProfilePicture(e)
-              console.log(e)
               setImageOpenModal(false)
           } } imageModal={imageOpenModal} />
       }

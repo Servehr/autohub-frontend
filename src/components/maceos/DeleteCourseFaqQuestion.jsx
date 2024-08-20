@@ -30,13 +30,11 @@ export const DeleteCourseFaqQuestion  = ({courseFaq, onClick, deleteAddCourseFaq
                 RemoveCourseFaq(courseFaqId)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

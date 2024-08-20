@@ -87,14 +87,23 @@ import StartExamTheoryPage from "./pages/maceos/examTheory/StartExamTheoryPage";
 import StartTheoryExam from "./pages/maceos/examTheory/StartTheoryExam";
 import ForceSubmitExamTheory from "./pages/maceos/examTheory/ForceSubmitExamTheory";
 import StartObjExam from "./pages/maceos/examObj/StartObjExam";
-import StartExamObjectivePage from "./pages/maceos/examObj/StartExamObjectivePage";
+import StartExamObjectivePage from "./pages/maceos/examObj/StartExamObjectivePage_";
 import ForceSubmitExamObjective from "./pages/maceos/examObj/ForceSubmitExamObjective";
-import ExamObjective from "./pages/maceos/examObj/exam-user";
+import ExamObjective from "./pages/maceos/examObj/ExamObjectives_";
 import Markings from "./pages/cms/Markings";
 import AdsClassic from "./pages/cms/AdsClassic";
 import NotAllowed from "./components/notAllowed";
 import AdminRoute from "./components/AdminRoute";
 import Board from "./pages/cms/board";
+import UserExamTheory from "./pages/maceos/examTheory/user-exam-theory";
+import ForceSubmitTestTheory from "./pages/maceos/testTheory/ForceSubmitTestTheory";
+import ResloveIssue from "./pages/maceos/testObj/ResloveIssue";
+import ExamObjectives from "./pages/maceos/examObj/ExamObjectives_";
+import TakeExam from "./pages/maceos/examObj/TakeExam";
+import Location from "./pages/cms/Location";
+import Users from "./pages/cms/Users";
+import ProductEntry from "./pages/cms/productEntry";
+import { appStore } from "./state/appState";
 
 export const Loader = ({ full }) => {
   return (
@@ -114,7 +123,7 @@ export const Loader = ({ full }) => {
 
 export default function App() 
 {
-
+  const advertState = appStore((state) => state)
   const categoryPaths = categories.map((category) => category.link);
 
   const location = useLocation();
@@ -146,6 +155,10 @@ export default function App()
             <Route path="/new-password" element={<NewPassword />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/blog" element={<Blogs />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/blog-detail/:post_id" element={<BlogDetail />} />
+            <Route path="/a/create-post" element={<CreateBlog />} />
             
             {/* <Route path="/dashboard" element={<RoutePath />} /> */}
 
@@ -227,22 +240,26 @@ export default function App()
 
               
               <Route path="/dashboard/start-obj-test" element={<StartObjTest />} />
-              <Route path="/dashboard/test-user-obj" element={<TestUser />} />
+              <Route path="/dashboard/test-user-objective" element={<TestUser />} />
               <Route path="/dashboard/force-submit" element={<ForceSubmit />} />
+              <Route path="/dashboard/resolve" element={<ResloveIssue />} />
 
               <Route path="/dashboard/start-theory-test" element={<StartTheoryTest />} />
               <Route path="/dashboard/start-test-theory" element={<StartTheoryPage />} />
-              {/* <Route path="/dashboard/test-user-theory" element={<TestUser />} /> */}
+              <Route path="/dashboard/test-user-theory" element={<TestUserTheory />} />
+              <Route path="/dashboard/force-submit-test-theory" element={<ForceSubmitTestTheory />} />
 
               
-              <Route path="/dashboard/start-exam-theory" element={<StartExamTheoryPage />} />
-              <Route path="/dashboard/start-exam-theory-page" element={<StartTheoryExam />} />
+              <Route path="/dashboard/start-exam-theory" element={<StartTheoryExam />} />
+              <Route path="/dashboard/start-exam-theory-page" element={<StartExamTheoryPage />} />
               <Route path="/dashboard/force-submit-exam" element={<ForceSubmitExamTheory />} />
+              <Route path="/dashboard/start-theory-exam" element={<UserExamTheory />} />
 
               <Route path="/dashboard/start-exam-obj" element={<StartObjExam />} />
               <Route path="/dashboard/start-exam-obj-page" element={<StartExamObjectivePage />} /> 
               <Route path="/dashboard/force-submit-exam-obj" element={<ForceSubmitExamObjective />} /> 
-              <Route path="/dashboard/exam-user-obj" element={<ExamObjective />} />             
+              <Route path="/dashboard/exam-user-objective" element={<ExamObjectives />} />            
+              <Route path="/dashboard/take-exam" element={<TakeExam />} />             
             </Route>
 
             <Route
@@ -266,6 +283,9 @@ export default function App()
                 <Route path="/a/request-item" element={<RequestItems />} />
                 <Route path="/a/items" element={<Items />} />
                 <Route path="/a/settings" element={<Settings />} />
+                <Route path="/a/location" element={<Location />} />
+                <Route path="/a/users" element={<Users />} />
+                <Route path="/a/product-entry" element={<ProductEntry />} />
 
                 {/* <Route path="/a/course" element={<Course />} /> */}
                 {/* <Route path="/a/test-questionaires/:id" element={<TestQuestionaire />} /> */}
@@ -283,12 +303,8 @@ export default function App()
                 <Route path="/a/faqs" element={<Faqs />} />
                 <Route path="/a/package" element={<Plans />} />
                 <Route path="/a/search" element={<SearchPage />} />
-                <Route path="/a/blog" element={<Blogs />} />
-                <Route path="/a/faq" element={<FAQ />} />
                 <Route path="/a/blog-post" element={<BlogPost />} />
-                <Route path="/a/create-post" element={<CreateBlog />} />
                 <Route path="/a/edit-post/:id" element={<EditBlog />} />
-                <Route path="/a/blog-detail/:post_id" element={<BlogDetail />} />
             </Route>
             
                 <Route path="/not-allowed" element={<NotAllowed />} />
@@ -300,7 +316,8 @@ export default function App()
 
           <ScrollRestoration />
         </div>
-        <Footer />
+        { advertState.getUserServices() != "3" && <Footer /> }
+        {/* <Footer /> */}
         {/* {isMobile && <MobileNav />} */}
       </HelmetProvider>
     </>

@@ -13,33 +13,19 @@ export default function Pagination({onClick, perPageNo, currentPageNo, noOfPages
     const [currentPage, setCurrentPage] = useState(currentPageNo)  
     const [perPage, setPerPage] = useState(perPageNo)  
     const [pages, setPages] = useState(noOfPages)    
-
-    console.log(currentPageNo)
-    // console.log(perPage)
     
     const fetchRoles = async (theCurrentPage, thePerPage) => 
     {
-        // alert(theCurrentPage)
         setCurrentPage(parseInt(theCurrentPage))
         onClick(theCurrentPage)
-        // fetchData(theCurrentPage, thePerPage, from)
-        //     .then((res) => 
-        //     {
-        //         onClick(res.data)
-        //     })
-        //     .catch((err) => 
-        //     {
-        //         console.log(err)
-        //         alert('No data found')
-        //     })
     }
 
     
     let decrease = [];
     let increase = [];
-    // const totaly = localStorage.getItem('currentPage')
+    
     const totaly = currentPage
-    // const showOnlySomeLinks: number = parseInt(totaly) - (parseInt(totaly) - 6)
+    
     const showOnlySomeLinks = 2
     const y = parseInt(totaly)
   
@@ -68,10 +54,8 @@ export default function Pagination({onClick, perPageNo, currentPageNo, noOfPages
           }
     })
   
-    // const total = localStorage.getItem('noOfPages')
     const total = pages
-    const viewingPage = currentPage //localStorage.getItem('currentPage')
-    console.log(increase)
+    const viewingPage = currentPage 
     const after= increase.map((num, index) => 
     {
           if(num != currentPage && currentPage >= 1)

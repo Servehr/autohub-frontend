@@ -37,17 +37,14 @@ export const AddExamQuestionaireModal = ({onClick, openQuestionaire})  =>
         {            
                 setIsLoading(true)
                 const data = { name: theTitle, description: theContent }
-                console.log(data)
                 AddExamQuestionaire(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

@@ -19,10 +19,6 @@ export default function UserExamTheoryy()
 
   const advertState = appStore((state) => state)
   const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid())
-  if(!isLoading)
-  {
-      console.log(data)
-  }
   const [approvalRequest, setApprovalRequest] = useState("")
 
   return (

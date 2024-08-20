@@ -12,6 +12,7 @@ import { SubmitTestTheory, TestCourseTheoryQuestions, TestQuestions } from "@/ap
 import { appStore } from "@/state/appState";
 import { ChangeTestTheoryQuestion } from "./ChangeTestTheoryQuestion copy";
 import { AnswerTestTheoryQuestion } from "./AnswerTestTheoryQuestion";
+import CountDownTimerTestTheory from "@/components/CountDownTimerTestTheory";
 
 
 export default function TestUserTheory() 
@@ -36,10 +37,6 @@ function TestTheory()
   const navigate = useNavigate();
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestCourseTheoryQuestions(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      // console.log(data?.data[0]['question'])
-  }
   const advertState = appStore((state) => state)
   const [selectedOptions, selectedTestTheoryOptions] = useState([])
   const [answer, setAnswer] = useState('')
@@ -63,23 +60,29 @@ function TestTheory()
   const [fakeRefresh, setFakeRefresh] = useState(-1)
   const [choosen, setChoosen] = useState(advertState.getSelectedTestTheoryOption())
 
-  useEffect(() => {      
 
+  useEffect(() => {
+    const checkIfForcedToSubmit = advertState.getForceTestTheory()
+    if(checkIfForcedToSubmit === "yes")
+    {
+        navigate('/dashboard/force-submit-test-theory', { replace: true })
+    }
   }, [])
 
   const SubmitObjectiveTest = () => 
   {
       setIsSubmitting(true)
-      const userAnswers = advertState.getSelectedTestTheoryOption()
-      if(userAnswers.length === 0)
+      const userTheoryAnswers = { userSubmitted : 'yes', answers: advertState.getSelectedTestTheoryOption() }
+      if(userTheoryAnswers.answers.length === 0)
       {
           setErrorMsg("Answer at least one question")
           setTimeout(() => {
               setIsSubmitting(false)
               setErrorMsg("")
-          }, 2000)
+          }, 7000)
+          return false
       } else {
-        SubmitTestTheory(userAnswers)
+        SubmitTestTheory(userTheoryAnswers)
         .then((res) => {
             if(res === "submitted")
             {
@@ -102,7 +105,7 @@ function TestTheory()
   }
 
   useEffect(() => {
-      console.log(advertState.getSelectedTestTheoryOption())
+    
   }, [])
   
   useEffect(() => 
@@ -111,19 +114,12 @@ function TestTheory()
 
   const showQuestion = (pst) => 
   {
-      console.log(advertState.getSelectedTestTheoryOption())
       setCurrentPage(pst)
       const checkIfPresent = advertState.getSelectedTestTheoryOption().find((x) => x.position === currentPage); 
       if(checkIfPresent)
       {
-          // setAnswer(checkIfPresent.answer)
-          // setFakeRefresh(Math.random()*11*313)
-          // document.getElementById("answering").value = checkIfPresent.answer
           document.getElementById("answering").value = ''
       } else {
-          // setAnswer("")
-          // setFakeRefresh(Math.random()*11*313)
-          // document.getElementById("answering").value = ''
       }
   }
 
@@ -147,7 +143,6 @@ function TestTheory()
         setTempSave(false)
         setSuccess('')
       }, 2000)
-      console.log(advertState.getSelectedTestTheoryOption())
   }
 
   const isSelected = (id) => 
@@ -179,8 +174,6 @@ function TestTheory()
           enteredValue = x.answer
         }
       }      
-      console.log(currentPage)
-      console.log(enteredValue)
       advertState.getSelectedAnswerValue(enteredValue)
       return enteredValue
   }
@@ -222,10 +215,14 @@ function TestTheory()
                  <div className="w-full mb-5">
                       <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div> 
 
-                      <div className="d-flex -mb-3 col-span-12 p-3">
-                            <div className="w-full flex justify-between">
-                              <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
-                              <button type="sumbit" 
+                      <div className="d-flex -mb-3 col-span-12 p-3"
+                      >
+                            <div className="w-full flex justify-between items-center">
+                                <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
+                                <span className="w-fit">
+                                    <CountDownTimerTestTheory type={'test-objective'} seconds={data?.addition} />
+                                </span>
+                                <button type="sumbit" 
                                   disabled={!isSubmitting}
                                   className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900 cursor-pointer'}`}
                                   onClick={() => {
@@ -233,8 +230,9 @@ function TestTheory()
                                   }}
                                   >
                                       {   isSubmitting ? ( <BeatLoader size={9} color="#fff" className="" />) : ( "Sumbit" )     }
-                              </button> 
+                              </button>
                             </div>
+
                              
                             <h1 className="w-full font-bold text-blue-900 mt-10 shadow-md px-2 py-4 border border-3 text-lg border-gray-300 bg-white">{data?.data[currentPage]['question']}</h1>
                             

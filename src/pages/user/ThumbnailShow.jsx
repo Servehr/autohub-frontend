@@ -54,9 +54,6 @@ export default function ListShow({product})
                         advertState.setProductId(product.id)
                         advertState.setImageOnEdit(product.images)
                         setProductImages(product.images)
-                        console.log(product.id)
-                        console.log(product.images)
-                        console.log(advertState.getProductId())
                         setProductId(product.id)
                         localStorage.setItem("theProductId", product.id)
                         setImageOpenModal(true)
@@ -78,7 +75,6 @@ export default function ListShow({product})
               <div className="flex gap-2" onClick={() => { 
                     populateProductStore(item)
                     localStorage.setItem("modelId", product.id)
-                    console.log(item)
                     navigate(`${product.id}/edit`)
                   }  
               }>
@@ -113,8 +109,6 @@ export default function ListShow({product})
                             setProductMessages(product.messages)
                             advertState.setProductComments(item)
                             advertState.setProductTitle(product.title)
-                            console.log(advertState.getProductTitle())
-                            console.log(advertState.getProductComments())
                             setCloseCommentDialog(true)
                           }  
                       }>                                   

@@ -14,7 +14,6 @@ export const DeleteModal = ({onClick, deleteModal, deleteUrl, returnTo, message,
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
         const [loading, setIsLoading] = useState(false)
-        console.log(imageProductUrl)
 
         const deleteProduct = async (deleteUrl) => 
         {
@@ -27,23 +26,10 @@ export const DeleteModal = ({onClick, deleteModal, deleteUrl, returnTo, message,
                 }).then((response) => 
                 {  
                         setIsLoading(false)
-                        console.log(response)
-                        // navigate(returnTo);
                         return onClick(false)
-                }).catch((error) => { 
-                        console.log(error)                      
+                }).catch((error) => {                     
                         return false
                 })
-        //     const response = await deleteAdProduct(deleteUrl)
-        //     if(response.success === 1)
-        //     {
-                // window.location.href = returnTo                
-                // navigate(returnTo);
-                // advertState.setRefresh(advertState.getRefresh()+1)
-                // return true
-                // delete
-        //         window.location.reload()
-        //     }
         }
 
         return (
@@ -55,21 +41,7 @@ export const DeleteModal = ({onClick, deleteModal, deleteUrl, returnTo, message,
                                                 <img className="w-full" src={`${PRODUCT_FACE}${imageProductUrl}`} alt="Sunset in the mountains" />
                                         </div>
                                 }
-                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-5 mt-5">
-                                        {/* <button  
-                                                className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
-                                                onClick={() =>
-                                                        onClick(deleteModal)
-                                                }
-                                                >
-                                                Cancel
-                                        </button>
-                                        <button
-                                                        className="mt-2 p-4 text-white hover:font-bold text-sm bg-blue-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                                        onClick={() => deleteProduct(deleteUrl)}
-                                                >
-                                                Delete 
-                                        </button> */}                                        
+                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-5 mt-5">                                       
                                         {
                                                 <button 
                                                         className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"

@@ -43,7 +43,6 @@ export default function BlogDetail()
     const { post_id } = useParams();
     const { data: user } = useUser();
     const [serverError, setServerError] = useState("");
-    console.log(post_id)
     
     const { isMobile } = browserType();
     const [currentPage, setCurrentPage] = useState(post_id)  
@@ -52,11 +51,7 @@ export default function BlogDetail()
     const [refresh, setRefresh] = useState(-1)
 
     const { data, isLoading, refetch, isRefetching } = useQuery([`get-post-detail/${Math.round()}`, currentPage], () => blogDetail(currentPage), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
-    if(!isLoading)
-    {
-        console.log(data?.post)
-        // setCurrentPage(data?.data?.currentPage)
-    }
+
     const {
         register,
         handleSubmit,
@@ -67,16 +62,12 @@ export default function BlogDetail()
       });
 
     useEffect(() => {
-        // console.log(currentPage)
-        // setCurrentPage(refresh)
-        // console.log("+++++++++++++++++++++++")
-        // refetch()
+        
     }, [])
     
 
   const onSubmit = (adMsg) => {
     // setLoading(true);
-    console.log(adMsg)
     let payLoad = { id: post_id, comment: comment }
     addCommentOnBlog(payLoad)
       .then(() => {

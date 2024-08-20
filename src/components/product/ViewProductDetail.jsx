@@ -17,13 +17,6 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
 
         const { data, isLoading, refetch } = useQuery([`single-product/${productId}`], () => singelProduct(productId), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
 
-        if(!isLoading)
-        {
-                data.images.map((img, index) => {
-                        console.log(img.image_url)
-                })
-        }
-
         const placeAdvert = async (img) => 
         {
                 const imageAdvert = { imageId: img.id, productId: img.product_id }  
@@ -32,7 +25,6 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                         refetch()
                 })
                 .catch((err) => {
-                        console.log(err)
                 }
                 )
         }
@@ -43,12 +35,10 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                 await SellablePrice(prices)
                 .then((res) => {
                         refetch()
-                        console.log(res)
                         toast.success("Selling Price Successfully Set", { position: "top-center" });
                 })
                 .catch((err) => {
-                        alert("Price Setting Failed")
-                        console.log(err)
+                        
                 }
                 )
         }
@@ -146,14 +136,9 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                                                                 let cssStyle = (img.as_advert === 1) ? "col-span-3 md:col-span-3 border border-2 mb-5 relative border border-2 border-green-700" : "col-span-3 md:col-span-3 border border-2 mb-5 relative"
                                                                 return (
                                                                         <div className={cssStyle} key={index}>
-                                                                                {/* <div className='top-20 right-10 px-5 py-2 text-white absolute'>
-                                                                                        <div className='w-full text-xs font-bold text-red-700'>AutoHub</div>
-                                                                                        <div className='text-xs font-bold text-green-800 -mt-15'>www.autohub.ng</div>
-                                                                                </div> */}
                                                                                 <img src={`${PRODUCT_FACE}${img.image_url}`} alt="product images" />
                                                                                 <button 
                                                                                         onClick={() => {
-                                                                                                console.log(img)
                                                                                                 placeAdvert(img)
                                                                                         }} 
                                                                                         className='hover:bg-green-800 rounded-full text-sm p-3 px-5 bg-blue-700 text-white font-bold absolute bottom-11 right-11'>

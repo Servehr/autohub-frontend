@@ -39,13 +39,8 @@ export default function RequestItems()
     const [openFaqModal, setOpenFaqModal] = useState(false)
     const [clickTable, setClickTable] = useState(false)
 
-    // if(!isLoading)
-    // {
-    //     console.log(data)
-    // }
 
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -67,8 +62,7 @@ export default function RequestItems()
     //                     setIsLoading(true)
     //                     setDatable(response.data.data)
     //                 }
-    //             }).catch((error) => {                        
-    //                     console.log(error)
+    //             }).catch((error) => {       
     //             })
     // }
 
@@ -142,7 +136,6 @@ export default function RequestItems()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setClickTable(e) 
                                                                                 } } 
                                                                                 page={'request'}

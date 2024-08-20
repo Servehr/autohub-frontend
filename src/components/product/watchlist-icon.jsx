@@ -11,11 +11,9 @@ const WatchListIcon = ({onClick, id, inWatchlist }) => {
 
   useEffect(() => {
     setIsInWatchlist(inWatchlist);
-    console.log(isInWatchlist)
   }, [inWatchlist]);
 
   const handleAddToWatchlist = (e) => {
-    console.log(id)
     e.stopPropagation();
 
     if (!user) {

@@ -4,33 +4,26 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { BeatLoader } from "react-spinners";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FormCode } from "@/components/FormCode";
 import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
+import { appStore } from "@/state/appState";
 
 
-export default function StartPage() 
-{
-  const [isUser, setIsUser] = useState("-1")
+export default function StartPage({ course, option }) 
+{ 
+  localStorage.setItem("text-courze", course)
+  localStorage.setItem("text-option", option)
 
-  return (
-    <>
-      <Helmet>
-        <title>Change Email | Autohub</title>
-        <meta name="description" content="Sell Faster, Buy Smarter" />
-      </Helmet>
-
-      
-      <StartTest />
-    </>
-  );
-}
-
-function StartTest() 
-{  
   const navigate = useNavigate();
+
+  const goTo = () => 
+  {
+      // navigate('/dashboard/test-user-obj', { replace: true })
+      navigate('/dashboard/resolve')
+  }
 
   return (
     <>
@@ -41,13 +34,11 @@ function StartTest()
             
             <div className="flex justify-center items-center mt-5"
             >                
-                <a className="p-3 bg-green-600 hover:bg-green-900 text-white col-span-12 mx-auto rounded-lg cursor-pointer w-fit"
-                  onClick={() => {
-                      navigate('/dashboard/test-user-obj')
-                  }}
+                <buton className="p-3 bg-green-600 hover:bg-green-900 text-white col-span-12 mx-auto rounded-lg cursor-pointer w-fit"
+                  onClick={goTo}
                 >
                     Start Test
-                </a>
+                </buton>
             </div>
       </div>
       <div className="p-5"></div>

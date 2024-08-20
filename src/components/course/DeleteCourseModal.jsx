@@ -21,7 +21,7 @@ export const DeleteCourseModal = ({onClick, deleteCourseModal, deleteCourse, cou
         {
                 onClick(true)
         }
-        // alert(id)
+        
         const deleteCourses = () => 
         {
                 setIsLoading(true)
@@ -33,7 +33,6 @@ export const DeleteCourseModal = ({onClick, deleteCourseModal, deleteCourse, cou
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })       
         }
         

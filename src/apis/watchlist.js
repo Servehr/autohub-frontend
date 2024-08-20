@@ -26,7 +26,6 @@ export async function fetchWatchListDetails(id) {
         if (res.data.success === 0) {
           reject(new Error("Something went wrong!"));
         } else {
-          console.log(res.data.data);
           resolve(res.data.data);
         }
       })
@@ -100,7 +99,6 @@ export async function addToWatchlist(requestData) {
 //         if (res.data.success === 0) {
 //           reject(res.data.message);
 //         } else {
-//           console.log(res.data.data)
 //           resolve(res.data.data);
 //         }
 //       })
@@ -119,7 +117,6 @@ export async function UserWatchList(currentPage, perPage) {
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res.data.data);
           resolve(res.data.data);
         }
       })

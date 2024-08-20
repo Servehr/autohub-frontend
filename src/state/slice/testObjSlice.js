@@ -24,8 +24,6 @@ const createTestObjectiveSlice  = (set, get) => (
         setSelectedOption(x)
         {
             set((state) => ({ selectedOption: [...state.selectedOption, x] }))
-            // console.log(x)
-            // console.log(this.selectedOption)
 
             // set((state) => ({
             //     selectedOption: { ...state.selectedOption, selectedOption: [...state.selectedOption, x] }
@@ -33,7 +31,6 @@ const createTestObjectiveSlice  = (set, get) => (
         },
         getSelectedOption()
         {
-            // console.log(this.selectedOption)
             return get().selectedOption
         },
 
@@ -41,9 +38,39 @@ const createTestObjectiveSlice  = (set, get) => (
         {
             set((state) => ({selectedOption: selectedOption}))
         },
-        setEmptyTestObjective()
+        getEmptyTestObjective()
         {
             return get().selectedOption
+        },
+
+        course: -1,
+        setCourse(course)
+        {
+            set((state) => ({course: course}))
+        },
+        getCourse()
+        {
+            return get().course
+        },
+
+        force: 'no',
+        setForce(force)
+        {
+            set((state) => ({force: force}))
+        },
+        getForce()
+        {
+            return get().force
+        },
+
+        defaultTestObjectiveAnswer: [],
+        setDefaultTestObjectiveAnswer(defaultTestObjectiveAnswer)
+        {
+            set((state) => ({defaultTestObjectiveAnswer: defaultTestObjectiveAnswer}))
+        },
+        getDefaultTestObjectiveAnswer()
+        {
+            return get().defaultTestObjectiveAnswer
         },
     }
 )

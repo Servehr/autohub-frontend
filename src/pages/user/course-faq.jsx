@@ -20,11 +20,6 @@ export default function CourseFaq()
   const id = (Math.round()*337)
   const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-
   const [loading, setIsLoading] = useState(false)
 
   const [openQuestion, setOpenQuestion] = useState(false)

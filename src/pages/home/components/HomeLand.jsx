@@ -16,13 +16,6 @@ export default function HomeLand()
 {
   const { pathname } = useLocation();
   const { ref, inView } = useInView();
-  // const categoryData = categories.filter((item) => item.link === pathname)[0];
-  // const categoryName = pathname.split("/")[1];
-
-  // if (!categoryData || categoryData.length == 0) {
-  //   return <NotFound />;
-  // }
-  console.log("Home Land")
 
   const {
     data,
@@ -38,7 +31,6 @@ export default function HomeLand()
     queryKey: 'all-products',
     queryFn: ({ pageParam = 1 }) => allProductsUploaded(pageParam),
     getNextPageParam: (lastPage, allPages) => {
-      console.log(allPages)
       const nextPageParam =
         lastPage?.current_page !== lastPage?.last_page
           ? allPages.length + 1
@@ -46,8 +38,6 @@ export default function HomeLand()
       return nextPageParam;
     },
   });
-  // console.log(error, isError);
-  console.log(data)
 
   const handleRetry = () => {
     refetch();

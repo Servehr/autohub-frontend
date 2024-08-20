@@ -30,13 +30,11 @@ export const AssessmentModal  = ({courseFaq, onClick, editDataCourse, assessment
                 CourseAssessment(courseFaqId)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

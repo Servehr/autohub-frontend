@@ -22,11 +22,6 @@ export default function Students()
 
     
     const { data, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(), { cacheTime: 0 })
-    
-    if(!isLoading)
-    {
-        console.log(data)
-    }
 
     return ( 
             <>
@@ -57,13 +52,15 @@ export default function Students()
                                                         }}
                                                     >Cofirm Access
                                                     </span>
-                                                    <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
+                                                    <button 
+                                                        disabled={(student?.payment_status === "paid") ? false : true}
+                                                        className="font-bold w-fit px-5 py-3  md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setConfirmAccess(true)
                                                         }}
                                                     >View Receipt
-                                                    </span>
+                                                    </button>
                                                 </div>
                                             </div> 
                                         )

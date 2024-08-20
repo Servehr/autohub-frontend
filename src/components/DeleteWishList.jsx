@@ -14,7 +14,6 @@ export const DeleteWishList = ({onClick, deleteWisListModal, deleteUrl, returnTo
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
         const [loading, setIsLoading] = useState(false)
-        console.log(imageProductUrl)
 
         const deleteProduct = async (deleteUrl) => 
         {
@@ -27,23 +26,10 @@ export const DeleteWishList = ({onClick, deleteWisListModal, deleteUrl, returnTo
                 }).then((response) => 
                 {  
                         setIsLoading(false)
-                        console.log(response)
-                        // navigate(returnTo);
                         return onClick(false)
-                }).catch((error) => { 
-                        console.log(error)                      
+                }).catch((error) => {                       
                         return false
                 })
-        //     const response = await deleteAdProduct(deleteUrl)
-        //     if(response.success === 1)
-        //     {
-                // window.location.href = returnTo                
-                // navigate(returnTo);
-                // advertState.setRefresh(advertState.getRefresh()+1)
-                // return true
-                // delete
-        //         window.location.reload()
-        //     }
         }
 
         return (

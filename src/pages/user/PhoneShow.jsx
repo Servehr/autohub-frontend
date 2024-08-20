@@ -55,9 +55,6 @@ export default function PhoneShow({productItem, refetch})
         advertState.setOthers(item?.others)
         advertState.setAvatar(item?.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(item)
-        console.log("=======================")
         advertState.setMileAge(item?.mileage)
         advertState.setFuelType(item?.fuel_type)
         advertState.setLocation(item?.location)
@@ -115,8 +112,6 @@ export default function PhoneShow({productItem, refetch})
                     <div className="col-span-2"> 
                                     <div className="flex gap-2" onClick={() => { 
                                             populateProductStore(productItem)
-                                            // localStorage.setItem("modelId", productItem.id)
-                                            console.log(productItem)
                                             navigate(`${productItem.id}/edit/${productItem.country_id}/${productItem.make_id}/${productItem.model_id}`) // stateId, modelId, trimId
                                         }  
                                     }>
@@ -144,8 +139,6 @@ export default function PhoneShow({productItem, refetch})
                                                     setProductMessages(productItem.messages)
                                                     advertState.setProductComments(productItem)
                                                     advertState.setProductTitle(productItem.title)
-                                                    console.log(advertState.getProductTitle())
-                                                    console.log(advertState.getProductComments())
                                                     setCloseCommentDialog(true)
                                                 }  
                                             }>                                   
@@ -209,9 +202,7 @@ export default function PhoneShow({productItem, refetch})
          imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => 
           { 
               setRefreshIt(e)
-              console.log(e)
               setImageOpenModal(false) 
-              console.log("Greater Things")
               refetch(e)
          }
           } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="" productId={productId} />

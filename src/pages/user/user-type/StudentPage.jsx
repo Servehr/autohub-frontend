@@ -19,12 +19,6 @@ export default function StudentPage()
   const advertState = appStore((state) => state)
   const { data, isLoading } = useQuery(['get-student-overview'], () => GetStudentOverview(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data?.attempted)
-      console.log(data?.objective[0]?.name)
-  }
-
   const [loggedInUserType, setLoggedInUserType] = useState('')
   const [theService, setTheService] = useState(-1)
   const [isUser, setIsUser] = useState("-1")
@@ -104,29 +98,59 @@ export default function StudentPage()
 
 
                     <div className="font-bold text-md -mb-3 md:col-span-12 col-span-12 text-green-900 mt-5 p-5 bg-gray-400 text-white rounded-md mb-2">Exam Results</div>
+                        {/* objective  */}
                         {
-                            !isLoading && data?.exam_objective && (data?.exam_objective === "not-taken") && 
+                            !isLoading && (Number(data?.exam_objective) === 0) && 
+                              <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                  <span className="px-3 text-md uppercase text-blue-800">Objective</span>
+                                  <span className="hidden md:block px-3"> {data?.exam_objective} </span>
+                              </div> 
+                        }
+                        {
+                            !isLoading && (data?.exam_objective === "not-taken") && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
                                   <span className="px-3 text-md uppercase text-blue-800">Objective</span>
                                   <span className="hidden md:block px-3"> NOT YET TAKEN </span>
                               </div> 
                         }
                         {
-                            !isLoading && data?.exam_objective && (data?.exam_objective != "not-taken") && 
+                            !isLoading && (Number(data?.exam_objective) > 0) &&
+                              <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                  <span className="px-3 text-md uppercase text-blue-800">Objective</span>
+                                  <span className="hidden md:block px-3"> {data?.exam_objective} </span>
+                              </div> 
+                        }
+                        {
+                            !isLoading && (Number(data?.exam_objective) > 0) && (data?.exam_objective != "not-taken") && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
                                   <span className="px-3 text-md uppercase text-blue-800">Objective</span>
                                   <span className="hidden md:block px-3"> { data?.exam_objective } </span>
                               </div> 
                         }
+                        {/* theory  */}
                         {
-                            !isLoading && data?.exam_theory && (data?.exam_theory === "not-taken") && 
+                            !isLoading && (Number(data?.exam_theory) === 0) && 
+                              <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                  <span className="px-3 text-md uppercase text-blue-800">Objective</span>
+                                  <span className="hidden md:block px-3"> {data?.exam_objective} </span>
+                              </div> 
+                        }
+                        {
+                            !isLoading && (data?.exam_theory === "not-taken") && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-green-100 rounded-lg space-between px-3 border border-solid border-green-900">
                                   <span className="px-3 text-md uppercase text-green-800">Theory</span>
                                   <span className="hidden md:block px-3"> NOT YET TAKEN </span>
                               </div> 
                         }
                         {
-                            !isLoading && data?.exam_theory && (data?.exam_theory != "not-taken") && 
+                            !isLoading && (Number(data?.exam_theory) > 0) && (data?.exam_theory === "not-taken") &&
+                              <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-green-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                  <span className="px-3 text-md uppercase text-green-800">Theory</span>
+                                  <span className="hidden md:block px-3"> {data?.exam_objective} </span>
+                              </div> 
+                        }
+                        {
+                            !isLoading && (Number(data?.exam_theory) > 0)  && (data?.exam_theory != "not-taken") && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-blue-900">
                                   <span className="px-3 text-md uppercase text-green-800">Theory</span>
                                   <span className="hidden md:block px-3"> { data?.exam_theory } </span>

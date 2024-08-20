@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { setUserNewEmail } from "@/apis/auth";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +6,19 @@ import { Helmet } from "react-helmet-async";
 import { FormCode } from "@/components/FormCode";
 import { AllCourse, DownloadDocument } from "@/apis/backend/course";
 import { useQuery } from "react-query";
+import axios_instance, { BASE_URL } from "@/lib/axios";
+import axios from "axios";
 
+const downloadPdfFile = async (id) =>
+  {
+    await axios_instance.get(`${BASE_URL}download-document/${id}`, {responseType: 'blob'})
+    .then((response) => 
+    {  
+        window.open(URL.createObjectURL(response.data));
+    }).catch((error) => {                      
+       return false;
+    })
+  }
 
 export default function AllCourses({ data }) 
 {
@@ -59,6 +68,26 @@ function Course({ data })
 
       })
   }
+
+  
+
+  const downloadPdfFiles = async () => 
+  {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `${BASE_URL}download-document/${id}`, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+       if (this.status == 200) {
+          var blob=new Blob([this.response], {type:"application/pdf"});
+          var link=document.createElement('a');
+          link.href=window.URL.createObjectURL(blob);
+          link.download="Report_"+new Date()+".pdf";
+          link.click();
+       }
+    };
+  xhr.send();
+}
+
   
   return (
     <>
@@ -84,7 +113,7 @@ function Course({ data })
                                         <button
                                           disabled={(x.file_name === null) ? true : false}
                                           onClick={() => { 
-                                              downloadDocument(x.id) 
+                                              downloadPdfFile(x.id) 
                                           }}
                                           className={`text-md text-left md:col-span-4 col-span-12 px-2 py-2 mb-1 justify-center w-full font-bold  
                                                     text-black gap-2 bg-white ${hasFile}

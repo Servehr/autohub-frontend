@@ -39,9 +39,6 @@ export default function CreateAd()
   const [selectedTrim, setSelectedTrim] = useState(advertState.getTheModelTrim());
   const [noMakerOption, setNoMakerOption] = useState(false);
   const [msg, setMsg] = useState("")
-
-  console.log(selectedModel)
-  console.log(advertState.getTheMakerModels())
   
   const [deleteOpenModal, setDeleteModal] = useState(false)
   const [ deleteUrl, setDeleteUrl] = useState("") 
@@ -73,11 +70,7 @@ export default function CreateAd()
   const [theModelName, setTheModelName] = useState(advertState.getTheModelName())
   const [selectManufacturer, setTheSelectManufacturer] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
-
-  console.log(advertState.getStateModel())
-
-  console.log({ theManufacturer, theModel, theTrim: advertState.getTrim(), theOthers, theCategory, theState })  
-//   advertState.setTrim(-1)
+ 
 
   const [countryErrorMsg, setCountryErrorMsg] = useState("")
   const [stateErrorMsg, setStateErrorMsg] = useState("")
@@ -113,26 +106,16 @@ export default function CreateAd()
   
   const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data", id], () => fetchAllRequiredData(id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
 
-  if(!allRequiredData)
-  {
-     console.log(allRequiredData)
-  }
-
   let submitForm = true
   let processData = false
   let isDraft = ""
 
   useEffect(() => {
-    // alert("Trying to implement change")
-    // advertState.setStates("")
-    //  alert(theManufacturer)
     advertState.setProcessAdvertAsDraft(false)
     advertState.setProcessAdvert(false)
-    // console.log(selectedModel)
     const onEdit = advertState.getOnEdit()
     if(onEdit === "yes")
     {
-        // alert(advertState.getOnEdit())
         clearProductStore()
         window.location.href = '/dashboard/create-advert'
         setProcessAdvert(false)
@@ -181,10 +164,8 @@ export default function CreateAd()
         advertState.setTheModelTrim([])
   }, [theManufacturer])
 
-  console.log(selectedTrim)
 
   useEffect(() => {
-    // alert("Trying to implement change")
     }, [mainImagePosition])
 
     useEffect(() => {
@@ -207,16 +188,13 @@ export default function CreateAd()
 
     useEffect(() => {
         setTheUserStates(advertState.getStates())
-        console.log(advertState.getStates())
     }, [selectedOptionOne, selectedOptionTwo])
 
     // model
   const callTellData = (x) => 
   {
         const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
-        console.log(filteredTrim)
         advertState.setTheModelTrim(filteredTrim)
-        console.log(advertState.getTheModelTrim())
   }
   // country
   const callData = (x) => 
@@ -224,8 +202,6 @@ export default function CreateAd()
       const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
       // sorting
       let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      console.log(allRequiredData?.state)
-      console.log(filteredModel)
       setSelectedStates(sortedProducts)
       advertState.setStateModel(sortedProducts)
       setSelectedTrim([])
@@ -238,13 +214,8 @@ export default function CreateAd()
       const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
       // sorting
       let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      console.log(allRequiredData?.model)
-      console.log(sortedProducts)
       setSelectedModel(sortedProducts)
       advertState.setTheMakerModels(sortedProducts)
-      console.log(sortedProducts)
-      console.log(advertState.getTheMakerModels())
-      console.log(selectedModel)
   }
 
   const [selectedCarModel, setCarSelectedModelGroup] = useState("")
@@ -276,7 +247,6 @@ export default function CreateAd()
         { 
             setCountryErrorMsg("Kindly Select Country"); 
             submitForm = false; 
-            console.log(theCountry)
         } else {
             setCountryErrorMsg(""); submitForm = true; 
         }
@@ -310,7 +280,6 @@ export default function CreateAd()
             }
         } else if(theModel === -1){ 
             setModelErrorMsg("Kindly Select Model")
-            console.log("Model");
             submitForm = false
         } else {
             setModelErrorMsg("")
@@ -341,12 +310,12 @@ export default function CreateAd()
         } else {
                 setConditionErrorMsg(""); submitForm = true; 
         }
-        if(theTrim === -1 || theTrim === "")
-        { 
-            setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
-        } else {
-            setTrimErrorMsg(""); submitForm = true;
-        }
+        // if(theTrim === -1 || theTrim === "")
+        // { 
+        //     setTrimErrorMsg("Kindly Select Trim"); submitForm = false; 
+        // } else {
+        //     setTrimErrorMsg(""); submitForm = true;
+        // }
         if(value === "" || value === null || value === undefined)
         {
             setDescriptionErrorMsg("Kindly give description")
@@ -364,7 +333,6 @@ export default function CreateAd()
             submitForm = true
         }
 
-        //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
         if(previewUrls.length === 0)
         {
@@ -385,22 +353,7 @@ export default function CreateAd()
             setMainImageErrorMsg("Make one of the uploaded image 'COVER IMAGE' by click on (MAKE AS MAIN IMAGE)"); 
             submitForm = false
         }
-
-        // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
-
-        // const advertise = 
-        // { 
-        //     state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
-        //     colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription,
-        //     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
-        //     manufacturerName: theManufacturerName, modelName: theModelName, images: "", imagePosition: mainImagePosition, country: theCountry
-        // }
-        // console.log(advertise)
-        // clearProductStore()
-        // console.log("££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££")
-        // return false
-        // alert("I got here")
-        
+       
 
         if(submitForm === false)
         {
@@ -425,7 +378,6 @@ export default function CreateAd()
                 }, 2000)
             }
         } else {
-            console.log(imagesToSave)
             // return       , mainImage: mainImagePosition       avatar: imagesToSave,      , draft: x
             const flash = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
             let chunckOne = []
@@ -454,12 +406,6 @@ export default function CreateAd()
                     chasis_number: theChasisNo, price: thePrice, others: theOthers, plan_id: 1 , draft: x, fuel: theFuelType, mileage: theMileAge,
                     manufacturerName: theManufacturerName, modelName: theModelName, images: chunckOne, imagePosition: mainImagePosition, country: Number(theCountry)
                 }
-                console.log(firstPayLoad)
-                
-                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                console.log("33333")
-                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                // return false
 
                 await axios.post(`${BASE_URL}ad/create-ad`, firstPayLoad, {
                         headers: {
@@ -473,8 +419,7 @@ export default function CreateAd()
                         newProductId = response.data.data
                         adProcessing = response.data.status
                         // onClick(true)
-                }).catch((error) => { 
-                        console.log(error)    
+                }).catch((error) => {    
                         setPostStatus("First Stage of Processing")  
                         setProcessAdvert(false)                   
                         return false
@@ -495,7 +440,6 @@ export default function CreateAd()
                 }
                 // send to server
                 const secondPayLoad = { images: chunckTwo, imagePosition: mainImagePosition, product_id: newProductId, nos: 2 }
-                console.log(secondPayLoad)
                 await axios.post(`${BASE_URL}ad/processing-create-ad`, secondPayLoad, {
                         headers: {
                                 'Content-Type': 'multipart/form-data',
@@ -506,7 +450,6 @@ export default function CreateAd()
                     adProcessing = response.data.status
                     // return
                 }).catch((error) => { 
-                        console.log(error)     
                         setPostStatus("Second Stage of Processing")     
                         setProcessAdvert(false)            
                         return false
@@ -527,7 +470,6 @@ export default function CreateAd()
                 }
                 // send to server
                 const thirdPayLoad = { images: chunckThree, imagePosition: mainImagePosition, product_id: newProductId, nos: 3 }
-                console.log(thirdPayLoad)
                 await axios.post(`${BASE_URL}ad/complete-create-ad`, thirdPayLoad, {
                         headers: {
                                 'Content-Type': 'multipart/form-data',
@@ -613,7 +555,6 @@ export default function CreateAd()
                 });
             })
             ).then((results) => {
-                console.log(results)
                 setPreviewUrls([...previewUrls, ...results]);
             });
         }     
@@ -625,7 +566,6 @@ export default function CreateAd()
         const newImages = [...images];
         newImages.splice(index, 1);
         setImages(newImages);
-        console.log('images ',images)
       
         const newPreviewUrls = [...previewUrls];
         newPreviewUrls.splice(index, 1);
@@ -639,15 +579,7 @@ export default function CreateAd()
             setMainImagePosition(mainImagePosition - 1)
         }
     }
-    // console.log(images)
-    // console.log(previewUrls)
-
-    // console.log(theUserState)
-    const selectFiles = () => 
-    {
-        // fileInputRef.current.click()
-    }
-
+  
     const clearProductStore = () => 
     {      
         advertState.setCountry(-1)
@@ -676,59 +608,24 @@ export default function CreateAd()
     const selectMultipleFiles = (event) => 
     {
         const selectedFiles = event.target.files;
-        console.log(selectedFiles)
         const selectedFilesArray = Array.from(selectedFiles)
 
         const imagesArray = selectedFilesArray.map((file) => {
             return URL.createObjectURL(file)
         })     
-        console.log(imagesArray)   
         imagesArray.forEach((image, index) => {
             advertState.setAvatar(image)
             setImages((previousImages) => previousImages.concat(image))
         })
         thumbnail.forEach((img, index) => {
-            console.log(img)
+
         })
-        console.log(imagesArray.length)
-        console.log(advertState.getAvatar())
 
         listOfFiles = []
         for (let index = 0; index < array.length; index++) 
         {
             let x = new File([imagesArray], "filename")
         }
-        
-        console.log(x)
-
-        // console.log("I came here")
-        // const files = event.target.files;
-        // console.log(files.length)
-        // if(files.length === 0) return;
-        // for (let index = 0; index < files.length; index++) 
-        // {
-        //     if(files[index].type.split('/')[0] !== 'image') continue;
-        //     if(thumbnail.length > 0)
-        //     {
-        //         if(!thumbnail.some((e) => e.name === files[index].name))
-        //         {    
-        //             setImages((prevImages) => [
-        //                 ...prevImages, {
-        //                     name: files[index].name,
-        //                     url: URL.createObjectURL(files[index])
-        //                 }
-        //             ])
-        //         }
-        //     } else { 
-        //         setImages((prevImages) => [
-        //             ...prevImages, {
-        //                 name: files[index].name,
-        //                 url: URL.createObjectURL(files[index])
-        //             }
-        //         ])
-        //     }
-        // }
-        // console.log(thumbnail)
     }
 
     const deleteImage = (image) => 
@@ -766,9 +663,6 @@ export default function CreateAd()
         advertState.setCountry(-1)
         advertState.setMileAge("")
         advertState.setFuelType("")
-        console.log("=======================")
-        console.log(advertState.getStates())
-        console.log("=======================")
     }
 
 
@@ -856,9 +750,7 @@ export default function CreateAd()
                                                                                     submitForm = false
                                                                                     setStateErrorMsg("Kindly Select State")
                                                                                 } else {
-                                                                                    console.log(e.target.value)
                                                                                     advertState.setStates(Number(e.target.value))
-                                                                                    console.log(advertState.getStates())
                                                                                     setTheState(Number(e.target.value))
                                                                                     submitForm = true
                                                                                     setStateErrorMsg("")
@@ -1064,7 +956,6 @@ export default function CreateAd()
                                                                                 advertState.setModel(Number(e.target.value))
                                                                                 setTheModel(Number(e.target.value))
                                                                                 callTellData(e.target.value)
-                                                                                console.log(Number(e.target.value))
                                                                             }
                                                                             } className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                                                             {/* { (theManufacturer != "") && tellData(theManufacturer) } */}

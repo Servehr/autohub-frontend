@@ -14,17 +14,15 @@ import UserTakeTestObjective from "./UserTakeTestTheory_";
 import PaymentPage from "../../user/user-type/PaymentPage";
 import StartPage from "../testObj/StartPage";
 import TestUserTheory from "./test-user-theory";
+import StartTheoryPage from "./StartTheoryPage";
 
 
 export default function StartTheoryTest() 
 {
 
   const advertState = appStore((state) => state)
-  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid())
-  if(!isLoading)
-  {
-      console.log(data)
-  }
+  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid('test-theory'))
+  
   const [approvalRequest, setApprovalRequest] = useState("")
 
   return (
@@ -34,15 +32,13 @@ export default function StartTheoryTest()
           >
 
               { approvalRequest && <p className={`font-bold text-lg text-white rounded-md col-span-12 ${(approvalRequest === "") ? " " : "p-3 bg-blue-600"}`}>{approvalRequest}</p> }
-              {/* <span className="col-span-12 font-bold text-green-800 mb-3">MACEOS ACADEMY COURSES: </span> */}
-              {/* <p className="mb-4 col-span-12 ">Below are the courses we offer. Browse through for your kind perusal; from the main courses to sub-courses and modules.</p> */}
-                {
+              {
                   isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <BeatLoader color="#1c9236" />
                   </div>
                 }
                 {
-                    !isLoading && (data === "not-paid") && <>
+                    !isLoading && (data?.data === "not-paid") && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -53,10 +49,8 @@ export default function StartTheoryTest()
                         }} />
                     </>
                 }
-                {
-                     !isLoading && (data === "paid") && <>
-                          <TestUserTheory />
-                     </>
+                {  !isLoading && data?.data && (data?.data === "paid") && 
+                        <StartTheoryPage course={data?.plus} option={data?.message} /> 
                 }
                     
         </div>

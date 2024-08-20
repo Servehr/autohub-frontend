@@ -156,7 +156,6 @@ function Bought() {
   // const imgUrl = data?.avatar && JSON.parse(data?.avatar)[0];
   return (
     <>
-      {/* {console.log(data)} */}
 
       <div className="rounded-lg py-2 h-[300px]">
         <div className="flex justify-center  h-full items-center w-full ">

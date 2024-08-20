@@ -23,9 +23,6 @@ export const ChangeTestTheoryQuestion = ({onClick, question, openTestTheoryAnswe
 
         const addQuestion = async () => 
         {  
-                // setTempSave(true)
-                console.log({ studentValue, courseId, questionId, currentPage })
-                // return false
                 const checkIfPresent = advertState.getSelectedTestTheoryOption().findIndex(x => {
                   return x.position === currentPage;
                 });      
@@ -38,13 +35,7 @@ export const ChangeTestTheoryQuestion = ({onClick, question, openTestTheoryAnswe
                     let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, test_theory_question_id: questionId, answer: editedAnswer, position: currentPage }
                     advertState.setSelectedTestTheoryOption(answer)             
                 }
-                onClick()
-                // setSuccess('Saved')
-                // setTimeout(() => {
-                //   setTempSave(false)
-                //   setSuccess('')
-                // }, 2000)
-                // console.log(advertState.getSelectedTestTheoryOption())   
+                onClick()  
         }
 
         return (

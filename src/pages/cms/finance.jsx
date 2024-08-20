@@ -39,13 +39,7 @@ export default function Finance()
     const [openFaqModal, setOpenFaqModal] = useState(false)
     const [clickTable, setClickTable] = useState(false)
 
-    // if(!isLoading)
-    // {
-    //     console.log(data)
-    // }
-
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -68,7 +62,7 @@ export default function Finance()
     //                     setDatable(response.data.data)
     //                 }
     //             }).catch((error) => {                        
-    //                     console.log(error)
+    //                    r)
     //             })
     // }
 
@@ -144,7 +138,6 @@ export default function Finance()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setClickTable(e) 
                                                                                 } } 
                                                                                 page={'student'}

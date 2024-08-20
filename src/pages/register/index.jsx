@@ -48,7 +48,6 @@ function RegisterView()
   const [successful, setSuccessful] = useState(false)
 
   useEffect(() => {
-      console.log(imageSize)
   }, [imageSize])
 
 
@@ -72,7 +71,6 @@ function RegisterView()
   const onChange = (imageList) => 
   {
       setImage(imageList);
-      console.log(imageList)
       let data = "";
       let x = ''
       imageList.map((image) => {
@@ -85,16 +83,12 @@ function RegisterView()
       var binary = fixBinary(atob(x));
       var blob = new Blob([binary], {type: 'image/jpeg'});
       var url = URL.createObjectURL(blob);
-      console.log('Created a png blob of size: ' + blob.size);
       if(blob.size > 1000000)
       {
           setError("Image must not be more than 1 MB")
           setIsAllow(false)
           binary = ''
       } else {
-          console.log(data)
-          console.log(typeof x)
-          console.log(typeof data)
           setFromattedImage(x);
           setError("")
           setIsAllow(true)
@@ -149,7 +143,6 @@ function RegisterView()
         .catch((err) => {
           setLoading(false);
           setError(`${err}`);
-          console.log(err);
         });
     }
     if (userType === types[1]) {
@@ -175,7 +168,6 @@ function RegisterView()
         company_name,
       })
         .then(() => {
-          // console.log()
           setLoading(false);
           increment();
           return
@@ -183,7 +175,6 @@ function RegisterView()
         .catch((err) => {
           setLoading(false);
           setError(`${err}`);
-          console.log(err);
         });
     }
   };

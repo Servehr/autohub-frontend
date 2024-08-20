@@ -27,7 +27,6 @@ import HomeLand from "./components/HomeLand";
 
 export default function HomePage() {
   const { isMobile } = browserType();
-  // console.log(isMobile)
   
   return (
     <>
@@ -47,7 +46,6 @@ function DesktopView() {
   const [loading, setLoading] = useState(false);
   const advertState = appStore((state) => state)
   const [theCategoryLink, setTheCategoryLink] = useState(advertState.getCategory())
-  console.log(theCategoryLink)
 
   const { data, isLoading } = useQuery("sponsored", fetchSponsored, {
     staleTime: Infinity,

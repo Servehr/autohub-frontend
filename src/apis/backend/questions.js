@@ -11,7 +11,6 @@ export async function AddTest(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -32,7 +31,6 @@ export async function AllTest(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
               resolve(res.data.data);
             }
           })
@@ -53,7 +51,7 @@ export async function UpdateTestQuestion(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -74,7 +72,7 @@ export async function DeleteTestQuestion(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -97,7 +95,7 @@ export async function AddTestTheoryQuestion(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -118,7 +116,7 @@ export async function AllTestTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -131,7 +129,6 @@ export async function AllTestTheory(id)
 
 export async function UpdateTestQuestionTheory(data) 
 {
-    console.log(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -140,7 +137,7 @@ export async function UpdateTestQuestionTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -161,7 +158,7 @@ export async function DeleteTestQuestionTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -184,7 +181,7 @@ export async function AddExam(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -205,7 +202,7 @@ export async function AllExam(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -226,7 +223,7 @@ export async function UpdateExamQuestion(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -247,7 +244,7 @@ export async function DeleteExamQuestion(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -270,7 +267,7 @@ export async function AddExamTheoryQuestion(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -291,7 +288,7 @@ export async function AllExamTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -304,7 +301,6 @@ export async function AllExamTheory(id)
 
 export async function UpdateExamQuestionTheory(data) 
 {
-    console.log(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -313,7 +309,7 @@ export async function UpdateExamQuestionTheory(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -334,7 +330,7 @@ export async function DeleteExamQuestionTheory(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -356,7 +352,7 @@ export async function AddTheoryQuestionExam(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -377,7 +373,7 @@ export async function AllTheoryQuestionExam(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -390,7 +386,6 @@ export async function AllTheoryQuestionExam(id)
 
 export async function UpdateQuestionTheoryExam(data) 
 {
-    console.log(data)
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -399,7 +394,7 @@ export async function UpdateQuestionTheoryExam(data)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })
@@ -420,7 +415,7 @@ export async function DeleteQuestionTheoryExam(id)
             if (res.data.success === false) {
               reject(res.data.message);
             } else {
-                console.log(res.data)
+                
               resolve(res.data.data);
             }
           })

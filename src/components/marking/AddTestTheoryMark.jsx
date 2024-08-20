@@ -22,14 +22,7 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, student})  =>
         const [loading, setIsLoading] = useState(false)
         const [questionId, setQuestionId] = useState(-1)
         const [currentQuestion, setCurrentQuestion] = useState(-1)
-        console.log(student)
-
         const { data, isLoading, refetch, isRefetching } = useQuery([`use-test-answers`], () => UserTestTheoryAnswers(userId), { cacheTime: 0 })
-      
-        if(!isLoading)
-        {
-            console.log(data)
-        }
 
         const cancelModal = () => 
         {
@@ -42,8 +35,7 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, student})  =>
                 const data = { score: studentScore, questionId: questionId, userId: userId }
                 ScoreStudentScore(data)
                 .then((res) => 
-                {
-                        console.log(res)                                   
+                {                                  
                         toast.success(`Marked`, {
                             position: "center-center",
                         });
@@ -53,7 +45,6 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, student})  =>
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

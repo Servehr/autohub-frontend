@@ -15,8 +15,6 @@ export default function Accordion({id='', title='', content='', status='', isOpe
         const openOrNot = (isOpen === true ) ?  "mb-5 mt-2 p-5 rounded-md border border-2" : "mt-2 p-5 rounded-md border border-2"
         setCss(openOrNot)
     }, [isOpen, position])
-
-    // console.log({title, body})
     
     return (        
         <div>

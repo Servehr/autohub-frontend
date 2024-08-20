@@ -28,28 +28,11 @@ const SlideShow = () => {
 
 const [currentImage, setCurrentImage] = useState(0)
 
-  if(!isLoading)
-  {
-    //   console.log(data)
-    //   if(currentImage === 0)
-    //   {console.log(data?.length)
-    //       setCurrentImage(currentImage+1)
-    //   } else if(currentImage === Number(data?.length)+1) {
-    //       setCurrentImage(0)
-    //   }
-    
-    //   console.log(data[0].slider.url.image_url)
-    //   data.map((car, index) => {
-    //       console.log(car.slider.url.image_url)
-    //   })
-  }
 
   useEffect(() => {
-        setTimeout(() => {
-            // setCurrentImage(1)            
+        setTimeout(() => {          
             if(currentImage === 0)
             {
-                console.log(data?.length)
                 setCurrentImage(currentImage+1)
             } else if(currentImage === Number(data?.length)-1) {
                 setCurrentImage(0)
@@ -64,7 +47,6 @@ const [currentImage, setCurrentImage] = useState(0)
       const firstImageOnSlide = currentImage === 0
       const imagePosition = firstImageOnSlide ? data.length - 1 : data.length + 1     
       setCurrentImage(imagePosition)
-      console.log(firstImageOnSlide)
   }
 
   const nextSlide = () => 
@@ -72,7 +54,6 @@ const [currentImage, setCurrentImage] = useState(0)
       const lastImageOnSlide = currentImage === (data.length - 1)
       const imagePosition = lastImageOnSlide ? 0 : currentImage + 1     
       setCurrentImage(imagePosition)
-      console.log(lastImageOnSlide)
   }
 
   const bgImageSlider = [

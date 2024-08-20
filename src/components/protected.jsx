@@ -19,7 +19,6 @@ const Protected = ({ children }) => {
   }
 
   if (!isLoading) {
-      console.log(data)
     if (!data) {
       return <HandleUnauthenticated />;
     }

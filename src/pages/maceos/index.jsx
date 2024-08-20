@@ -37,18 +37,11 @@ export default function MACEOS()
     const [confirmPasswordErrorMsg, setConfirmPasswordErrorMsg] = useState("")
     const [errMsg, setErrMsg] = useState("")
 
-    // console.log(userId)
     const { data, isLoading, refetch, isRefetching, isError } = useQuery(["get-authenticated-user", userId], () => AuthenticatedUser(userId), { cacheTime: 0 })
 
     useEffect(() => {
         
     }, [])
-
-    if(!isLoading)
-    {
-        console.log(data)
-        console.log(data?.plus)
-    }
 
     const {
         register,
@@ -64,7 +57,6 @@ export default function MACEOS()
         setLoading(true)      
         const x = new Date(data?.birth)
         data.birth = x.getFullYear() + '-' + x.getMonth() + '-' +  x.getDay()
-        // console.log(data)
         // return false
         if(userId)
         { 
@@ -96,9 +88,6 @@ export default function MACEOS()
             {
                 data.password = password
                 data.email = email
-                console.log(data)
-                // setLoading(false)
-                // return false
                 NewUser(data)
                 .then((res) => {
                     if(res.success === false)

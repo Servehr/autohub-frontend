@@ -24,12 +24,7 @@ export default function Ads()
     const { data: advertData, isLoading, isRefetching, refetch } = useQuery(["get-all-product"], () => getAdverts(currentPage, perPage, searchQuery), { cacheTime: 0 })
     const [dataTable, setDatable] = useState("")
     const [refresh, setRefresh] = useState(0)
-      
-    if(!isLoading)
-    {
-        // console.log(advertData)
-    }
-
+ 
     const columns = [
         { field: 'user' },
         { field: 'title' },
@@ -42,9 +37,6 @@ export default function Ads()
 
     useEffect(() => {
         refetch()
-        // console.log("Great")
-        // console.log(refresh)
-        // console.log("Great")
     }, [refresh])
 
     useEffect(() => {
@@ -53,19 +45,16 @@ export default function Ads()
 
     const searchedProduct = (queryParameter) => 
     {
-        console.log(queryParameter)
         GetSearchedProduct(queryParameter)
         .then((res) => {
             // setError(false)
             // setLoading(false);
-            console.log(res)
             refetch()
             // setIsSuccess(res.message)
             // setSuccessModal(true)
         })
         .catch((err) => {
             // setIsSuccess("")
-            console.log(err)
             // setLoading(false);
             // setError(`${err}`);
         }
@@ -83,12 +72,10 @@ export default function Ads()
         if (e.target.value != "") 
         {
             // searchedProduct(value)
-            console.log(e.target.value)
             // setShowSuggestions(false)
             refetch()
         } else {
-            setSearchQuery("")     
-            console.log(e.target.value)   
+            setSearchQuery("")       
             refetch()                            
         }
     }
@@ -131,7 +118,6 @@ export default function Ads()
                                                                         columns={columns}
                                                                         data={advertData?.product_advert?.product}
                                                                         onClick={(e) =>  {
-                                                                            console.log(e)
                                                                             setRefresh(e)
                                                                         } }
                                                                         page={'advert'}
@@ -142,8 +128,6 @@ export default function Ads()
                     !isLoading && !isRefetching && (advertData?.product_advert?.product.length > 0) && 
                             <Pagination onClick={(data) => {
                                       setCurrentPage(data)
-                                      console.log(data)
-                                      console.log(currentPage)
                                       // setRefresh(data)
                                       // setPerPage(data.perPage)
                                       setTimeout(() => {

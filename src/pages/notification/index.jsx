@@ -27,7 +27,6 @@ export default function NotificationPage() {
 export function Messages() {
   const { data, isLoading, isError } = useQuery("messages", fetchMyMessage);
 
-  // console.log(data)
   const { isMobile } = browserType();
   const navigate = useNavigate();
   return (
@@ -41,7 +40,6 @@ export function Messages() {
               onClick={() => navigate(`/product/${item.product_id}#comments`)}
               className="h-max flex flex-col p-2 gap-3 justify-between relative bg-white rounded-lg w-full"
             >
-              {/* {console.log(item)} */}
               <div className="flex flex-col gap-1 text-brandDarkGray ">
                 <p className="font-medium text-brandDarkGray text-sm ">
                   Comment on product{" "}

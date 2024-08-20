@@ -56,10 +56,6 @@ export default function CreateBlog()
         // }
     }
 
-    // if(!isLoading)
-    // {
-    //     console.log(blogPost?.blog_post?.posts)
-    // }
 
     useEffect(() => {
         
@@ -67,14 +63,12 @@ export default function CreateBlog()
 
     const publishPost = () => 
     {
-        // console.log({theValue: value})
-        console.log({ files, content })
+        
     }
 
     const uploadImage = async () =>
         {
                 // addProductAds(imageToUpload) 
-                console.log({ title, value })
                 let token = localStorage.getItem("token")           
                 let blogPost = new FormData();
                 blogPost.append('title', title)
@@ -89,9 +83,8 @@ export default function CreateBlog()
                 }).then((response) => 
                 {  
                         setUrl("")
-                        navigate('/blog-post')
-                }).catch((error) => { 
-                        console.log(error)                      
+                        navigate('/a/blog-post')
+                }).catch((error) => {                     
                         return false
                 })
         }
@@ -106,7 +99,6 @@ export default function CreateBlog()
         
         const onEditorChange = (value) => {
             setContent(value)
-            console.log(content)
         }
     
         const onFilesChange = (files) => {
@@ -121,12 +113,7 @@ export default function CreateBlog()
 
 
   return ( 
-        <div className="bg-white">
-            <div className='w-full flex'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
-                <div className='bg-white md:flex-row px-5 md:w-10/12 w-full md:ml-5 mb-20'>
+            <div className='bg-white md:flex-row px-5 md:w-10/12 w-full md:ml-5 mb-20'>
                     <div className="bg-white p-3 mt-1 text-xl font-bold flex">
                         <span className="font-bold md:w-2/12 text-md sm:w-full items-center">Create Post</span>
                     </div>
@@ -136,7 +123,6 @@ export default function CreateBlog()
                         <div className="md:col-span-4 col-span-12 p-3 border border-2 rounded-xl">
                             {/* <Icons width={100} height={50} iconName={'image'} color="#f9f7f7" /> */}
                                                         
-
                             <div className="drag-area p-3 items-center text-center justify-center">
                                 {
                                     (imgeUrl == "") ? 
@@ -149,7 +135,6 @@ export default function CreateBlog()
                                         <>
                                             { imgeUrl && <img src={imgeUrl} alt="Product image" className="h-80 rounded-xl w-fit mb-10 object-fit mx-auto p-2 bg-green-200" /> }
                                                 <span className={""} onClick={() => { 
-                                                                                        // console.log(image)
                                                                                         setUrl("")
                                                                                         // setDeleteModal(true)
                                                                             }}
@@ -196,21 +181,21 @@ export default function CreateBlog()
                             >
                             </textarea>
 
-                            <QuillEditor
+                            {/* <QuillEditor
                                 placeholder={" ... typing"}
                                 onEditorChange={onEditorChange}
                                 onFilesChange={onFilesChange}                                
-                            />
+                            /> */}
                             
-                            {/* <ReactQuill theme="snow" 
+                            <ReactQuill theme="snow" 
                                         value={value} 
                                         onChange={setValue} 
                                         className="w-full md:w-11/12 h-[350px]" 
                                         modules={modules}            
-                                    /> */}
+                                    />
 
-                            <div className="bg-green-800 px-2 py-4 w-[150px] rounded-md mt-5 text-sm text-white font-semibold hover:font-bold text-center cursor-pointer hover:bg-green-500 hover:text-black hover:text-sm" 
-                                onClick={publishPost}
+                            <div className="bg-green-800 px-2 py-4 w-[150px] rounded-md mt-20 text-sm text-white font-semibold hover:font-bold text-center cursor-pointer hover:bg-green-500 hover:text-black hover:text-sm" 
+                                onClick={uploadImage}
                             >
                                 Publish Post
                             </div>
@@ -218,9 +203,6 @@ export default function CreateBlog()
 
                     </div>
 
-                </div>
             </div>
-
-        </div>
   )
 }

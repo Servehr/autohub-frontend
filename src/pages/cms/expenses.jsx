@@ -38,13 +38,7 @@ export default function Expenses()
     const [openFaqModal, setOpenFaqModal] = useState(false)
     const [clickTable, setClickTable] = useState(false)
 
-    // if(!isLoading)
-    // {
-    //     console.log(data)
-    // }
-
     useEffect(() => {
-        console.log("Giving")
         // refetch()
     }, [clickTable])
 
@@ -67,7 +61,7 @@ export default function Expenses()
     //                     setDatable(response.data.data)
     //                 }
     //             }).catch((error) => {                        
-    //                     console.log(error)
+    //                    
     //             })
     // }
 
@@ -142,7 +136,6 @@ export default function Expenses()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setClickTable(e) 
                                                                                 } } 
                                                                                 page={'expenses'}

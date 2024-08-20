@@ -77,27 +77,19 @@ export default function Main()
 }
 
 export const CategoryContainer = () => {
-  // const navigate = useNavigate();
   const advertState = appStore((state) => state)
-  
 
-  // const { data, isLoading } = useQuery("category-with-product", fetchCategoryWithProductCount, {
-  //   staleTime: Infinity,
-  // });
   const [categoryData, setCategoryData] = useState([])
 
   useEffect(() => 
   {
       axios.get(`${BASE_URL}ad/list-with-catogries-count`).then((response) => {
-          console.log(response.data)
           advertState.setCategory(response.data)
           setCategoryData(response.data)
       }).catch((error) => {
-          console.log(error)
+        
       })
   }, [categories]) 
-
-  console.log(categoryData)
 
 
   return (
@@ -115,7 +107,6 @@ export const CategoryContainer = () => {
               className="h-[39px] duration-300 transition flex items-center justify-between hover:bg-brandGreen/10 px-4 cursor-pointer rounded-lg"
             >
               <div className="flex gap-3 items-center">
-                {/* <img src="/assets/arrow-right.svg" alt="" style={{width: "15px", height: "15px"}} /> */}
                 <img src={category.icon} alt="" style={{width: "15px", height: "15px"}} />
 
                 <p className="text-brandGreen text-xs font-medium">
@@ -124,7 +115,6 @@ export const CategoryContainer = () => {
               </div>
 
               <div className="text-brandGreen text-sm font-semibold flex relative gap-5">
-                {/* <div style={{paddingTop: "0.1em", paddingBottom: "0.1rem", fontSize: "11px"}} classsName="p-2 bg-blue-200 text-gray-800 rounded">{category.adverts}</div> */}
                 <span style={{fontSize: "11px"}} class="bg-blue-500 text-purple-100 px-1 rounded-full">{category.products_count}</span>
                 <img src="/assets/arrow-right.svg" alt="" />
               </div>

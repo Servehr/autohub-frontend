@@ -10,7 +10,6 @@ import { BeatLoader, BounceLoader } from "react-spinners";
 
 export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
 {
-        // console.log(adverProductId)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();        
         const [loading, setIsLoading] = useState(false)
@@ -27,8 +26,6 @@ export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
                 let fileDocument = new FormData();
                 fileDocument.append('id', courseId.id)
                 fileDocument.append('material', courseFile)
-                // console.log(courseId.id)
-                // console.log(fileDocument)
                 // return false
                 await axios.post(`${BASE_URL}upload-course-document`, fileDocument, {
                         headers: {
@@ -42,12 +39,10 @@ export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
                         {
                                 return onClick(true)
                         } else {
-                                // alert("Error")
                                 setIsLoading(false)
                         }
                 }).catch((error) => { 
-                        setIsLoading(false)
-                        console.log(error)                      
+                        setIsLoading(false)                     
                         return false
                 })
         }
@@ -55,7 +50,6 @@ export const UploadCourseModal = ({onClick, uploadCourse, courseId})  =>
         const uploadDocument = (file) => 
         {
                 const course = file[0]
-                console.log(course)
                 setCourseFile(course)
         }
 

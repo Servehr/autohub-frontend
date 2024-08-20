@@ -20,8 +20,6 @@ export const EditCourseModal = ({onClick, editCourseModal, editCourse, courseId}
         const [theContent, setTheContent] = useState(editCourse.description)
         const [theIsOpened, setTheIsOpened] = useState('')
 
-        console.log(editCourse)
-
         const cancelModal = () => 
         {
                 onClick(true)
@@ -30,9 +28,7 @@ export const EditCourseModal = ({onClick, editCourseModal, editCourse, courseId}
         const updateCourse = () => 
         {            
                 const data = { id: id, name: theTitle, description: theContent }
-                console.log(data)
                 setIsLoading(true)
-                console.log(data)
                 UpdateCourse(data)
                 .then((res) => 
                 {
@@ -41,7 +37,6 @@ export const EditCourseModal = ({onClick, editCourseModal, editCourse, courseId}
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })                 
         }
 

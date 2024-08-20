@@ -27,7 +27,7 @@ export const ApproveExpenses = ({onClick, approveExpenses, expenseId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })       
         }
         

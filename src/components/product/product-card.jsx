@@ -18,7 +18,6 @@ function isProductInWatchList(watchlist, product_id) {
       const result = watchlist?.filter(
         (product) => product.product_id === product_id
       )[0];
-      console.log(result)
       return result;
     } else {
       return false;
@@ -37,7 +36,6 @@ export function ProductCard2({ data }) {
 
   const imgUrl = data?.avatar;
   const navigate = useNavigate();
-  console.log(watchlist)
   // const { data: user } = useUser();
 
   return (
@@ -99,7 +97,6 @@ export function ProductCard({ data, innerRef })
 {
   const imgUrl = `${PRODUCT_FACE}${data?.avatar}`;
   const waterM = `${WATER_MARK}${data?.watermark}`;
-  console.log(imgUrl)
   const navigate = useNavigate();
   const { data: user } = useUser();
   const { data: watchlist, refetch } = useQuery("watchlist", fetchWatchList, {
@@ -109,10 +106,8 @@ export function ProductCard({ data, innerRef })
   const [refreshPage, setRefreshPage] = useState("")
 
   useEffect(() => {
-    console.log("Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? Did i hit again? ")
+    
   }, [refreshPage])
-
-  console.log(imgUrl)
 
   return (
     <div

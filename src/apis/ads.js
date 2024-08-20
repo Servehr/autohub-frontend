@@ -28,20 +28,10 @@ export async function fetchSponsored()
           if (res.data.success === 0) {
             resolve([]);
           } else {
-            // console.log(res.data.data.category)
-            // const catogory = res.data.data.category
-            // const sponsored = res.data.data.sponsored
-            // console.log(res.data.data.sponsored)
-            
-            // const x = []
-            // x['sponsored'] = sponsored
-            // x['category'] = catogory
-            // console.log(res.data.data)
             resolve(res.data.data);
           }
         })
         .catch(() => {
-          // console.log(err)
           let message = "Something went wrong!";
           reject(new Error(message));
         });
@@ -57,14 +47,10 @@ export async function ImageSlider()
           if (res.data.success === 0) {
             resolve([]);
           } else {
-                // localStorage.setItem("sliderSizee", res.data.data.slider.length)
-                // console.log(res.data.data.slider.length)
-                // console.log(res.data.data.slider)
                 resolve(res.data.data);
           }
         })
         .catch(() => {
-          // console.log(err)
           let message = "Something went wrong!";
           reject(new Error(message));
         });
@@ -97,7 +83,6 @@ export async function fetchProductWithSlug(slug) {
         if (res.data.success === 0) {
           resolve([]);
         } else {
-          console.log(res.data.data)
           resolve(res.data.data);
         }
       })
@@ -116,7 +101,6 @@ export async function fetchByCategory(id, page) {
         if (res.data.success === 0) {
           resolve([]);
         } else {
-          // console.log(res.data.data)
           resolve(res.data.data);
         }
       })
@@ -136,7 +120,6 @@ export async function allProductsUploaded(page)
           if (res.data.success === 0) {
             resolve([]);
           } else {
-            console.log(res.data)
             resolve(res.data.data);
           }
         })
@@ -191,7 +174,6 @@ export async function fetchProductDetails(id) {
         if (res.data.data === null) {
           reject(new Error("Details not found"));
         } else {
-          // console.log(res.data.data)
           resolve(res.data.data);
         }
       })
@@ -285,34 +267,6 @@ export async function fetchSearch({
 }
 
 // prettier-ignore
-export async function createAd({ title, state, category, maker, model, colour, year_of_production, transmission, condition, chasis_number, trim, description, price, plan_id, avatar, others }) 
-{
-  // const requestData = { title, state, category, maker, model, colour, year_of_production, transmission, condition, chasis_number, trim, description, price, plan_id, avatar, others }
-
-  //   console.log(requestData)
-    // return
-    // return new Promise((resolve, reject) => {
-    //   sendDataWithForm
-    //     .post("/ad/create", requestData)
-    //     .then((res) => {
-          // console.log(res)
-          // if (res.data.success === 0) {
-          //   reject(res.data.message);
-          // } else {
-            // console.log(res);
-        //     resolve(res.data.message);
-        //   }
-        // })
-        // .catch((err) => {
-          // console.log(err);
-    //       let message = err?.message;
-    //       reject(message);
-    //     });
-    // });
-}
-
-
-// prettier-ignore
 export async function saveAdvert(
     { state, category, maker, model, colour, year_of_production, manufacturerName, modelName, 
       transmission, condition, chasis_number, trim, description, price, plan_id, avatar, others, mainImage, draft
@@ -323,22 +277,17 @@ export async function saveAdvert(
     transmission, condition, chasis_number, trim, description, price, plan_id, avatar, others, mainImage, draft
   }
 
-    console.log(requestData)
-    // return
     return new Promise((resolve, reject) => {
       axios_instance
         .post("/ad/create-ad", requestData)
         .then((res) => {
-          // console.log(res)
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            // console.log(res);
             resolve(res.data.draft);
           }
         })
         .catch((err) => {
-          // console.log(err);
           let message = err?.message;
           reject(message);
         });
@@ -347,22 +296,18 @@ export async function saveAdvert(
 
 export async function updateAds(advertDetail)
 {
-  console.log(advertDetail)
   // return
     return new Promise((resolve, reject) => {
       axios_instance
         .put("/ad/update", advertDetail)
         .then((res) => {
-            console.log(res)
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            console.log(res.data);
             resolve(res.data);
           }
         })
         .catch((err) => {
-          // console.log(err);
           let message = err?.message;
           reject(message);
         });
@@ -375,16 +320,13 @@ export async function addProductAds(advertDetail)
       sendDataWithForm
         .put("/ad/add-product-ads", advertDetail)
         .then((res) => {
-          // console.log(res)
           if (res.data.success === 0) {
             reject(res.data.success);
           } else {
-            // console.log(res);
             resolve(res.data);
           }
         })
         .catch((err) => {
-          // console.log(err);
           let message = err?.message;
           reject(message);
         });
@@ -400,7 +342,6 @@ export async function deleteAdProduct(url)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          // console.log(res)
           resolve(res.data);
         }
       })
@@ -420,7 +361,6 @@ export async function setProductAdvert(data)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res)
           resolve(res.data);
         }
       })
@@ -442,7 +382,6 @@ export async function setProductSliderAdvert(data)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res)
           resolve(res.data);
         }
       })
@@ -464,7 +403,6 @@ export async function SellablePrice(data)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res)
           resolve(res.data);
         }
       })
@@ -484,7 +422,6 @@ export async function unpublishAd(url)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          // console.log(res)
           resolve(res.data);
         }
       })
@@ -504,7 +441,6 @@ export async function fetchUserProduct(id)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          // console.log(res)
           resolve(res.data.data);
         }
       })
@@ -539,7 +475,6 @@ export async function getAdverts(currentPage, PerPage, searchQuery)
     let theQuery = searchQuery.trim()
     if(theQuery.length === 0)
     {        
-      // console.log("All Searched Product")
         return new Promise((resolve, reject) => {
           axios_instance
             .get(`ad/products/${currentPage}/${PerPage}`)
@@ -556,7 +491,6 @@ export async function getAdverts(currentPage, PerPage, searchQuery)
             });
         });
     } else {        
-        // console.log("Searched Product")
         return new Promise((resolve, reject) => {
       
           axios_instance
@@ -565,7 +499,6 @@ export async function getAdverts(currentPage, PerPage, searchQuery)
               if (res.data.success === 0) {
                 reject(res.data.message);
               } else {
-                // console.log(res)
                 resolve(res.data.data);
               }
             })
@@ -582,7 +515,6 @@ export async function viewPosts(currentPage, PerPage, searchQuery)
 {
     if(searchQuery === "" | searchQuery === undefined | searchQuery === null)
     {        
-      // console.log("All Searched Product")
         return new Promise((resolve, reject) => {
           axios_instance
             .get(`view-blog/${currentPage}/${PerPage}`)
@@ -590,7 +522,6 @@ export async function viewPosts(currentPage, PerPage, searchQuery)
               if (res.data.success === 0) {
                 reject(res.data.message);
               } else {
-                console.log(res.data.response)
                 resolve(res.data.response);
               }
             })
@@ -600,7 +531,6 @@ export async function viewPosts(currentPage, PerPage, searchQuery)
             });
         });
     } else {        
-        // console.log("Searched Product")
         return new Promise((resolve, reject) => {
       
           axios_instance
@@ -609,7 +539,6 @@ export async function viewPosts(currentPage, PerPage, searchQuery)
               if (res.data.success === 0) {
                 reject(res.data.message);
               } else {
-                // console.log(res)
                 resolve(res.data.data);
               }
             })
@@ -631,7 +560,6 @@ export async function fetchData(theCurrentPage, thePerPage, from)
 
             reject(res.data.message);
           } else {
-            console.log(res.data.response)
             resolve(res.data.response);
           }
         })
@@ -651,7 +579,6 @@ export async function faqAndProduct()
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            console.log(res.data.response)
             resolve(res.data.response);
           }
         })
@@ -664,9 +591,6 @@ export async function faqAndProduct()
 
 export async function blogDetail(post_id)
 {
-    console.log("kkkkkkkkkkkkkkkkkkkkk")
-    console.log(post_id)
-    console.log("kkkkkkkkkkkkkkkkkkkkk")
     return new Promise((resolve, reject) => {
       axios_instance_no
         .get(`blog-detail/${post_id}`)
@@ -674,7 +598,6 @@ export async function blogDetail(post_id)
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            console.log(res.data.response)
             resolve(res.data.response);
           }
         })
@@ -694,7 +617,6 @@ export async function addCommentOnBlog(payLoad)
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            console.log(res.data.response)
             resolve(res.data.response);
           }
         })
@@ -714,7 +636,6 @@ export async function getPost(id)
           if (res.data.success === 0) {
             reject(res.data.message);
           } else {
-            console.log(res.data.title)
             resolve(res.data);
           }
         })
@@ -745,15 +666,13 @@ export async function addMessage(requestData) {
   });
 }
 
-export async function followUser(vendor) {
-  // const requestData = { product_id, message };
-  // console.log(vendor)
+export async function followUser(vendor) 
+{
   return new Promise((resolve, reject) => {
     axios_instance
       .post(`follow`, vendor)
       .then((res) => {
         if (res.data.success === 0) {
-          console.log(res)
           reject(0);
         } else {
           resolve(res.data.follower);
@@ -775,7 +694,6 @@ export async function getUserFollowers(vendor)
         if (res.data.success === 0) {
           reject(0);
         } else {
-          console.log(res.data.follower)
           resolve(res.data.follower);
         }
       })
@@ -792,9 +710,6 @@ export async function getCategories()
     axios_instance
       .get(`ad/list-with-catogries-count`)
       .then((res) => {
-          console.log("Nice Nice Nice Nice Nice Nice Nice ")
-          console.log(res)
-          console.log("Nice Nice Nice Nice Nice Nice Nice ")
           resolve(res);
       })
       .catch((err) => {
@@ -850,7 +765,6 @@ export async function GetSearchedProduct(keyword) {
         if (res.data.success === 0) {
           reject(new Error("Something went wrong!"));
         } else {
-          console.log(res)
           resolve(res.data.data);
         }
       })

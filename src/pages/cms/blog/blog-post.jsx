@@ -35,12 +35,6 @@ export default function BlogPost()
     
   const navigate = useNavigate();
 
-
-    if(!isLoading)
-    {
-        console.log(blogPost?.data?.posts)
-    }
-
     const columns = [
         { field: 'title' },
         { field: 'user' },
@@ -53,37 +47,7 @@ export default function BlogPost()
 
     useEffect(() => {
         refetch()
-        // console.log("Great")
-        // console.log(refresh)
-        // console.log("Great")
     }, [refresh])
-
-    // useEffect(() => 
-    // {
-        // setadvertData(roleadvertData(currentPage, perPage))
-    // }, [])
-
-    // const [isLoading, setIsLoading] = useState(false)
-    // useEffect(() => {
-    //     getProducts()
-    // }, [isLoading])
-
-    // const getProducts = async () => 
-    // {
-    //     let token = localStorage.getItem("token")  
-    //     await axios.get(`${BASE_URL}ad/all-product`, {
-    //             headers: { 'Authorization': token ? `Bearer ${token}` : ""}
-    //             }).then((response) => 
-    //             {  
-    //                 if(response.data.data)
-    //                 {
-    //                     setIsLoading(true)
-    //                     setDatable(response.data.data)
-    //                 }
-    //             }).catch((error) => {                        
-    //                     console.log(error)
-    //             })
-    // }
 
     const fetchRoles = (theCurrentPage, thePerPage) =>
     {
@@ -102,7 +66,6 @@ export default function BlogPost()
             {
                 // refetch()
                 // setIsLoading(true)
-                console.log(res)
                 // setTimeout(() => {
                     setCurrentPage(res?.product_advert?.currentPage)
                     setTotalRow(res?.product_advert?.totalPage)
@@ -119,8 +82,6 @@ export default function BlogPost()
             })
             .catch((err) => 
             {
-                console.log(err)
-                alert('No data found')
                  setDataState(true)
             })
     }
@@ -173,19 +134,16 @@ export default function BlogPost()
 
     const searchedProduct = (queryParameter) => 
     {
-        console.log(queryParameter)
         GetSearchedProduct(queryParameter)
         .then((res) => {
             // setError(false)
             // setLoading(false);
-            console.log(res)
             refetch()
             // setIsSuccess(res.message)
             // setSuccessModal(true)
         })
         .catch((err) => {
             // setIsSuccess("")
-            console.log(err)
             // setLoading(false);
             // setError(`${err}`);
         }
@@ -199,12 +157,10 @@ export default function BlogPost()
         if (e.target.value != "") 
         {
             // searchedProduct(value)
-            console.log(e.target.value)
             // setShowSuggestions(false)
             refetch()
         } else {
-            setSearchQuery("")     
-            console.log(e.target.value)   
+            setSearchQuery("")       
             refetch()                            
         }
     }
@@ -232,7 +188,6 @@ export default function BlogPost()
                     placeholder="Search titile, content, author"
                     onKeyUp ={(e) => {
                         setSearchQuery(e.target.value)
-                        console.log(searchQuery)
                         callTheSearch(e)
                     }}
                 />
@@ -262,7 +217,6 @@ export default function BlogPost()
                                                                 columns={columns}
                                                                 data={blogPost?.data?.posts}
                                                                 onClick={(e) =>  {
-                                                                    console.log(e)
                                                                     setRefresh(e)
                                                                 } }
                                                                 page={'blog'}

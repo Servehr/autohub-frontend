@@ -18,11 +18,6 @@ export default function UserTakeTestTheory()
   const navigate = useNavigate()
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestCourseTheoryQuestions(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-
   const [selectedOptions, setSelectedOptions] = useState([])
   const [courseId, setCourseId] = useState('')
   const [answer, setAnswer] = useState('')
@@ -52,14 +47,6 @@ export default function UserTakeTestTheory()
               setErrorMsg("")
           }, 2000)
       } else {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        console.log(userAnswers)
-        console.log(userAnswers[8])
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        // setTimeout(() => {
-        //     setIsSubmitting(false)
-        // }, 2000)
-        // return false
         SubmitTestObjective(userAnswers)
         .then((res) => {
             if(res === "submitted")
@@ -84,18 +71,10 @@ export default function UserTakeTestTheory()
   }
 
   useEffect(() => {
-    // console.log(selectedOptions)
-      // forceUpdate()
-      // console.log(advertState.getSelectedOption()[0]['answer'])
-      // console.log(advertState.getSelectedOption())
-      // isChecked()
-      // setChoosen(advertState.getSelectedOption())
-      console.log(advertState.getSelectedOption())
   }, [])
   
   useEffect(() => 
   {      
-    //  console.log(advertState.getSelectedOption()[currentQuestion]['answer'])
       isChecked()
   }, [currentQuestion, fakeRefresh])
 
@@ -103,24 +82,16 @@ export default function UserTakeTestTheory()
   {
       deselectAll()
       setCurrentQuestion(position)
-      console.log(position)      
-      // setChoosen([...choosen, question])
-      // localStorage.setItem('no', question)
-      // refetch()
-      console.log(choosen)
-      console.log(advertState.getSelectedOption())
   }
 
   const deselectAll = () => 
   {
       setChoosen(advertState.getSelectedOption())
       let allOptions = document.querySelectorAll('.theOption')
-      // console.log(allOptions)
       allOptions.forEach(value => value.checked = false)
   }
 
   useEffect(() => {
-      console.log(selectedOptions)
   }, [selectedOptions, answer, courseId])
 
 
@@ -134,16 +105,13 @@ export default function UserTakeTestTheory()
           // id, user_id, course_id, option_id, selected
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
           advertState.setSelectedOption(answer)     
-          console.log(advertState.getSelectedOption())
       } else {        
           advertState.getSelectedOption().splice(checkIfPresent, 1);
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
-          advertState.setSelectedOption(answer)     
-          console.log(advertState.getSelectedOption())          
+          advertState.setSelectedOption(answer)              
       }
       setCurrentQuestion(position)
       setFakeRefresh(Math.random() * position)
-      // refetch()
   }
 
   const isSelected = (id) => 
@@ -319,8 +287,6 @@ export default function UserTakeTestTheory()
                   
                   data?.data &&  (data?.message < 1) &&            
                     data?.data.map((num, index) => {
-                      // console.log(index)
-                      // console.log(advertState.getSelectedOption())
                       const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                       const currentAnswer = (currentQuestion === index) ? "bg-green-400 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
                       const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 

@@ -32,7 +32,6 @@ export const AddStaffModal = ({onClick, openStaff})  =>
         // {
             
         //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         console.log(data)
         //         if(theIsOpened === -1)
         //         {
         //              alert("Select whether you want it published immediately or not")   
@@ -40,12 +39,11 @@ export const AddStaffModal = ({onClick, openStaff})  =>
         //         CreateFaq(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
-        //                 console.log(err)
+        
         //         })    
         // }
 

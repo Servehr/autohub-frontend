@@ -11,7 +11,7 @@ import { appStore } from "@/state/appState";
 import DynamicTable from "@/components/table"
 import { GetSearchedProduct, allProduct, getPost } from "@/apis/ads";
 import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
+import { BASE_URL, BLOG_POST } from "@/lib/axios";
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Compressor from 'compressorjs'
@@ -22,6 +22,7 @@ export default function EditBlog()
     // const advertState = appStore((state) => state)
     const { id } = useParams();    
     const { data, isLoading, refetch } = useQuery([`get-post/${id}`, id], () => getPost(id), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
+
     const [dataTable, setDatable] = useState("")
     const [refresh, setRefresh] = useState(0)
     const [isLoadingData, setIsLoading] = useState(false)
@@ -52,10 +53,6 @@ export default function EditBlog()
         // }
     }
 
-    // if(!isLoading)
-    // {
-    //     console.log(blogPost?.blog_post?.posts)
-    // }
 
     useEffect(() => {
         setUrl(imgeUrl)
@@ -63,13 +60,12 @@ export default function EditBlog()
 
     const publishPost = () => 
     {
-        console.log({theValue: value})
+        
     }
 
     const uploadImage = async () =>
         {
-                // addProductAds(imageToUpload) 
-                console.log({ title, value })
+                // addProductAds(imageToUpload)
                 let token = localStorage.getItem("token")           
                 let blogPost = new FormData();
                 blogPost.append('title', title)
@@ -84,8 +80,7 @@ export default function EditBlog()
                 {  
                         setUrl("")
                         navigate('/blog-post')
-                }).catch((error) => { 
-                        console.log(error)                      
+                }).catch((error) => {                      
                         return false
                 })
         }
@@ -106,11 +101,11 @@ export default function EditBlog()
 
 
   return ( 
-        <div className="pb-5 bg-white">
-            <div className='w-full flex'>
-                <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
-                    <Sidebar />
-                </div>
+        // <div className="pb-5 bg-white">
+        //     <div className='w-full flex'>
+        //         <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600'> 
+        //             <Sidebar />
+        //         </div>
                 <div className='bg-white md:flex-row px-5 md:w-10/12 w-full md:ml-5 mb-40'>
                     <div className="bg-white p-3 mt-1 text-xl font-bold flex">
                         <span className="font-bold md:w-2/12 text-md sm:w-full items-center">Edit Post</span>
@@ -137,7 +132,7 @@ export default function EditBlog()
                                     }
 
                                     {
-                                        (imgeUrl === "") && <img src={data.photos} alt="Product image" className="h-80 rounded-xl w-fit mb-10 object-fit mx-auto p-2 bg-green-200" />
+                                        (imgeUrl === "") && <img src={`${BLOG_POST}/${data?.data?.photos}`} alt="Product image" className="h-80 rounded-xl w-fit mb-10 object-fit mx-auto p-2 bg-green-200" />
                                     }
                                     {/* {
                                         (imgeUrl != "" || imgeUrl != "undefined") ? 
@@ -173,12 +168,12 @@ export default function EditBlog()
                                     onChange={(e) => setTitle(e.target.value)}
                                     name="password"
                                     type=""
-                                    value={data.title}
+                                    defaultValue={data?.data?.title}
                                     placeholder="Enter Title"
                                     className="border w-full md:w-11/12 outline-none focus:border-brandGreen text-xs mb-10 sm:text-base rounded-[10px] p-4"
                                 />
                                 
-                                <ReactQuill theme="snow" value={data.content} onChange={setValue} className="w-full md:w-11/12 h-[450px]" modules={modules} />
+                                <ReactQuill theme="snow" value={data?.data?.content} onChange={setValue} className="w-full md:w-11/12 h-[450px]" modules={modules} />
 
                                 <div className="bg-green-800 px-2 py-4 w-[150px] rounded-md mt-20 text-sm text-white font-semibold hover:font-bold text-center cursor-pointer hover:bg-green-500 hover:text-black hover:text-sm" 
                                     onClick={uploadImage}>
@@ -191,8 +186,8 @@ export default function EditBlog()
                     </div>
 
                 </div>
-            </div>
+        //     </div>
 
-        </div>
+        // </div>
   )
 }

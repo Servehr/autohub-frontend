@@ -44,9 +44,29 @@ const createExamTheorySlice  = (set, get) => (
         {
             set((state) => ({selectedExamTheoryOption: selectedExamTheoryOption}))
         },
-        setEmptyExamTheory()
+        getEmptyExamTheory()
         {
             return get().selectedExamTheoryOption
+        },
+
+        forceExamTheory: 'no',
+        setForceExamTheory(forceExamTheory)
+        {
+            set((state) => ({forceExamTheory: forceExamTheory}))
+        },
+        getForceExamTheory()
+        {
+            return get().forceExamTheory
+        },
+
+        defaultExamTheoryAnswer: [],
+        setDefaultExamTheoryAnswer(defaultExamTheoryAnswer)
+        {
+            set((state) => ({defaultExamTheoryAnswer: defaultExamTheoryAnswer}))
+        },
+        getDefaultExamTheoryAnswer()
+        {
+            return get().defaultExamTheoryAnswer
         },
     }
 )

@@ -32,19 +32,16 @@ export const BasicProfile = ({onClick, data, openBasicInfo})  =>
         const addQuestion = () => 
         {   
                 const data = { id: Number(theId), name: firstName, lastname: surname, email: email, phoneno: phoneno }
-                console.log(data)
                 setIsLoading(true)
                 UpdateUserProfile(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         setIsLoading(false)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })    
         }
 

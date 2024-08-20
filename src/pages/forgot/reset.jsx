@@ -21,27 +21,12 @@ export default function ResetPassword()
     const navigate = useNavigate();
     const [userReset, setUserReset] = useState("-1")
     
-
-    // const isUserActivated = localStorage.getItem("userId")
-    // if(isUserActivated === null)
-    // {
-    //     console.log(isUserActivated)
-    //     navigate("/login");
-    // }
-
-    // const x =  localStorage.setItem("autoUser", "dfihoahdfar343dfdaer3")
-    // const isUser = localStorage.getItem("userId")
-    // console.log(isUser)
-
     useEffect(() => 
     {
         const isUserActivated = localStorage.getItem("userId")
-        console.log(isUserActivated)
         setUserReset(isUserActivated)
-        console.log(userReset)
         if(!isUserActivated)
         {
-            console.log(isUserActivated)
             navigate("/login");
         }
     }, [userReset])
@@ -94,7 +79,6 @@ function ResetContainer() {
     setError("");
     const { firstDigit, secondDigit, thirdDigit, fourthDigit } = data;
     const activationCode = firstDigit.toString()+secondDigit.toString()+thirdDigit.toString()+fourthDigit.toString()
-    console.log(activationCode)
     forgotPasswordComplete(activationCode)
       .then(() => {})
       .catch((err) => {

@@ -27,7 +27,6 @@ export const EditItemModal = ({onClick, editItemModal, itemId})  =>
         const updateFaqData = () => 
         {
                 const data = {itemId: itemId }
-                console.log(data)
                 UpdateFaq(data)
                 .then((res) => 
                 {
@@ -35,7 +34,7 @@ export const EditItemModal = ({onClick, editItemModal, itemId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })                 
         }
 

@@ -33,11 +33,6 @@ export default function Exams()
     const { id } = useParams()
     const { data, isLoading, isRefetching, refetch } = useQuery([`all-test`, id], () => AllExam(id), { cacheTime: 0 })
 
-    if(!isLoading)
-    { 
-        console.log(data) 
-    }
-
     const [openExamQuestionaire, setOpenExamQuestion] = useState(false)
     const [editExamQuestion, setEditExamQuestion] = useState(false)
     const [deleteExamQuestion, setDeleteExamQuestion] = useState(false)
@@ -101,7 +96,6 @@ export default function Exams()
                                                         <div className="flex space-x-5">
                                                             <span onClick={() => {
                                                                 setQuestionToEdit(data[index])
-                                                                console.log(data[index])
                                                                 setEditExamQuestion(true)
                                                             }}>
                                                                 <Icons iconName={'edit'} width={6} height={6} />

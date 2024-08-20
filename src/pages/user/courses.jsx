@@ -36,11 +36,6 @@ function Course()
   const id = (Math.round()*337)
   const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse(), { cacheTime: 0 })
 
-  if(!isLoading)
-  {
-      console.log(data)
-  }
-
   const [loading, setIsLoading] = useState(false)
 
   const [downloadForm, setDownloadForm] = useState(false)

@@ -27,7 +27,6 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
         const updateFaqData = () => 
         {
                 const data = {coutryId: coutryId }
-                console.log(data)
                 UpdateFaq(data)
                 .then((res) => 
                 {
@@ -35,7 +34,6 @@ export const EditCountryModal = ({onClick, editCountryModal, coutryId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                 })                 
         }
 

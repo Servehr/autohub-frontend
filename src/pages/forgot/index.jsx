@@ -66,7 +66,6 @@ function PasswordContainer() {
       .then(() => {})
       .catch((err) => {
         setLoading(false);
-        console.log(err)
         setError(`${err}`);
       });
   };

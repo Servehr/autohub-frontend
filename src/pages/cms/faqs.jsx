@@ -31,51 +31,22 @@ export default function Faqs()
     const [openFaqModal, setOpenFaqModal] = useState(false)
     const [clickTable, setClickTable] = useState(false)
 
-    if(!isLoading)
-    {
-        console.log(data)
-    }
-
     useEffect(() => {
-        console.log("Giving")
         refetch()
     }, [clickTable])
-
-
-    // const [isLoading, setIsLoading] = useState(false)
-    // useEffect(() => {
-    //     getProducts()
-    // }, [isLoading])
-
-    // const getProducts = async () => 
-    // {
-    //     let token = localStorage.getItem("token")  
-    //     await axios.get(`${BASE_URL}ad/all-product`, {
-    //             headers: { 'Authorization': token ? `Bearer ${token}` : ""}
-    //             }).then((response) => 
-    //             {  
-    //                 if(response.data.data)
-    //                 {
-    //                     setIsLoading(true)
-    //                     setDatable(response.data.data)
-    //                 }
-    //             }).catch((error) => {                        
-    //                     console.log(error)
-    //             })
-    // }
 
 
   return ( 
         <>
 
-                    <div className="w-full justify-between p-3 flex space-x-10 -mb-3 items-center">                        
-                        <div className="bg-white p-3">
-                            <h1 className="font-bold">All FAQS</h1>
-                        </div>
-                        <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenFaqModal(true)}>Add Faq</div>
-                    </div>
+            <div className="w-full justify-between p-3 flex space-x-10 -mb-3 items-center">                        
+                <div className="bg-white p-3">
+                    <h1 className="font-bold">All FAQS</h1>
+                </div>
+                <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenFaqModal(true)}>Add Faq</div>
+            </div>
                     
-                    <div className="w-full p-3 mb-10" style={{ marginBottom: '100px' }}>
+            <div className="w-full p-3 mb-10" style={{ marginBottom: '100px' }}>
                         {/* {isLoading && (
                             <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
                             {isMobile ? (
@@ -101,13 +72,12 @@ export default function Faqs()
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    console.log(e)
                                                                                     setClickTable(e) 
                                                                                 } } 
                                                                                 page={'faqs'}
                                                                             />
                         }
-                    </div>
+            </div>
 
             { openFaqModal && <AddFaqModal onClick={(e) => {
                                                 setOpenFaqModal(false) 

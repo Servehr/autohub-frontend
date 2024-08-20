@@ -166,26 +166,6 @@ export default function Profile()
               setOpenBasicInfo(false)
         }} /> }
 
-        {/* <div className="w-full justify-end flex">
-          <div
-            className={`p-2 px-4  bg-brandDarkGray w-max text-sm text-white font-medium rounded-lg`}
-            // onClick={() => logOut()}
-          >
-            Save Changes
-          </div>
-        </div> */}
-
-        {/* Change Profile Picture Button */}
-        {/* <div className="w-full my-2">
-          <div
-            className="text-xs"
-            // className="p-2 px-4  bg-brandGreen w-max text-sm text-white font-medium rounded-lg"
-            // onClick={() => logOut()}
-          >
-            Change Profile Picture
-          </div>
-        </div> */}
-
         <div className="w-full justify-center flex md:hidden mt-14">
           <div
             className="p-4 py-3 my-2 bg-brandGreen/10 w-max rounded-full text-brandGreen font-semibold"
@@ -201,7 +181,6 @@ export default function Profile()
               if(e != true)
               {   
                   setProfilePicture(`${AVATAR}${e}`)
-                  console.log(e)
               }
               // alert(e)
               setImageOpenModal(false)

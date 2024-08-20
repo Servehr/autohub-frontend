@@ -64,11 +64,9 @@ function ChangePasswordContainer() {
     let passwordd = data.password
     let phone = data.phone
     let credentilas = { phone: phone, password: passwordd}
-    console.log(credentilas)
     setUserNewPhoneNumber(credentilas)
       .then((res) => {
           setLoading(false);
-          console.log(res)
           setSuccessMessage(res.message)
           setTimeout(() => {
               setSuccessMessage("")

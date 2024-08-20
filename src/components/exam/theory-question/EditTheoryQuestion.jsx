@@ -17,25 +17,19 @@ export const EditTheoryQuestion = ({onClick, data, editQuestion})  =>
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
         const [mark, setMark] = useState(data['mark'])
-
-        console.log(data)
         
 
         const updateQuestion = async () => 
-        {       
-                // const theId = data['id']            
+        {                
                 const data = { id: Number(id), question: question, mark: mark  }
-                console.log(data)
                 setIsLoading(true)
                 UpdateExamQuestionTheory(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                         setIsLoading(false)
                 })    
         }

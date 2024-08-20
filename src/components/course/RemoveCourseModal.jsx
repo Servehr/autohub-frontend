@@ -21,8 +21,6 @@ export const RemoveCourseModal = ({onClick, removeUploadCourse, removeCourse, co
         {
                 onClick(true)
         }
-
-        // console.log(removeCourse.id)
         
         const RemoveCoursesMaterial = () => 
         {
@@ -36,7 +34,6 @@ export const RemoveCourseModal = ({onClick, removeUploadCourse, removeCourse, co
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })       
         }
         

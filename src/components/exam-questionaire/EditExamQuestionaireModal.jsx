@@ -32,7 +32,6 @@ export const EditExamQuestionaireModal = ({onClick, editFolder, description, cou
         {
                 setIsLoading(true)
                 const data = { id: id, name: theTitle, description: theContent }
-                console.log(data)
                 UpdateExamQuestionaires(data)
                 .then((res) => 
                 {
@@ -41,7 +40,6 @@ export const EditExamQuestionaireModal = ({onClick, editFolder, description, cou
                 .catch((err) => 
                 {
                         setIsLoading(false)
-                        console.log(err)
                 })                 
         }
         

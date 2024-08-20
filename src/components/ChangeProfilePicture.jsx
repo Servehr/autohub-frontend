@@ -10,7 +10,6 @@ import { BeatLoader } from "react-spinners";
 
 export const ChangeProfilePicture = ({onClick, imageModal, imageId, adverProductId})  =>
 {
-        console.log(adverProductId)
         const advertState = appStore((state) => state)
         const navigate = useNavigate();        
         const [imageToUpload, setImageToUpload] = useState(false)
@@ -19,12 +18,8 @@ export const ChangeProfilePicture = ({onClick, imageModal, imageId, adverProduct
         const [productId, setProductId] = useState(adverProductId)
         const [loading, setIsLoading] = useState(false)
         
-        // const [deleteOpenModal, setDeleteModal] = useState(false)
-        // const [ deleteUrl, setDeleteUrl] = useState("") 
-        // const [ productToDeleteMessage, setProductToDeleteMessage] = useState("") 
         const uploadImage = async () =>
         {
-                // addProductAds(imageToUpload) 
                 setIsLoading(true)
                 let token = localStorage.getItem("token")           
                 let imgTo = new FormData();
@@ -38,11 +33,9 @@ export const ChangeProfilePicture = ({onClick, imageModal, imageId, adverProduct
                 {  
                         setIsLoading(false)
                         setUrl("")
-                        console.log(response.data.data[0])
                         onClick(response.data.data[0])
                 }).catch((error) => { 
-                        setIsLoading(false)
-                        console.log(error)                      
+                        setIsLoading(false)                   
                         return false
                 })
         }
@@ -70,7 +63,6 @@ export const ChangeProfilePicture = ({onClick, imageModal, imageId, adverProduct
                                 </div>
                                 <div className="grid grid:col-12 gap-5 mt-5 mb-5 justify-center items-center">
                                         <div className="bg-white shadow-md w-fit mx-auto">
-                                                {/* <img src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTgzODM0NDU&ixlib=rb-1.2.1&q=80" alt="Product image" className="h-80 w-72 object-cover" /> */}
                                                { imgeUrl && 
                                                         <img src={imgeUrl} alt="Product image" className="h-80 w-72 object-cover" />
                                                 }

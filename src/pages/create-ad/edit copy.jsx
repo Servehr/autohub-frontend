@@ -33,12 +33,6 @@ export default function EditProduct()
   const advertState = appStore((state) => state)
   const years = getYearsArray();
 
-  if(!allRequiredData)
-  {
-     console.log(allRequiredData)
-  }
-
-
   const [selectedMaker, setSelectedMaker] = useState(0);
   const [selectedModel, setSelectedModel] = useState([]);
   
@@ -72,17 +66,8 @@ export default function EditProduct()
   {
       const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => item.make_id === Number(x))
       setSelectedModel(filteredModel)
-      console.log(filteredModel)
   }
-  console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-  console.log(theState)
-  console.log(theCategory)
-  console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
   const [selectedCarModel, setCarSelectedModelGroup] = useState("");
-
-//   const userSelectedModel = localStorage.getItem("modelId")
-//   console.log(allRequiredData)
-//   setCarSelectedModelGroup(allRequiredData?.model)
 
   const updateAdvertDetail = () => 
   {
@@ -91,13 +76,11 @@ export default function EditProduct()
                                 state: theState, category: theCategory, maker: theManufacturer, model: theModel, year_of_production: theProductionYear, 
                                 colour: theColour, transmission: theTransmission, condition: theCondition, trim: theTrim, description: theDescription, 
                                 chasis_number: theChasisNo, price: thePrice, productId: allRequiredData?.userProductDetail?.id, mileage: theMileAge, fuel: theFuel, country: theCountry
-                            }   
-    console.log(advertDetail)
+                            }  
     updateAds(advertDetail)
       .then((res) => {
             setError(false)
             setLoading(false);
-            console.log(res)
             setIsSuccess(res.message)
             clearProductStore()
             setSuccessModal(true)            
@@ -109,7 +92,6 @@ export default function EditProduct()
       })
       .catch((err) => {
         setIsSuccess("")
-        console.log(err)
         setLoading(false);
         setError(`${err}`);
       });
@@ -157,9 +139,6 @@ export default function EditProduct()
         advertState.setOthers(item?.others)
         advertState.setAvatar(item?.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(advertState.getStates())
-        console.log("=======================")
         advertState.setMileAge(item?.mileage)
     advertState.setFuelType(item?.fuel)
   }

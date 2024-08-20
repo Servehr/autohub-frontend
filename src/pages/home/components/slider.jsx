@@ -32,22 +32,15 @@ export const SlideTheImages = ({data, imageSize}) =>
   {
     //   setSliderSize(imageSize)
       sliderTimeOut =  setTimeout(() => {
-          console.log("First Trip")
           if(slide === 0)
           {
-              console.log(imageSize)
-              console.log(slide)
-              console.log(data?.length)
-              console.log("It`s Zero")
               if(imageSize > 1)
               {
                 setSlide(slide+1)
               }
           } else if((imageSize-1) > slide) {
               setSlide(slide+1)
-              console.log("It`s the last number")
           } else {
-            console.log("Am ehere")
               setSlide(0)
           }
       }, 5000);
@@ -69,24 +62,6 @@ export const SlideTheImages = ({data, imageSize}) =>
   {
       clearTimeout(sliderTimeOut)
       setSlide(position)
-  }
-
-  if(imageSize > 0)
-  {
-     console.log(data?.length)
-     console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-     console.log(data)
-     console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-    // for (let index = 0; index < data.length; index++) 
-    //   {
-    //       console.log(data?.)
-    //   }
-  }
-
-  if(imageSize > 0)
-  {
-     console.log(data?.length)
-     console.log(data)
   }
 
   return (
@@ -116,20 +91,6 @@ export const SlideTheImages = ({data, imageSize}) =>
                         </div>
                     </>
               }
-
-              {/* <BsArrowRightCircleFill className="arrow arrow-right" onClick={nextSlide} /> */}
-
-             {/* <span className="indicators bg-green-700 rounded-full hidden md:block left-10 bg-red-600">
-              { ((data?.length > 0)) &&
-                  data?.map((control, index) => {
-                      return (
-                        <button key={index}	onClick={() => goToSlide(index)} 
-                          className={ slide === index ? "rounded-full bg-white p-2 m-3" : "rounded-full bg-blue-400 p-2 m-3" }>
-                        </button>
-                      )
-                  })
-              }
-             </span> */}
 
              {
                (data?.length > 0) && 

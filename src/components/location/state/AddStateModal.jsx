@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal } from '../Modal';
+import { Modal } from '../../Modal';
 import { Link, useNavigate } from "react-router-dom";
 import { deleteAdProduct } from '@/apis/ads';
 import { appStore } from "@/state/appState";
@@ -8,7 +8,7 @@ import { BASE_URL } from "@/lib/axios";
 import { CreateFaq } from '@/apis/misc';
 
 
-export const AddStateModal = ({onClick, openStateModal})  =>
+export const AddStateModal = ({onClick, addState})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
@@ -31,8 +31,7 @@ export const AddStateModal = ({onClick, openStateModal})  =>
         // const addFaq = async () => 
         // {
             
-        //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         console.log(data)
+        //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }a)
         //         if(theIsOpened === -1)
         //         {
         //              alert("Select whether you want it published immediately or not")   
@@ -40,25 +39,24 @@ export const AddStateModal = ({onClick, openStateModal})  =>
         //         CreateFaq(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
-        //                 console.log(err)
+        
         //         })    
         // }
 
         return (
-                <Modal onClick={onClick} isOpen={openStateModal} wrapperWidth={800} margin={'100px auto 0px auto'}>
+                <Modal onClick={onClick} isOpen={addState} wrapperWidth={800} margin={'100px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll justify-center item-center'>
                                 
                                 <div className='col-span-12 pb-2 overflow-auto justify-center h-fit py-2 item-center'>
                                         <>                                                
                                                 <div className="p-1 mt-1">
-                                                        <h1 className='font-bold text-lg mb-5'>Add State</h1>                                           
-                                                        <div className="w-1/2 p-2 relative">
-                                                        <span className="w-full font-bold text-sm">Country<strong className="text-red-500"></strong></span> 
+                                                        <h1 className='font-bold text-md mb-5 text-blue-800 px-3'>Add State</h1>                                           
+                                                        <div className="w-2/2 p-2 relative mb-2">
+                                                        {/* <span className="w-full font-bold text-sm">Country<strong className="text-red-500"></strong></span>  */}
                                                         <select onChange={(e) => {    
                                                                                 
                                                                                 }
@@ -71,22 +69,20 @@ export const AddStateModal = ({onClick, openStateModal})  =>
                                                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                                         </div>
                                                         </div> 
-                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5 w-2/2 p-2">
                                                                 <input onChange={(e) => {
-                                                                        // advertState.setChasisNumber(e.target.value)
-                                                                        // setTheChasisNo(e.target.value)
                                                                         setTitle(e.target.value)
-                                                                }} type="text" id="course" defaultValue={''}  name="course" placeholder="Enter Course" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                                                }} type="text" id="stateName" defaultValue={''}  name="stateName" placeholder="Enter State Name" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>
                                                 </div>
                                         </>
                                 </div>
                                 
-                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-1 mt-3">
+                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-1 px-1">
                                         <button  
                                                 className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
                                                 onClick={() => {
-                                                        onClick(!openStateModal)
+                                                        onClick(!addState)
                                                 }}
                                         >
                                                         Cancel

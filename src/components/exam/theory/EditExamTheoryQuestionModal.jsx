@@ -21,17 +21,14 @@ export const EditExamTheoryQuestionModal = ({onClick, data, editQuestion})  =>
         {       
                 // const theId = data['id']            
                 const data = { id: Number(id), question: question }
-                console.log(data)
                 setIsLoading(true)
                 UpdateTestQuestionTheory(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                         setIsLoading(false)
                 })    
         }

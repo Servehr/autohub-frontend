@@ -21,7 +21,6 @@ export default function ListShow({productItem, refetch})
 {
   const advertState = appStore((state) => state)
   const navigate = useNavigate();
-  // const [product, setProduct] = useState([])  
   const [deleteOpenModal, setDeleteModal] = useState(false)
   const [deleteUrl, setDeleteUrl] = useState("") 
   const [productToDeleteMessage, setProductToDeleteMessage] = useState("") 
@@ -34,12 +33,6 @@ export default function ListShow({productItem, refetch})
   const [productMessages, setProductMessages] = useState(advertState.getProductComments())
   const [productTitle, setProductTitle] = useState(advertState.getProductTitle())
 
-  const callThatPlace = () => 
-  {
-    //   Oncli
-  }
-
-  console.log(productItem)
 
   const populateProductStore = (item) => 
   {      
@@ -60,9 +53,6 @@ export default function ListShow({productItem, refetch})
         advertState.setOthers(item?.others)
         advertState.setAvatar(item?.avatar)
         advertState.setOnEdit('yes')
-        console.log("=======================")
-        console.log(item)
-        console.log("=======================")
         advertState.setMileAge(item?.mileage)
         advertState.setFuelType(item?.fuel_type)
         advertState.setLocation(item?.location)
@@ -104,9 +94,6 @@ export default function ListShow({productItem, refetch})
                         advertState.setProductId(productItem.id)
                         advertState.setImageOnEdit(productItem.images)
                         setProductImages(productItem.images)
-                        console.log(productItem.id)
-                        console.log(productItem.images)
-                        console.log(advertState.getProductId())
                         setProductId(productItem.id)
                         localStorage.setItem("theProductId", productItem.id)
                         setImageOpenModal(true)
@@ -127,10 +114,6 @@ export default function ListShow({productItem, refetch})
           <div className="col-span-3 items-center justify-center mx-2"> 
               <div className="flex gap-2" onClick={() => { 
                     populateProductStore(productItem)
-                    // localStorage.setItem("modelId", productItem.id)
-                    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-                    console.log(productItem)
-                    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                     navigate(`${productItem.id}/edit/${productItem.country_id}/${productItem.make_id}/${productItem.model_id}`) // stateId, modelId, trimId
                   }  
               }>
@@ -165,8 +148,6 @@ export default function ListShow({productItem, refetch})
                             setProductMessages(productItem.messages)
                             advertState.setProductComments(productItem)
                             advertState.setProductTitle(productItem.title)
-                            console.log(advertState.getProductTitle())
-                            console.log(advertState.getProductComments())
                             setCloseCommentDialog(true)
                           }  
                       }>                                   
@@ -234,9 +215,7 @@ export default function ListShow({productItem, refetch})
          imageOpenModal && (productId != "")  && <ChangeProductImage onClick={(e) => 
           { 
               setRefreshIt(e)
-              console.log(e)
               setImageOpenModal(false) 
-              console.log("Greater Things")
               refetch(e)
          }
           } imageModal={imageOpenModal} imageId={productTitle} imageUrl={productImages} mode="" productId={productId} />

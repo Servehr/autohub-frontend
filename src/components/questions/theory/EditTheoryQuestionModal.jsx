@@ -16,34 +16,22 @@ export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
 {
         const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
       
-        if(!isLoading)
-        {
-            console.log(everyCourse)
-        }
-
         const [question, setQuestion] = useState(data['question'])
         const [id, setId] = useState(data['id'])
         const [loading, setIsLoading] = useState(false)
         const [mark, setMark] = useState(data['mark'])
 
-        console.log(data)
-        
-
         const updateQuestion = async () => 
-        {       
-                // const theId = data['id']            
+        {                  
                 const data = { id: Number(id), question: question, mark: mark  }
-                console.log(data)
                 setIsLoading(true)
                 UpdateTestQuestionTheory(data)
                 .then((res) => 
                 {
-                        console.log(res)
                         return onClick(Math.random())
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
                         setIsLoading(false)
                 })    
         }

@@ -125,7 +125,7 @@ export function SponsoredSection2() {
   if (isLoading) {
     return <SectionSkeleton />;
   } else {
-    //  console.log(data)
+    
   }
 
   return (

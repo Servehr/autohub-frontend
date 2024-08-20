@@ -32,20 +32,18 @@ export const RevokeRole = ({onClick, openRevoke, userId})  =>
         // {
             
         //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         console.log(data)
-        //         if(theIsOpened === -1)
+        //        if(theIsOpened === -1)
         //         {
         //              alert("Select whether you want it published immediately or not")   
         //         }
         //         CreateFaq(data)
         //         .then((res) => 
         //         {
-        //                 console.log(res)
         //                 return onClick(Math.random())
         //         })
         //         .catch((err) => 
         //         {
-        //                 console.log(err)
+
         //         })    
         // }
 
@@ -99,7 +97,6 @@ export const RevokeRole = ({onClick, openRevoke, userId})  =>
                                 </button>
                                 <button
                                         className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2 justify-end"
-                                        onClick={() => console.log('') }
                                 >
                                    Change 
                                 </button>

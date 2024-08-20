@@ -21,11 +21,6 @@ export default function AdsClassic()
     const [refresh, setRefresh] = useState(0)
     
     const { data: advertData, isLoading, isRefetching, refetch } = useQuery(["get-all-product"], () => getAdverts(currentPage, perPage, searchQuery), { cacheTime: 0 })
-    
-    if(!isLoading)
-    {
-        console.log(advertData)
-    }
 
     return ( 
             <>
@@ -61,15 +56,13 @@ export default function AdsClassic()
                                                             setProductToDeleteMessage(`You are about to delete an image associated to product: ${imageId}`)
                                                             setImageProductUrl(image.image_url)
                                                             setDeleteModal(true)
-                                                            console.log("")
                                                         }}
                                                         >
                                                         <Icons iconName={'delete'} color="red" width={5} height={5}  />
                                                 </span>
                                                 
                                                 <span className="rounded-sm border border-1 right-0 delete cursor-pointer hover:bg-orange-200 hover:rounded-full hover:p-1" onClick={() => { 
-                                                    // setImageFaceAdvert(image)
-                                                        console.log("")
+                                                            // setImageFaceAdvert(image)
                                                         }
                                                     }
                                                 >

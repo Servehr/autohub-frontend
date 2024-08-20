@@ -27,7 +27,7 @@ export const DeleteStaffModal = ({onClick, deleteStaff, staffId})  =>
                 })
                 .catch((err) => 
                 {
-                        console.log(err)
+                        
                 })       
         }
         

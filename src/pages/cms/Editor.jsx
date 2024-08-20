@@ -102,7 +102,7 @@ class QuillEditor extends React.Component {
     }
 
     handleChange = (html) => {
-        console.log('html', html)
+        // console.log('html', html)
         // https://youtu.be/BbR-QCoKngE
         // https://www.youtube.com/embed/ZwKhufmMxko
         // https://tv.naver.com/v/9176888
@@ -135,7 +135,7 @@ class QuillEditor extends React.Component {
 
         if (e.currentTarget && e.currentTarget.files && e.currentTarget.files.length > 0) {
             const file = e.currentTarget.files[0];            
-            console.log(file);
+            // console.log(file);
 
             let formData = new FormData();
             const config = {

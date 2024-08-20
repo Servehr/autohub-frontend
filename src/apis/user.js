@@ -26,7 +26,6 @@ export async function fetchOnSale() {
         if (res.data.success === 0) {
           reject(new Error(res.data.message));
         } else {
-          console.log(res.data.data)
           resolve(res.data.data);
         }
       })
@@ -44,7 +43,6 @@ export async function publishedPost(currentPage, perPage) {
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res.data.data);
           resolve(res.data.data);
         }
       })
@@ -57,17 +55,13 @@ export async function publishedPost(currentPage, perPage) {
 
 export async function pendingProduct(currentPage, perPage) 
 {
-  console.log('why why why ++++')
   return new Promise((resolve, reject) => {
     axios_instance
       .get(`ad/inactive-post/${currentPage}/${perPage}`)
       .then((res) => {
-         console.log(res)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res.data.data);
-          console.log(res.data);
           resolve(res.data.data);
         }
       })
@@ -84,12 +78,9 @@ export async function draftProduct(currentPage, perPage)
     axios_instance
       .get(`ad/draft-post/${currentPage}/${perPage}`)
       .then((res) => {
-         console.log(res)
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res.data.data);
-          console.log(res.data);
           resolve(res.data.data);
         }
       })
@@ -144,14 +135,10 @@ export async function updatePassword(currentPassword, newPassword) {
         if (res.data.success === 0) {
           reject(res.data.message);
         } else {
-          console.log(res);
-          // localStorage.setItem("token", res.data.token);
           resolve(res);
-          // window.location.href = "/user";
         }
       })
       .catch((err) => {
-        console.log(err);
         let message = err.response.data.message || err.message;
         reject(message);
       });
@@ -160,22 +147,14 @@ export async function updatePassword(currentPassword, newPassword) {
 
 export async function updateAvatar(avatar) 
 {  
-  // console.log(avatar.avatar)
-  // console.log(typeof data)
-  // console.log(localStorage.getItem("token"))
-  // console.log(localStorage.getItem("authenticatedId"))
   const id = localStorage.getItem("authenticatedIdd");
   return new Promise((resolve, reject) => {
     axios_instance
       .post(`update-avatar`, { id: id, avatar: avatar.avatar})
       .then((res) => {
         if (res?.data?.success === 0) {
-          console.log("Error")
           reject(res.data.message);
         } else {
-          console.log(res.data)
-          // return
-          // window.location.href = '/login'
           resolve(res);
         }
       })
@@ -245,7 +224,6 @@ export async function isPaidAndStudentSummary()
         if (res.data.success === 0) {
           reject(new Error(res.data.message));
         } else {
-          console.log(res.data);
           resolve(res.data);
         }
       })
@@ -264,7 +242,6 @@ export async function uploadReceipt(receipt)
         if (res.data.success === 0) {
           reject(new Error(res.data.message));
         } else {
-          console.log(res.data);
           resolve(res.data);
         }
       })
@@ -285,7 +262,6 @@ export async function ConfirmStudentAccess(id)
         if (res.data.success === false) {
           reject(new Error(res.data.message));
         } else {
-          console.log(res.data);
           resolve(res.data.success);
         }
       })
