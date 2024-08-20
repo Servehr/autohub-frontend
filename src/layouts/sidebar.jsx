@@ -83,8 +83,7 @@ export default function DashSidebar()
               { data && data.data?.name}
             </p>
             { (advertState.getLoggedInUserType()) === "market" && <p className="font-medium text-md md:text-base">
-              {data && data.data?.phoneno}           
-                {advertState.getLoggedInUserType()}+{advertState.getUserServices()} 
+                  {data && data.data?.phoneno}          
             </p>}
             { (advertState.getLoggedInUserType()) === "market" && <p className="text-blue-800 p-2 text-lg">
                 Followers: <strong style={{ color: 'red' }}>{ data.followers }</strong>

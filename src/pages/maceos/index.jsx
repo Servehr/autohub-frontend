@@ -262,7 +262,13 @@ export default function MACEOS()
                                                     <div className="flex flex-wrap -m-2 mt-2 mb-2 md:mx-5 mx-2">
                                                         <div className=" md:w-1/2 w-full relative px-2">
                                                             <span className="w-full font-bold text-sm">State / Province / Region</span>
-                                                            <select 
+                                                            <input 
+                                                                {...register("region")} 
+                                                                type="text" id="region" 
+                                                                defaultValue={''} 
+                                                                name="region"  placeholder="Enter Your State / Province / Region"
+                                                                className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
+                                                            {/* <select 
                                                                 {...register("region")}  
                                                                 name="region"
                                                                 id="region"
@@ -272,7 +278,7 @@ export default function MACEOS()
                                                             </select>
                                                             <div className="pointer-events-none absolute mr-3 inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-5">
                                                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                            </div>
+                                                            </div> */}
                                                             <p className="text-sm text-brandRed font-bold">{errors.region?.message}</p>
                                                         </div>
                                                         <div className="p-2 md:w-1/2 w-full -mt-2">
