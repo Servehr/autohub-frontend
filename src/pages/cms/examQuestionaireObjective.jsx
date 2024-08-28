@@ -22,7 +22,7 @@ const courseYear = () =>
     return years.toReversed();
 }
 
-export default function ExamQuestionaireObjective()
+export default function ExamQuestionaireObjective({ academicSession })
 {
     let x = Math.round()
     const [openQuestionaire, setOpenQuestionaire] = useState(false)
@@ -31,11 +31,15 @@ export default function ExamQuestionaireObjective()
     const [selectedYear, setSelectedYear] = useState(currentYear)
     const years = courseYear()
 
-    const { data, isLoading, isRefetching, refetch } = useQuery([`${x}/test-questionaires`], () => AllExamQuestionaires(selectedYear), { cacheTime: 0, retry: 2 })
+    const reversedSession = academicSession.toReversed()
+    const [currentSession, setCurrentSession] = useState(academicSession[academicSession.length-1]['identifier'])
+    const [currentSessionName, setCurrentSessionName] = useState('') 
+
+    const { data, isLoading, isRefetching, refetch } = useQuery([`${x}/test-questionaires`], () => AllExamQuestionaires(currentSession), { cacheTime: 0, retry: 2 })
 
     const byYear = (year) => 
     {
-        setSelectedYear(year)
+        setCurrentSession(year)
         setTimeout(() => {            
             refetch()
         }, 1000)
@@ -62,12 +66,12 @@ export default function ExamQuestionaireObjective()
                     <div className="mb-4 border border-gray-200">
                         <div className="relative"
                         >
-                            <select defaultValue={''} onChange={(e) => byYear(e.target.value)} 
+                            <select defaultValue={''} onChange={(e) => byYear(e.target.value)}
                                 className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                 {       
-                                    years.map((year, index) => (
-                                        <option key={index} value={year} className='p-2'>
-                                            {year}
+                                    reversedSession.map((academic, index) => (
+                                        <option key={index} value={academic?.identifier} className='p-2'>
+                                            {academic?.name} - {academic?.identifier}
                                         </option>
                                     ))
                                 }
@@ -94,7 +98,7 @@ export default function ExamQuestionaireObjective()
                     {
                         !isLoading && !isRefetching && (data?.length === 0) && <div className="col-span-12 h-[300px] flex justify-center -mt-3 items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                             <h1 className="font-bold -mt-10">
-                                No questionaire created yet for the year {selectedYear}
+                                No questionaire created yet
                             </h1>
                         </div>
                     }
@@ -116,7 +120,7 @@ export default function ExamQuestionaireObjective()
                                                 setOpenQuestionaire(false) 
                                                 // setClickTable(e) 
                                             }
-                                        } openQuestionaire={openQuestionaire}  
+                                        } openQuestionaire={openQuestionaire} AllSessions={currentSession} 
                                 /> 
             }
         </>

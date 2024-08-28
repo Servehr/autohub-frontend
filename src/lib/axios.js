@@ -12,6 +12,7 @@ export const PRODUCT_FACE = `${DESTINATION}product/`;
 export const AVATAR = `${DESTINATION}avatar/`;
 export const WATER_MARK = `${DESTINATION}water/`;
 export const BLOG_POST = `${DESTINATION}posts/`;
+export const RECEIPT = `${DESTINATION}receipt/`;
 
 export const axios_instance_no = axios.create({
   baseURL: BASE_URL,

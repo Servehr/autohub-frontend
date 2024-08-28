@@ -320,6 +320,26 @@ export async function CourseAssessment(id)
     });
 }
 
+export async function AllowCourseDownload(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`allow-download`, {id : id})
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
 export async function CheckIfUserHasPaid(from) 
 {
     return new Promise((resolve, reject) => 
@@ -379,7 +399,7 @@ export async function SubmitTestTheory(data)
 }
 
 export async function SubmitExamObjective(data) 
-{alert("Hey")
+{
     return new Promise((resolve, reject) => 
     {
         axios_instance
@@ -418,44 +438,84 @@ export async function SubmitExamTheory(data)
     });
 }
 
-export async function UserCourses() 
+export async function UserCourses(currentPage, PerPage, searchQuery) 
 {
-    return new Promise((resolve, reject) => 
-    {
-        axios_instance
-          .get("user-courses")
-          .then((res) => {
-            if (res.data.success === false) {
-              reject(res.data.message);
-            } else {
-              resolve(res.data.data);
-            }
-          })
-          .catch((err) => {
-            let message = "Something went wrong!";
-            reject(new Error(err));
-          });
-    });
+    let theQuery = searchQuery.trim()
+    if(theQuery.length === 0)
+    {        
+        return new Promise((resolve, reject) => {
+          axios_instance
+            .get(`user-courses/${currentPage}/${PerPage}`)
+            .then((res) => {
+              if (res.data.success === 0) {
+                reject(res.data.message);
+              } else {
+                resolve(res.data.response);
+              }
+            })
+            .catch(() => {
+              let message = "Something went wrong!";
+              reject(new Error(message));
+            });
+        });
+    } else {        
+        return new Promise((resolve, reject) => {
+      
+          axios_instance
+            .get(`user-courses/${currentPage}/${PerPage}/${theQuery}`)
+            .then((res) => {
+              if (res.data.success === 0) {
+                reject(res.data.message);
+              } else {
+                resolve(res.data.response);
+              }
+            })
+            .catch(() => {
+              let message = "Something went wrong!";
+              reject(new Error(message));
+            });
+        });
+    }
 }
 
-export async function AllStudent() 
+export async function AllStudent(currentPage, perPage, searchQuery) 
 {
-    return new Promise((resolve, reject) => 
-    {
-        axios_instance
-          .get("all-student")
-          .then((res) => {
-            if (res.data.success === false) {
-              reject(res.data.message);
-            } else {
-              resolve(res.data.data);
-            }
-          })
-          .catch((err) => {
-            let message = "Something went wrong!";
-            reject(new Error(err));
-          });
-    });
+    let theQuery = searchQuery.trim()
+    if(theQuery.length === 0)
+    {        
+        return new Promise((resolve, reject) => {
+          axios_instance
+            .get(`all-student/${currentPage}/${perPage}`)
+            .then((res) => {
+              if (res.data.success === 0) {
+                reject(res.data.message);
+              } else {
+                resolve(res.data.response);
+              }
+            })
+            .catch(() => {
+              let message = "Something went wrong!";
+              reject(new Error(message));
+            });
+        });
+    } else {        
+        return new Promise((resolve, reject) => {
+      
+          axios_instance
+            .get(`all-student/${currentPage}/${perPage}/${theQuery}`)
+            .then((res) => {
+              if (res.data.success === 0) {
+                reject(res.data.message);
+              } else {
+                resolve(res.data.response);
+              }
+            })
+            .catch(() => {
+              let message = "Something went wrong!";
+              reject(new Error(message));
+            });
+        });
+    }
 }
 
 export async function UserTestTheoryAnswers(id) 
@@ -550,6 +610,328 @@ export async function ScoreStudentScoreExam(data)
               reject(res.data.message);
             } else {
               resolve(res);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+// modules
+export async function CreateModule(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`create-module`, { course_id: data.id, name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UpdateModule(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`edit-module`, { id: data.id, name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function DeleteModulez(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .delete(`delete-module/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+// submodule
+export async function CreateSubModule(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`create-sub-module`, { module_id: data.id, name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UpdateSubModule(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`edit-sub-module`, { id: data.id, name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function DeleteSubModulee(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .delete(`delete-sub-module/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function viewCourseModule(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`all-course-module/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function viewCourseSubModule(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get(`all-course-sub-module/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function OpenExam(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`open-exam-objective`, id)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function CloseExam(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`close-exam-objective`, id)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function OpenExamTheory(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`open-exam-theory`, id)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function CloseExamTheory(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`close-exam-theory`, id)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function ExamObjectiveDuration(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`exam-objective-duration`, { id: data, exam_objective_duration: data.exam_objective_duration })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function ExamTheoryDurration(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`exam-theory-duration`,  { id: data, exam_theory_duration: data.exam_theory_duration })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function TestObjectiveDurration(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`test-objective-duration`,  { id: data, test_objective_duration: Number(data.objective_duration) })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function TestTheoryDurration(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`test-theory-duration`,  { id: data, test_theory_duration: Number(data.test_theory_duration) })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
             }
           })
           .catch((err) => {

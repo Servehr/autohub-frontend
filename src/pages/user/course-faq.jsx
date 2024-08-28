@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
-import { setUserNewEmail } from "@/apis/auth";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { BeatLoader } from "react-spinners";
-import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { FormCode } from "@/components/FormCode";
-import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
-import { Icons } from "@/util/icon";
-import { CourseFaqQuestion } from "@/components/CourseFaqQuestion";
 import CourseFaqs from "./course-faqs";
 import PaymentPage from "./user-type/PaymentPage";
+import { isPaidAndStudentSummary } from "@/apis/user";
 
 
 export default function CourseFaq() 
 {
-  const id = (Math.round()*337)
-  const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse(), { cacheTime: 0 })
+  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => isPaidAndStudentSummary('test-objective'), { refetchOnWindowFocus: true, cacheTime: 0 })
 
   const [loading, setIsLoading] = useState(false)
 
@@ -41,8 +31,24 @@ export default function CourseFaq()
                       <BeatLoader color="#1c9236" />
                   </div>
                 }
+                {       
+                  !isLoading && (data?.plus === 'closed') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            Academic Session is currently closed
+                      </p>
+                  </div>
+                }
+                {       
+                  !isLoading && (data?.message === 'invalid') && (data?.plus === 'open') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            You Are Not Enrolled For Current Session
+                      </p>
+                  </div>
+                }
                 {
-                    !isLoading && (data?.plus === "not-paid") && <>
+                    !isLoading && (data?.data?.payment_status === "not-paid") && (data?.message === 'valid') && (data?.plus === 'open') && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -55,15 +61,8 @@ export default function CourseFaq()
                     </>
                 }
                 {
-                  !isLoading && (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
-                      <h1 className="font-bold">
-                          No course created yet
-                      </h1>
-                  </div>
-                }
-                {
-                     !isLoading && (data?.plus === "paid") && <>
-                          <CourseFaqs data={data?.data} />
+                     !isLoading && (data?.data?.payment_status === "paid") && (data?.message === 'valid') && (data?.plus === "open") && <>
+                          <CourseFaqs />
                      </>
                 }
                     

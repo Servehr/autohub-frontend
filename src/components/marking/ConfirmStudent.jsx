@@ -32,7 +32,7 @@ export const ConfirmStudent = ({onClick, confirmAccess, student})  =>
                 .then((res) => 
                 {
                         setIsLoading(false)
-                        return onClick(Math.random())
+                        onClick('yes')
                 })
                 .catch((err) => 
                 {

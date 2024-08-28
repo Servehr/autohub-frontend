@@ -19,12 +19,12 @@ export async function loginUser(email, password) {
             localStorage.setItem("users", JSON.stringify(res.data.data));
             localStorage.setItem("kindOfUser", JSON.stringify(res.data.resource));
             localStorage.setItem("services", res.data.persin)
-            const theUser = localStorage.getItem('user')       
+            const theUser = localStorage.getItem('user')
             if(res.data.persin === 3)
             {
-                localStorage.setItem("userTypes", 'admin');
-                window.location.href = "/a/overview";
-            } else if(res.data.persin === 2) {  
+                 window.location.href = "/a/overview";
+                //  localStorage.setItem("userTypes", 'both');
+              } else if(res.data.persin === 2) {  
                 localStorage.setItem("userTypes", 'both');
                 window.location.href = "/dashboard/summary";
             } else if(res.data.persin === 1){
@@ -38,7 +38,7 @@ export async function loginUser(email, password) {
       })
       .catch((err) => {
         let message = "Something went wrong";
-        reject(new Error(message));
+        reject(new Error(err));
       });
   });
 }
@@ -234,7 +234,6 @@ export function deleteProductAdvert({ id })
   });
 }
 
-
 export function logOut()
 {
     return new Promise((resolve, reject) => {
@@ -258,7 +257,6 @@ export function logOut()
   });
 }
 
-
 export function logItOut()
 {
     return new Promise((resolve, reject) => {
@@ -280,7 +278,6 @@ export function logItOut()
         });
   });
 }
-
 
 export function staffs()
 {

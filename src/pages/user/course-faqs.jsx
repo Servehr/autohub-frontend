@@ -1,41 +1,33 @@
 import { useEffect, useState } from "react";
-import { setUserNewEmail } from "@/apis/auth";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { BeatLoader } from "react-spinners";
-import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { FormCode } from "@/components/FormCode";
 import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 import { Icons } from "@/util/icon";
 import { CourseFaqQuestion } from "@/components/CourseFaqQuestion";
 
 
-export default function CourseFaqs({ data }) 
-{
-
+export default function CourseFaqs() 
+{  
+  const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(),  { refetchOnWindowFocus: true, cacheTime: 0 })
   const [openQuestion, setOpenQuestion] = useState(false)
   const [currentCourse, setCurrentCourse] = useState("")
 
   return (
     <>
-              {
-                  (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                {
+                  (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <h1 className="font-bold">
                           No course created yet
                       </h1>
                   </div>
                 }
                 {
-                    (data?.length > 0) && < div className="col-span-12">                      
+                    (data?.data?.length > 0) && < div className="col-span-12">                      
                       <div className="font-bold text-xl mb-5 text-blue-700 mt-28 md:mt-0">MACEOS ACADEMY COURSES</div> 
                       <span className="col-span-12 font-bold text-red-800 text-sm -mt-3 mb-3">Download Course</span>
                     </div>
                 }
                 {
-                    (data.length > 0) && data?.map((x) => {
+                    (data?.data?.length > 0) && data?.data?.map((x) => {
                                 return (
                                         <div
                                           onClick={() => {

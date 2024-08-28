@@ -40,6 +40,146 @@ export async function CountryStates(id)
     });
 }
 
+export async function AddCountri(country) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`add-country`, country)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UpdateCountri(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`update-country`,  { id: data.id, name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function DeleteCountri(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .delete(`delete-country/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function AddSteate(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .post(`add-state`, { country_id: data.country_id,  ijinle_id: data.ijinle_id,  name: data.name })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UpdateSteate(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`update-state`, { id: data.stateId,  name: data.stateName })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function UpdateSteateLevel(data) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .put(`update-state-level`, { id: data.id,  rate: data.rate })
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
+export async function DeleteSteate(id) 
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .delete(`delete-state/${id}`)
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            let message = "Something went wrong!";
+            reject(new Error(err));
+          });
+    });
+}
+
 export async function Manufacturers() 
 {
     return new Promise((resolve, reject) => 

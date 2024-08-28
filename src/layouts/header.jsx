@@ -87,6 +87,8 @@ export default function Header()
     `/a/users`,
     `/a/product-entry`,
     `/a/location`,
+    `/a/modules`,
+    `/a/academic-session`,
   ];
 
   const { pathname } = useLocation();

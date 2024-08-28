@@ -8,7 +8,7 @@ import { BASE_URL } from "@/lib/axios";
 import { CreateFaq } from '@/apis/misc';
 import { UpdateTestQuestion } from '@/apis/backend/questions';
 import { BeatLoader } from "react-spinners";
-import { AllCourse } from '@/apis/backend/course';
+import { AllCourses } from '@/apis/backend/course';
 import { useQuery } from 'react-query';
 
 
@@ -16,7 +16,7 @@ export const EditQuestionModal = ({onClick, datax, editQuestion})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
+        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourses(), { staleTime: Infinity })
      
         const [question, setQuestion] = useState(datax['question'])
         const [optionA, setOptionA] = useState(datax['option_a'])

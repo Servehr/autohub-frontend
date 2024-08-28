@@ -90,6 +90,7 @@ export default function Pagination({onClick, perPageNo, currentPageNo, noOfPages
                     { 
                         after
                     }
+                    {/* { !hasNextPage && <>{'hasNextPage'}</> } */}
                     {
                         hasNextPage &&
                             <button onClick={() => fetchRoles(parseInt(currentPage)+1, perPage)} className="rounded-lg border bg-green-800 px-3 py-1 hover:bg-red-700"  disabled={!hasNextPage}>

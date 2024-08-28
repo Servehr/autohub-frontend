@@ -22,7 +22,7 @@ export default function Students()
 {
     const advertState = appStore((state) => state)
     const { data, isLoading, refetch, isRefetching } = useQuery([`is-paid-and-student-summary`], () => isPaidAndStudentSummary(), { cacheTime: 0 })
-  
+      
     const [loggedInUserType, setLoggedInUserType] = useState('')
     const [theService, setTheService] = useState(-1)
     const [isUser, setIsUser] = useState("-1")
@@ -47,9 +47,26 @@ export default function Students()
                   isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <BeatLoader color="#1c9236" />
                   </div>
-              }
+                }
+                {       
+                  !isLoading && (data?.plus === 'closed') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            Academic Session is currently closed
+                      </p>
+                  </div>
+                }
+                {       
+                  !isLoading && (data?.message === 'invalid') && (data?.plus === 'open') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            You Are Not Enrolled For Current Session
+                      </p>
+                  </div>
+                }
+
               {
-                  !isLoading && (data?.payment === "not-paid") && <>
+                  !isLoading && (data?.data?.payment_status === "not-paid") && (data?.message === 'valid') && (data?.plus === 'open') && <>
                       <PaymentPage onClick={(e) => {
                           if(e === true)
                           {          
@@ -61,7 +78,7 @@ export default function Students()
                   </>
               }
               {
-                  !isLoading && (data?.payment === "paid") && <>
+                  !isLoading && data?.data && (data?.data?.payment_status === "paid") && (data?.message === 'valid') && (data?.plus === "open") && <>
                       <StudentPage />
                   </>
               }

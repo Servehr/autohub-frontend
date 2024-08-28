@@ -15,13 +15,14 @@ import PaymentPage from "../../user/user-type/PaymentPage";
 import StartPage from "../testObj/StartPage";
 import TestUserTheory from "./test-user-theory";
 import StartTheoryPage from "./StartTheoryPage";
+import { isPaidAndStudentSummary } from "@/apis/user";
 
 
 export default function StartTheoryTest() 
 {
 
   const advertState = appStore((state) => state)
-  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => CheckIfUserHasPaid('test-theory'))
+  const { data, isLoading, refetch, isRefetching} = useQuery([`check-if-user-has-paid`], () => isPaidAndStudentSummary('test-theory'), { refetchOnWindowFocus: true, cacheTime: 0 })
   
   const [approvalRequest, setApprovalRequest] = useState("")
 
@@ -31,14 +32,31 @@ export default function StartTheoryTest()
           className="grid md:grid-cols-12 grid-cols-12 gap-5"
           >
 
-              { approvalRequest && <p className={`font-bold text-lg text-white rounded-md col-span-12 ${(approvalRequest === "") ? " " : "p-3 bg-blue-600"}`}>{approvalRequest}</p> }
-              {
-                  isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                { approvalRequest && <p className={`font-bold text-lg text-white rounded-md col-span-12 ${(approvalRequest === "") ? " " : "p-3 bg-blue-600"}`}>{approvalRequest}</p> }
+                {
+                    isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <BeatLoader color="#1c9236" />
                   </div>
                 }
+                {       
+                  !isLoading && (data?.plus === 'closed') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            You Are Not Enrolled For Current Session
+                      </p>
+                  </div>
+                }
+                {       
+                  !isLoading && (data?.message === 'invalid') && (data?.plus === 'open') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            Student Not Enrolled For Current Session
+                      </p>
+                  </div>
+                }
+
                 {
-                    !isLoading && (data?.data === "not-paid") && <>
+                    !isLoading && (data?.data?.payment_status === "not-paid") && (data?.message === 'valid') && (data?.plus === 'open') && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -49,7 +67,8 @@ export default function StartTheoryTest()
                         }} />
                     </>
                 }
-                {  !isLoading && data?.data && (data?.data === "paid") && 
+                
+                {  !isLoading && data?.data && (data?.data?.payment_status === "paid") && (data?.message === 'valid') && (data?.plus === "open") && 
                         <StartTheoryPage course={data?.plus} option={data?.message} /> 
                 }
                     

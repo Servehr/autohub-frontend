@@ -325,7 +325,7 @@ export async function ActivateProduct(id)
 {
   return new Promise((resolve, reject) => {
     axios_instance
-      .post(`ad/activate-product/${id}`)
+      .put(`ad/activate-product`,  {id: id})
       .then((res) => {
         if (res.data.success === 0) {
           reject(res.data.message);
@@ -344,7 +344,26 @@ export async function DeActivateProduct(id)
 {
   return new Promise((resolve, reject) => {
     axios_instance
-      .post(`ad/de-activate-product/${id}`)
+      .put(`ad/de-activate-product`, {id: id})
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(res.data.message);
+        } else {
+          resolve(res.data.data);
+        }
+      })
+      .catch(() => {
+        let message = "Something went wrong!";
+        reject(new Error(message));
+      });
+  });
+}
+
+export async function SoldTheProduct(id)
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .put(`ad/sold-product`,  {id: id})
       .then((res) => {
         if (res.data.success === 0) {
           reject(res.data.message);

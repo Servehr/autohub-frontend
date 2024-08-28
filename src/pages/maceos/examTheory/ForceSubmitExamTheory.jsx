@@ -23,8 +23,9 @@ export default function ForceSubmitExamTheory()
     {
         if(advertState.getSelectedExamTheoryOption().length === 0)
         {
-            const optionId = localStorage.getItem("text-exam-thoeory-ques")          
-            const answers = { user_id: Number(localStorage.getItem("authenticatedId")), answer: 'xxx', exam_theory_id: optionId, position: -1 }
+            const optionId = localStorage.getItem("text-exam-thoeory-ques") 
+            const examCode = localStorage.setItem("exam-theory-code", code)         
+            const answers = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: examCode, marker_id: -1, answer: 'xxx', exam_theory_id: optionId, position: -1 }
             const systemAnswer = { userSubmitted : 'no', answers: answers }
             advertState.setDefaultExamTheoryAnswer(systemAnswer)
         } else {

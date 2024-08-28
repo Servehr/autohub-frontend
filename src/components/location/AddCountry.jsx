@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from '../Modal';
-import { Link, useNavigate } from "react-router-dom";
-import { deleteAdProduct } from '@/apis/ads';
-import { appStore } from "@/state/appState";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
-import { CreateFaq } from '@/apis/misc';
+import { AddCountri } from '@/apis/backend/location';
 
 
 export const AddCountry = ({onClick, openAddCountry})  =>
 {
-        const advertState = appStore((state) => state)
         const [country, setCountry] = useState("")
         
         const cancelModal = () => 
@@ -21,10 +15,10 @@ export const AddCountry = ({onClick, openAddCountry})  =>
 
         const addKountry = async () => 
         {   
-                CreateFaq({ name: country })
+                AddCountri({ name: country, slug: country.toLowerCase() })
                 .then((res) => 
                 {
-                        return onClick(Math.random())
+                        onClick()
                 })
                 .catch((err) => 
                 {
@@ -39,8 +33,8 @@ export const AddCountry = ({onClick, openAddCountry})  =>
                                 <div className='col-span-12 pb-2 overflow-auto justify-center h-fit py-2 item-center'>
                                         <>                                                
                                                 <div className="p-1 mt-1">
-                                                        <h1 className='font-bold text-lg mb-5'>Add Faq</h1>
-                                                        <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
+                                                        <h1 className='font-bold text-lg mb-5'>Add Country</h1>
+                                                        <div className="w-full d-flex md:flex mt-1 gap-5">
                                                                 <input onBlur={(e) => {
                                                                         setCountry(e.target.value)
                                                                 }} type="text" id="addCountry" 
@@ -54,7 +48,7 @@ export const AddCountry = ({onClick, openAddCountry})  =>
                                         </>
                                 </div>
                                 
-                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-1 mt-3">
+                                <div className="items-center gap-5 sm:flex flex justify-between mb-2 mx-1">
                                         <button  
                                                 className="mt-2 p-4 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
                                                 onClick={cancelModal}

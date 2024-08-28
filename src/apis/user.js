@@ -251,8 +251,6 @@ export async function uploadReceipt(receipt)
   });
 }
 
-
-
 export async function ConfirmStudentAccess(id) 
 {
   return new Promise((resolve, reject) => {
@@ -263,6 +261,155 @@ export async function ConfirmStudentAccess(id)
           reject(new Error(res.data.message));
         } else {
           resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function EnrolStudent(id) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .put("enrol-student", { id: id})
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function AddStaff(data) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .post("add-staff", { name: data.firstname, lastname: data.surname, email: data.email, admin_role: data.role })
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function UpdateStaff(data) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .put("update-staff", { id: data.id, name: data.firstname, lastname: data.surname, email: data.email, admin_role: data.role })
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function SuspendStaff(data) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .put("suspend-user", { id: data.id, status: data.status})
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function ChangeUserRole(data) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .put("change-user-role", { id: data.id, admin_role: data.role})
+      .then((res) => {
+        if (res.data.success === false) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.success);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
+export async function UserDealers(currentPage, perPage, searchQuery)  
+{
+  let theQuery = searchQuery.trim()
+  if(theQuery.length === 0)
+  {        
+      return new Promise((resolve, reject) => {
+        axios_instance
+          .get(`dealers/${currentPage}/${perPage}`)
+          .then((res) => {
+            if (res.data.success === 0) {
+              reject(res.data.message);
+            } else {
+              console.log(res.data.response)
+              resolve(res.data.response);
+            }
+          })
+          .catch(() => {
+            let message = "Something went wrong!";
+            reject(new Error(message));
+          });
+      });
+  } else {        
+      return new Promise((resolve, reject) => {
+    
+        axios_instance
+          .get(`dealers/${currentPage}/${perPage}/${theQuery}`)
+          .then((res) => {
+            if (res.data.success === 0) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data.response);
+            }
+          })
+          .catch(() => {
+            let message = "Something went wrong!";
+            reject(new Error(message));
+          });
+      });
+  }
+}
+
+export async function GetUserResult(id) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .get(`user-result-student/${id}`)
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data.data);
         }
       })
       .catch(() => {

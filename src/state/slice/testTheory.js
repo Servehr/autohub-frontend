@@ -68,6 +68,16 @@ const createTestTheorySlice  = (set, get) => (
         {
             return get().defaultTestTheoryAnswer
         },
+
+        testTheoryIdentifier: '',
+        setTestTheoryIdentifier(testTheoryIdentifier)
+        {
+            set((state) => ({testTheoryIdentifier: testTheoryIdentifier}))
+        },
+        getTestTheoryIdentifier()
+        {
+            return get().testTheoryIdentifier
+        }
     }
 )
 

@@ -104,6 +104,8 @@ import Location from "./pages/cms/Location";
 import Users from "./pages/cms/Users";
 import ProductEntry from "./pages/cms/productEntry";
 import { appStore } from "./state/appState";
+import Modules from "./pages/cms/Modules";
+import AcademicSession from "./pages/cms/AcademicSession";
 
 export const Loader = ({ full }) => {
   return (
@@ -158,7 +160,6 @@ export default function App()
             <Route path="/blog" element={<Blogs />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/blog-detail/:post_id" element={<BlogDetail />} />
-            <Route path="/a/create-post" element={<CreateBlog />} />
             
             {/* <Route path="/dashboard" element={<RoutePath />} /> */}
 
@@ -275,6 +276,7 @@ export default function App()
                 <Route path="/a/overview" element={<Board />}/>
                 <Route path="/a/students" element={<Students />} />
                 <Route path="/a/courses" element={<Course />} />
+                <Route path="/a/modules" element={<Modules />} />
                 <Route path="/a/dealers" element={<Dealers />} />
                 <Route path="/a/dealer-post" element={<DealerPost />} />
                 <Route path="/a/staffs" element={<Staff />} />
@@ -305,6 +307,8 @@ export default function App()
                 <Route path="/a/search" element={<SearchPage />} />
                 <Route path="/a/blog-post" element={<BlogPost />} />
                 <Route path="/a/edit-post/:id" element={<EditBlog />} />
+                <Route path="/a/create-post" element={<CreateBlog />} />
+                <Route path="/a/academic-session" element={<AcademicSession />} />
             </Route>
             
                 <Route path="/not-allowed" element={<NotAllowed />} />

@@ -17,10 +17,10 @@ export default function LoginPage() {
   const navigate = useNavigate();  
   const { data: user } = useUser();
 
-  if(!user)
-    {
-        navigate('/login')
-    }
+  if(!user?.data)
+  {
+      navigate('/home')
+  }
 
   return (
     <>

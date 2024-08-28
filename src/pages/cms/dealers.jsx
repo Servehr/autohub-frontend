@@ -1,148 +1,151 @@
 import * as yup from "yup";
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import Sidebar  from "../shared/sidebar";
-import AdminHeader from "@/layouts/AdminHeader";
-import '../css/ad.css'
-import '../css/dragAndDrop.css'
-import { appStore } from "@/state/appState";
 import { BeatLoader, BounceLoader } from "react-spinners";
-import { browserType } from "@/store";
 import DynamicTable from "@/components/table"
-import { allProduct } from "@/apis/ads";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
-import { fetchAllFaqs } from "@/apis/misc";
-import { AddFaqModal } from "@/components/faq/AddFaqModal";
+import { UserDealers } from "@/apis/user";
+import Pagination from "@/components/Pagination";
 
 export default function Dealers()
 {
+    const pages = [5, 20, 25, 30, 50, 100, 200]
+    const [currentPage, setCurrentPage] = useState(1)  
+    const [perPage, setPerPage] = useState(pages[0])  
+    const [searchQuery, setSearchQuery] = useState("")
     
-    const { isMobile } = browserType();
-    // const advertState = appStore((state) => state)    
-    const  data  = [
-        { firstname: 'Grace', surname: 'Kelechi', email: 'grace2349@gmail.com', phoneNumber: '09083847543', post: 34 },
-        { firstname: 'Ibrahim', surname: 'Sanusi', email: 'sanusi0987@gmail.com', phoneNumber: '07023541276', post: 20 },
-        { firstname: 'Peter', surname: 'Ederson', email: 'peterson@yahoo.com', phoneNumber: '09023765432', post: 21 },
-        { firstname: 'Michael', surname: 'John', email: 'michaeljohnson@mail.com', phoneNumber: '07023541276', post: 5 },
-        { firstname: 'Bernald', surname: 'Festus', email: 'festuswre@gmail.com', phoneNumber: '08078654231', post: 10 }
-    ]
-    const [dataTable, setDatable] = useState("")
+    const { data: Dealers, isLoading, isRefetching, refetch } = useQuery(["get-all-dealers"], () => UserDealers(currentPage, perPage, searchQuery), { cacheTime: 0 })
+
     const columns = [
-        { field: 'firstname' },
-        { field: 'surname' },
+        { field: 'name' },
+        { field: 'middlename' },
+        { field: 'lastname' },
         { field: 'email' },
-        { field: 'phoneNumber' },
-        { field: 'post' },
+        { field: 'phoneno' },
+        { field: 'status' }
     ]
-    const [openFaqModal, setOpenFaqModal] = useState(false)
-    const [clickTable, setClickTable] = useState(false)
 
-    useEffect(() => {
-        // refetch()
-    }, [clickTable])
+    const displayByPageNo = (page) => 
+    {   
+        setPerPage(Number(page)) 
+        setTimeout(() => 
+        {          
+            refetch()
+        }, 2000)        
+    }
 
+    const tellThePost = (e) => 
+    {        
+        setSearchQuery(e.target.value)
+        setTimeout(() => 
+        {            
+            callTheSearch(e)
+        }, 2000)
+    }
 
-    // const [isLoading, setIsLoading] = useState(false)
-    // useEffect(() => {
-    //     getProducts()
-    // }, [isLoading])
-
-    // const getProducts = async () => 
-    // {
-    //     let token = localStorage.getItem("token")  
-    //     await axios.get(`${BASE_URL}ad/all-product`, {
-    //             headers: { 'Authorization': token ? `Bearer ${token}` : ""}
-    //             }).then((response) => 
-    //             {  
-    //                 if(response.data.data)
-    //                 {
-    //                     setIsLoading(true)
-    //                     setDatable(response.data.data)
-    //                 }
-    //             }).catch((error) => {                        
-    //                    ror)
-    //             })
-    // }
-
+    const callTheSearch = (e) => 
+    {        
+        if (e.target.value != "") 
+        {
+            refetch()
+        } else {
+            setSearchQuery("")       
+            refetch()                            
+        }
+    }
 
   return ( 
-        <>
+            <>
+                    <div className="grid grid-cols-12 justify-center items-center px-5 gap-3">
 
-                    <div className="w-full justify-between p-3 flex space-x-10 -mt-10 items-center">                        
-                        <div className="bg-white mb-5">
-                            <h1 className="font-bold text-2xl">Dealers</h1>
+                        <div className="col-span-2"
+                        >
+                            <span className="font-bold md:w-2/12 text-2xl sm:w-full items-center">All Dealers</span>
                         </div>
-                        {/* <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenFaqModal(true)}>Add Faq</div> */}
-                    </div>
-
-                    <div className="grid grid-cols-12 justify-between mb-3">
-                        <div className="col-span-2 relative px-2">
-                            <span className="w-full font-bold text-sm"></span>
-                            <select onChange={(e) => {    
-                                                                            
-                                }
-                            } 
-                                name="state"
-                                id="state"
-                                className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-4 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    <option value={20}> 20  </option>
-                                    <option value={20}> 30  </option>
-                                    <option value={20}> 40  </option>
-                                    <option value={20}> 50  </option>
-                                    <option value={20}> 100  </option>
-                                    <option value={20}> 200  </option>
-                            </select>
-                            <div className="pointer-events-none absolute mr-3 inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        <div className="col-span-2"
+                        >
+                        <div className="mb-4 border border-gray-200 mt-4"
+                        >
+                            <div className="relative"
+                            >
+                                <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                                    className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    {       
+                                        pages.map((page, index) => (
+                                            <option key={index} value={page} className='p-2'>
+                                                {page}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </div>
                             </div>
+                        </div>   
                         </div>
-                        <div className="col-span-9 px-2">
-                            <input onBlur={(e) => {
-                                                        
-                                    }} type="text" id="city" defaultValue={''}  name="city" placeholder="Enter Your City" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                        <div className="col-span-8"
+                        >
+                            <input
+                                type="text"
+                                required
+                                // ref={inputRef}
+                                name="search"
+                                autoComplete="off"
+                                aria-label="Search ..."
+                                // value={query}
+                                className="md:w-12/12 sm:w-full h-[65px] w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
+                                placeholder="Search name, middlename, lastname"
+                                onKeyUp={tellThePost}
+                            />    
                         </div>
-                        <div className="col-span-1">
-                            <div
-                                    onClick={() => {} }
-                                    className="peer relative appearance-none w-fit text-white p-3 cursor-pointer bg-green-800 hover:bg-green-600 hover:font-bold rounded-md">Submit</div>
-                        </div>
-                    </div>
+                    </div>             
                     
-                    <div className="w-full p-3 mb-10" style={{ marginBottom: '100px' }}>
-                        {/* {isLoading && (
-                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-                            {isMobile ? (
-                                <BeatLoader color="#1c9236" />
-                            ) : (
-                                <BounceLoader color="#1c9236" />
-                            )}
+                    <div className="w-full p-3 mb-3 mt-3 pb-5"
+                    >
+                        {isLoading && !isRefetching && (
+                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">                            
+                                <BounceLoader color="#1c9236" />    
                             </div>
-                        )} */}
+                        )}
 
                         {/* {!isLoading && isRefetching && (
-                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">
-                            {isMobile ? (
-                                <BeatLoader color="#1c9236" />
-                            ) : (
+                            <div className="min-h-[320px] flex justify-center items-center text-brandGreen">                            
                                 <BounceLoader color="#1c9236" />
-                            )}
                             </div>
                         )} */}
+
                         {
-                            // !isLoading && !isRefetching && (data.length > 0) &&  <DynamicTable 
-                            (data.length > 0) &&  <DynamicTable 
-                                                                                header={['FirstName', 'Surname', 'Email', 'Phone Number', 'Post', 'Actions']} 
-                                                                                columns={columns}
-                                                                                data={data}
-                                                                                onClick={(e) =>  {
-                                                                                    setClickTable(e) 
-                                                                                } } 
-                                                                                page={'dealers'}
-                                                                            />
+                            !isLoading && (Dealers?.data?.dealers.length > 0) &&  <DynamicTable 
+                                                                        header={['FirstName', 'Middlename', 'Surname', 'Email', 'Phone Number', 'Status', 'Actions']} 
+                                                                        columns={columns}
+                                                                        data={Dealers?.data?.dealers}
+                                                                        onClick={(e) =>  {
+                                                                            refetch()
+                                                                        } }
+                                                                        page={'dealers'}
+                                                                    />
                         }
                     </div>
+                    { 
+                        !isLoading && !isRefetching && (Dealers?.data?.dealers.length > 0) && 
+                                <Pagination onClick={(data) => {
+                                        setCurrentPage(data)
+                                        // setRefresh(data)
+                                        // setPerPage(data.perPage)
+                                        setTimeout(() => {
+                                            refetch()   
+                                        }, 1000)
+                                        // do all the setting here and then refresh for new set of data rows
+                                    } 
+                                } 
+                                perPageNo={perPage} 
+                                currentPageNo={currentPage} 
+                                noOfPages={Dealers?.dealers?.noOfPages} 
+                                hasNextPage={Dealers?.dealers?.hasNextPage} 
+                                hasPreviousPage={Dealers?.dealers?.hasPreviousPage} 
+                                from={''}
+                            />    
+                    }
 
         </>
   )

@@ -11,6 +11,7 @@ import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 import AllCourses from "./allCourses";
 import PaymentPage from "./user-type/PaymentPage";
+import { isPaidAndStudentSummary } from "@/apis/user";
 
 
 export default function Courses() 
@@ -34,7 +35,7 @@ export default function Courses()
 function Course() 
 {
   const id = (Math.round()*337)
-  const { data, isLoading, refetch, isRefetching } = useQuery([`${id}get-courses`], () => AllCourse(), { cacheTime: 0 })
+  const { data, isLoading, refetch, isRefetching } = useQuery([`is-paid-and-student-summary`], () => isPaidAndStudentSummary(), { refetchOnWindowFocus: true, cacheTime: 0 })
 
   const [loading, setIsLoading] = useState(false)
 
@@ -53,9 +54,26 @@ function Course()
                   isLoading && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <BeatLoader color="#1c9236" />
                   </div>
+                } 
+                {       
+                  !isLoading && (data?.plus === 'closed') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            Academic Session is currently closed
+                      </p>
+                  </div>
                 }
+                {       
+                  !isLoading && (data?.message === 'invalid') && (data?.plus === 'open') && <div className="col-span-12 h-[300px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                      <p className="font-bold text-2xl"
+                      >
+                            You Are Not Enrolled For Current Session
+                      </p>
+                  </div>
+                }
+
                 {
-                    !isLoading && (data?.plus === "not-paid") && <>
+                    !isLoading && (data?.data?.payment_status === "not-paid") && (data?.message === 'valid') && (data?.plus === 'open') && <>
                         <PaymentPage onClick={(e) => {
                             if(e === true)
                             {          
@@ -63,20 +81,19 @@ function Course()
                             } else {            
                               setApprovalRequest(e)      
                             }
-                            refetch()
                         }} />
                     </>
                 }
                 {
-                  !isLoading && (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                  !isLoading && (data?.length === 0) && (data?.plus === 'open') && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <h1 className="font-bold">
                           No course created yet
                       </h1>
                   </div>
                 }
                 {
-                     !isLoading && (data?.plus === "paid") && <>
-                          <AllCourses data={data?.data} />
+                     !isLoading && data?.data && (data?.data?.payment_status === "paid") && (data?.message === 'valid') && (data?.plus === "open") && <>
+                          <AllCourses />
                      </>
                 }
                     

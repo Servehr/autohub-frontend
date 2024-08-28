@@ -28,17 +28,6 @@ export default function Questions()
     const { id } = useParams()
     const { data, isLoading, isRefetching, refetch } = useQuery([`${x}/all-test`, id], () => AllTest(id), { refetchOnWindowFocus: false, cacheTime: 0, retry: 2 })
 
-    const Questions = [
-        { id: 1, question: "Artificial Intelligence is about_____", options: [ 'Playing a game on Computer', 'Making a machine Intelligent', 'Programming on Machine with your Own Intelligence',
-                                                                                'Putting your intelligence in Machine',
-                                                                            ] 
-        },
-        { id: 1, question: "Who is known as the -Father of AI?", options: [ 'Fisher Ada', 'Alan Turing', 'John McCarthy', 'Allen Newell' ]  },
-        { id: 3, question: "Select the most appropriate situation for that a blind search can be used", options: [ 'Real-life situation', 'Small Search Space', 'Complex game', 'All of the above' ]  },
-        { id: 4, question: "If a robot is able to change its own trajectory as per the external conditions, then the robot is considered as the__", options: [ 'Mobile', 'Non-Servo', 'Open Loop', 'Intelligent' ]  },
-        { id: 5, question: "Which algorithm is used in the Game tree to make decisions of Win/Lose?", options: [ 'Heuristic Search Algorithm', 'DFS/BFS algorithm', 'Greedy Search Algorithm', 'Min/Max algorithm' ]  },
-    ]
-
     const [openQuestionaire, setOpenQuestion] = useState(false)
     const [editQuestion, setEditQuestion] = useState(false)
     const [deleteQuestion, setDeleteQuestion] = useState(false)

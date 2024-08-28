@@ -72,6 +72,17 @@ const createTestObjectiveSlice  = (set, get) => (
         {
             return get().defaultTestObjectiveAnswer
         },
+
+        testObjectiveIdentifier: '',
+        setTestObjectiveIdentifier(testObjectiveIdentifier)
+        {
+            set((state) => ({testObjectiveIdentifier: testObjectiveIdentifier}))
+        },
+        getTestObjectiveIdentifier()
+        {
+            return get().testObjectiveIdentifier
+        }
+
     }
 )
 

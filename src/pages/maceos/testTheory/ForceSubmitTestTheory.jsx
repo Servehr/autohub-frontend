@@ -12,13 +12,14 @@ import { useQuery } from "react-query";
 import { appStore } from "@/state/appState";
 
 
-export default function ForceSubmitTestTheory() 
+export default function ForceSubmitTestTheory({ course }) 
 {
   const advertState = appStore((state) => state)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState(false)
   const [emptyAnswer, setEmptyAnswer] = useState([])
   const [toBeSubmitted, setToBeSubmitted] = useState([])
+  const [courseIds, setCourse] = useState(course)
   const navigate = useNavigate()
 
   useEffect(() => 
@@ -26,7 +27,7 @@ export default function ForceSubmitTestTheory()
       if(advertState.getSelectedTestTheoryOption().length === 0)
       {
           const courseId = localStorage.getItem("text-theori-courze")
-          const optionId = localStorage.getItem("text-theori-option")           
+          const optionId = localStorage.getItem("text-theori-option")  
           const answers = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: courseId, answer: 'xxx', test_theory_question_id: optionId, position: -1 }
           const systemAnswer = { userSubmitted : 'no', answers: answers }
           advertState.setDefaultTestTheoryAnswer(systemAnswer)

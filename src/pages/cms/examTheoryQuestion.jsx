@@ -2,26 +2,11 @@ import * as yup from "yup";
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import Sidebar  from "../shared/sidebar";
-import AdminHeader from "@/layouts/AdminHeader";
 import '../css/ad.css'
 import '../css/dragAndDrop.css'
-import { appStore } from "@/state/appState";
 import { BeatLoader, BounceLoader } from "react-spinners";
-import { browserType } from "@/store";
-import DynamicTable from "@/components/table"
-import { allProduct } from "@/apis/ads";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
-import Folder from "@/components/Folder";
 import { Icons } from "@/util/icon";
-import { AddQuestionModal } from "@/components/questions/AddQuestionModal";
-import { EditQuestionModal } from "@/components/questions/EditQuestionModal";
-import { DeleteQuestionModal } from "@/components/questions/DeleteQuestionModal";
 import { AllTest, AllTestTheory, AllTheoryQuestionExam } from "@/apis/backend/questions";
-import { AddTheoryQuestionModal } from "@/components/questions/theory/AddTheoryQuestionModal";
-import { EditTheoryQuestionModal } from "@/components/questions/theory/EditTheoryQuestionModal";
-import { DeleteTheoryQuestionModal } from "@/components/questions/theory/DeleteTheoryQuestionModal";
 import { AddTheoryQuestion } from "@/components/exam/theory-question/AddTheoryQuestion";
 import { EditTheoryQuestion } from "@/components/exam/theory-question/EditTheoryQuestion";
 import { DeleteTheoryQuestion } from "@/components/exam/theory-question/DeleteTheoryQuestion";

@@ -17,6 +17,7 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
         const { id } = useParams()
+        const testQuestionIdentifier = advertState.getTestObjectiveIdentifier()
         const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourses(), { staleTime: Infinity })
  
         const [question, setQuestion] = useState("")
@@ -35,7 +36,17 @@ export const AddQuestionModal = ({onClick, openQuestionaire, folderName})  =>
 
         const addQuestion = () => 
         {   
-                const dataz = { test_questionaire_id: Number(id), course_id: Number(course), question: question, option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD, answer: answer}
+                const dataz = { 
+                                        test_questionaire_id: Number(id), 
+                                        course_id: Number(course), 
+                                        question: question, 
+                                        option_a: optionA, 
+                                        option_b: optionB, 
+                                        option_c: optionC, 
+                                        option_d: optionD, 
+                                        answer: answer, 
+                                        questionaire: testQuestionIdentifier
+                        }
                setIsLoading(true)
                 AddTest(dataz)
                 .then((res) => 

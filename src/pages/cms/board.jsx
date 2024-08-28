@@ -27,7 +27,7 @@ const pulsates = [
 export default function Board()
 {
     const x = Math.round()
-    const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
+    const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: true, cacheTime: 0 })
 
     return (
             <>

@@ -92,7 +92,7 @@ export const AddTestTheoryMark = ({onClick, openAddTestTheoryMark, student})  =>
                                                                                 setCurrentQuestion(question.id)
                                                                                 setStudentScore(e.target.value)
                                                                                 setQuestionId(question.test_theory_question_id)
-                                                                        }} type='number' id="optionA"  defaultValue={question?.score}
+                                                                        }} type='number' id="optionA"  defaultValue={(question?.score) === 'xxx' ? '' : question?.score}
                                                                                         name="optionA" 
                                                                                         placeholder="Enter Score" 
                                                                                         className="w-10/12 bg-white rounded border border-gray-300 

@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from '../Modal';
-import { Link, useNavigate } from "react-router-dom";
-import { deleteAdProduct } from '@/apis/ads';
-import { appStore } from "@/state/appState";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
-import { DeleteFaq } from '@/apis/misc';
+import { DeleteCountri } from '@/apis/backend/location';
 
 
-export const DeleteCountry = ({onClick, openDeleteCountry, countryId, countryName})  =>
+export const DeleteCountry = ({onClick, openDeleteCountry, countryName})  =>
 {
-        const advertState = appStore((state) => state)
-        const navigate = useNavigate();
-
         const cancelModal = () => 
         {
                 onClick(true)
@@ -20,10 +12,10 @@ export const DeleteCountry = ({onClick, openDeleteCountry, countryId, countryNam
 
         const deleteKountry = () => 
         {
-                DeleteFaq(countryName?.id)
+                DeleteCountri(countryName?.id)
                 .then((res) => 
                 {
-                        onClick(Math.random())
+                        onClick()
                 })
                 .catch((err) => 
                 {

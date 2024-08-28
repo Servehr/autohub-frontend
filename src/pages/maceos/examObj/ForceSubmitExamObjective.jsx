@@ -25,9 +25,9 @@ export default function ForceSubmitExamObjective()
     {
         if(advertState.getSelectedExamObjectiveOption().length === 0)
         {
-            const optionId = localStorage.getItem("text-exam-theory-option")  
-            // alert(optionId)          
-            const answers = { user_id: Number(localStorage.getItem("authenticatedId")), selected: 'e', option_id: optionId, position: -1 }
+            const optionId = localStorage.getItem("text-exam-theory-option") 
+            const examCode = localStorage.getItem("exam-obj-code")
+            const answers = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: examCode, selected: 'e', option_id: optionId, position: -1 }
             const systemAnswer = { userSubmitted : 'no', answers: answers }
             advertState.setDefaultExamObjectiveAnswer(systemAnswer)
         } else {

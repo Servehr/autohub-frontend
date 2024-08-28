@@ -17,7 +17,7 @@ export default function ResolveIssue()
   const advertState = appStore((state) => state)
   const navigate = useNavigate()
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-test-theory-question"], () => TestQuestions(), { cacheTime: 0 })
-
+ 
   const [selectedOptions, setSelectedOptions] = useState([])
   const [courseId, setCourseId] = useState('')
   const [answer, setAnswer] = useState('')
@@ -106,10 +106,12 @@ export default function ResolveIssue()
       {          
           // id, user_id, course_id, option_id, selected
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
+          console.log(answer)
           advertState.setSelectedOption(answer)     
       } else {        
           advertState.getSelectedOption().splice(checkIfPresent, 1);
           let answer = { user_id: Number(localStorage.getItem("authenticatedId")), course_id: course, selected: option, option_id: question, position: position }
+          console.log(answer)
           advertState.setSelectedOption(answer)               
       }
       setCurrentQuestion(position)
@@ -165,7 +167,7 @@ export default function ResolveIssue()
               }
               
               {
-                !isLoading && (data?.message > 0) &&   <>                                      
+                !isLoading && (data?.plus > 0) &&  <>                                      
                     <div className="d-flex justify-center text-center items-center text-lg h-[300px] pt-52 mb-20">
                         <div className="font-bold text-blue-700 pr-5 text-md mb-5 text-green-700" style={{ fontSize: '26px' }}>You Already Had This Test</div>
                         <Link
@@ -198,9 +200,9 @@ export default function ResolveIssue()
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Test Objective Question Not Yet Prepared</span>
                   </div>
               }
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.message < 1) &&
+              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) &&
                  <div className="w-full mb-1">
-                      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div> 
+                      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.message?.name}</div> 
                       { 
                           errorMsg &&  
                           <div className="w-full text-lg font-md text-white bg-red-600 rounded-md mb-5 p-3">
@@ -211,7 +213,7 @@ export default function ResolveIssue()
                       <div className="w-full flex justify-between items-center">
                           <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.data?.length}</span> 
                           <span className="w-fit">
-                              <CountDownTimer type={'test-objective'} seconds={data?.addition} />
+                              <CountDownTimer type={'test-objective'} seconds={data?.message?.objective_duration} course={data?.message?.id} question={data?.addition} />
                           </span>
                           <button type="sumbit" 
                               disabled={isSubmitting}
@@ -299,7 +301,7 @@ export default function ResolveIssue()
                  
                 {
                   
-                  data?.data &&  (data?.message < 1) &&            
+                  data?.data &&  (data?.plus < 1) &&            
                     data?.data.map((num, index) => {
                       const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                       const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
@@ -316,7 +318,7 @@ export default function ResolveIssue()
             </div>
           }
           {  
-            data?.data && (data?.data.length > 0) && (data?.message < 1) &&
+            data?.data && (data?.data.length > 0) && (data?.plus < 1) &&
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-3">
                 <button type="sumbit" 
                 disabled={isSubmitting}

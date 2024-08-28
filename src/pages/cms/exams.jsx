@@ -8,22 +8,8 @@ import '../css/ad.css'
 import '../css/dragAndDrop.css'
 import { appStore } from "@/state/appState";
 import { BeatLoader, BounceLoader } from "react-spinners";
-import { browserType } from "@/store";
-import DynamicTable from "@/components/table"
-import { allProduct } from "@/apis/ads";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
-import { fetchAllFaqs } from "@/apis/misc";
-import { AddFaqModal } from "@/components/faq/AddFaqModal";
-import { AddQuestionaireModal } from "@/components/questionaire/AddQuestionaireModal";
-import Folder from "@/components/Folder";
-import { EditQuestionaireModal } from "@/components/questionaire/EditQuestionaireModal";
 import { Icons } from "@/util/icon";
-import { AddQuestionModal } from "@/components/questions/AddQuestionModal";
-import { EditQuestionModal } from "@/components/questions/EditQuestionModal";
-import { DeleteQuestionModal } from "@/components/questions/DeleteQuestionModal";
 import { AllExam } from "@/apis/backend/questions";
-import { AddExamTheoryQuestionModal } from "@/components/exam/theory/AddExamTheoryQuestionModal";
 import { EditExamQuestionModal } from "@/components/exam/EditExamQuestionModal";
 import { DeleteExamQuestionModal } from "@/components/exam/DeleteExamQuestionModal";
 import { AddExamQuestionModal } from "@/components/exam/AddExamQuestionModal";

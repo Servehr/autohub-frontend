@@ -19,6 +19,10 @@ export default function StudentPage()
   const advertState = appStore((state) => state)
   const { data, isLoading } = useQuery(['get-student-overview'], () => GetStudentOverview(), { cacheTime: 0 })
 
+  if(!isLoading)
+    {
+        console.log(data)
+    }
   const [loggedInUserType, setLoggedInUserType] = useState('')
   const [theService, setTheService] = useState(-1)
   const [isUser, setIsUser] = useState("-1")
@@ -120,19 +124,26 @@ export default function StudentPage()
                                   <span className="hidden md:block px-3"> {data?.exam_objective} </span>
                               </div> 
                         }
-                        {
+                        {/* {
                             !isLoading && (Number(data?.exam_objective) > 0) && (data?.exam_objective != "not-taken") && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
                                   <span className="px-3 text-md uppercase text-blue-800">Objective</span>
                                   <span className="hidden md:block px-3"> { data?.exam_objective } </span>
                               </div> 
-                        }
+                        } */}
                         {/* theory  */}
                         {
                             !isLoading && (Number(data?.exam_theory) === 0) && 
                               <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
                                   <span className="px-3 text-md uppercase text-blue-800">Objective</span>
                                   <span className="hidden md:block px-3"> {data?.exam_objective} </span>
+                              </div> 
+                        }
+                        {
+                            !isLoading && (data?.exam_theory === "not-yet-marked") && 
+                              <div className="flex justify-between p-2 bg-white md:col-span-6 col-span-6 text-black font-bold text-sm ring-2 ring-green-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                  <span className="px-3 text-md uppercase text-green-800">Theory</span>
+                                  <span className="hidden md:block px-3"> NOT YET MARKED </span>
                               </div> 
                         }
                         {

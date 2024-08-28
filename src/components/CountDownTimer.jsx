@@ -17,8 +17,11 @@ const DisplayTime = () => {
 
 }
 
-export default function CountDownTimer({ seconds })
+export default function CountDownTimer({ seconds, course, question })
 {
+    localStorage.setItem("text-courze", course)
+    localStorage.setItem("text-option", question)
+
     const advertState = appStore((state) => state)
     const [countdown, setCountDown] = useState(seconds)
     const [theTime, setTheTime] = useState(0)

@@ -8,13 +8,13 @@ import { CreateFaq } from '@/apis/misc';
 import { UpdateTestQuestion, UpdateTestQuestionTheory } from '@/apis/backend/questions';
 import { BeatLoader } from "react-spinners";
 import { Modal } from '@/components/Modal';
-import { AllCourse } from '@/apis/backend/course';
 import { useQuery } from 'react-query';
+import { AllCourses } from '@/apis/backend/course';
 
 
 export const EditTheoryQuestionModal = ({onClick, data, editQuestion})  =>
 {
-        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { staleTime: Infinity })
+        const { data: everyCourse, isLoading, refetch, isRefetching } = useQuery([`get-all-courses`], () => AllCourses(), { staleTime: Infinity })
       
         const [question, setQuestion] = useState(data['question'])
         const [id, setId] = useState(data['id'])

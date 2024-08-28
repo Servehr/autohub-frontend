@@ -53,7 +53,8 @@ export default function ForceSubmit()
                  }, 3000)
              }
          })
-         .catch(() => {
+         .catch((err) => {
+             console.log(err)
              setTimeout(() => {
                  setIsSubmitting(false)
              }, 2000)

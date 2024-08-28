@@ -11,10 +11,8 @@ import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 
 
-export default function StartTheoryPage({ course, option }) 
+export default function StartTheoryPage() 
 {
-  localStorage.setItem("text-theori-courze", course)
-  localStorage.setItem("text-theori-option", option)
 
   return (
     <>

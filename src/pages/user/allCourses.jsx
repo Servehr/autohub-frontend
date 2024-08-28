@@ -9,8 +9,8 @@ import { useQuery } from "react-query";
 import axios_instance, { BASE_URL } from "@/lib/axios";
 import axios from "axios";
 
-const downloadPdfFile = async (id) =>
-  {
+export const downloadPdfFile = async (id) =>
+{
     await axios_instance.get(`${BASE_URL}download-document/${id}`, {responseType: 'blob'})
     .then((response) => 
     {  
@@ -18,28 +18,12 @@ const downloadPdfFile = async (id) =>
     }).catch((error) => {                      
        return false;
     })
-  }
-
-export default function AllCourses({ data }) 
-{
-  const navigate = useNavigate();
-  const [isUser, setIsUser] = useState("-1")
-
-  return (
-    <>
-      <Helmet>
-        <title>Change Email | Autohub</title>
-        <meta name="description" content="Sell Faster, Buy Smarter" />
-      </Helmet>
-
-      
-      <Course data={data} />
-    </>
-  );
 }
 
-function Course({ data }) 
+export default function AllCourses() 
 {
+  
+  const { data, isLoading, refetch, isRefetching } = useQuery([`get-courses`], () => AllCourse(), { refetchOnWindowFocus: true, cacheTime: 0 })
   const [downloadForm, setDownloadForm] = useState(false)
 
   useEffect(() => {
@@ -94,25 +78,25 @@ function Course({ data })
         {/* <span className="col-span-12 font-bold text-green-800 mb-3">MACEOS ACADEMY COURSES: </span> */}
               {/* <p className="mb-4 col-span-12 ">Below are the courses we offer. Browse through for your kind perusal; from the main courses to sub-courses and modules.</p> */}
               {
-                  (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                  (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                       <h1 className="font-bold">
                           No course created yet
                       </h1>
                   </div>
                 }
                 {
-                    (data?.length > 0) && < div className="col-span-12">                      
+                    (data?.data?.length > 0) && < div className="col-span-12">                      
                       <div className="font-bold text-xl mb-5 text-blue-700 mt-28 md:mt-0">MACEOS ACADEMY COURSES</div> 
                       <span className="col-span-12 font-bold text-red-800 text-sm -mt-3 mb-3">Download Course</span>
                     </div>
                 }
                 {
-                    (data?.length > 0) && data?.map((x) => {
+                    (data?.data?.length > 0) && data?.data?.map((x) => {
                                 let hasFile = (x.file_name != null) ? "cursor-pointer" : ""
                                 return (
                                         <button
                                           disabled={(x.file_name === null) ? true : false}
-                                          onClick={() => { 
+                                          onClick={(e) => { 
                                               downloadPdfFile(x.id) 
                                           }}
                                           className={`text-md text-left md:col-span-4 col-span-12 px-2 py-2 mb-1 justify-center w-full font-bold  

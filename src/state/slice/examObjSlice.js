@@ -57,7 +57,17 @@ const createExamObjectiveSlice  = (set, get) => (
         getDefaultExamObjectiveAnswer()
         {
             return get().defaultExamObjectiveAnswer
+        },        
+
+        examObjectiveIdentifier: '',
+        setExamObjectiveIdentifier(examObjectiveIdentifier)
+        {
+            set((state) => ({examObjectiveIdentifier: examObjectiveIdentifier}))
         },
+        getExamObjectiveIdentifier()
+        {
+            return get().examObjectiveIdentifier
+        }
     }
 )
 

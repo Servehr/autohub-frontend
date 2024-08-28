@@ -2,32 +2,104 @@ import * as yup from "yup";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../shared/sidebar";
-import AdminHeader from "@/layouts/AdminHeader";
 import { useQuery } from "react-query";
-import { getAdverts } from "@/apis/ads";
 import { UserCourses } from "@/apis/backend/course";
 import { AVATAR } from "@/lib/axios";
 import { AddTestTheoryMark } from "@/components/marking/AddTestTheoryMark";
 import { AddExamTheoryMark } from "@/components/marking/AddExamTheoryMark";
+import Pagination from "@/components/Pagination";
 
 
 export default function Markings()
 {
+    const navigate = useNavigate();
+    const pages = [10, 20, 50, 100, 200]
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(20)  
+    const [perPage, setPerPage] = useState(pages[1])  
     const [searchQuery, setSearchQuery] = useState("")
-    const [refresh, setRefresh] = useState(0)
+
     const [student, setStudent] = useState(-1)
     const [openAddTestTheoryMark, setOpenAddTestTheoryMark] = useState("")
     const [openAddExamTheoryMark, setOpenAddExamTheoryMark] = useState("")
 
+    const { data: markings, isLoading, isRefetching, refetch } = useQuery(["user-courses"], () => UserCourses(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true,  cacheTime: 0 })
     
-    const { data, isLoading, isRefetching, refetch } = useQuery(["user-courses"], () => UserCourses(), { cacheTime: 0 })
+    const displayByPageNo = (page) => 
+    {   
+        setPerPage(Number(page)) 
+        setTimeout(() => 
+        {          
+            refetch()
+        }, 2000)        
+    }
+
+    const tellThePost = (e) => 
+    {        
+        setSearchQuery(e.target.value)
+        setTimeout(() => 
+        {            
+            callTheSearch(e)
+        }, 2000)
+    }
+
+    const callTheSearch = (e) => 
+    {        
+        if (e.target.value != "") 
+        {
+            refetch()
+        } else {
+            setSearchQuery("")       
+            refetch()                            
+        }
+    }
 
     return ( 
-            <>
-                        <span className="font-bold text-xl col-span-12 text-green-600 ml-3 mb-20 font-bold uppercase">Students</span>
+                    <div className="pb-5 bg-white"
+                    >
+                        <div className="grid grid-cols-12 justify-center items-center px-5 gap-3">
+
+                            <div className="col-span-2"
+                            >
+                                <span className="font-bold md:w-2/12 text-2xl sm:w-full items-center">Student Sheet</span>
+                            </div>
+                            <div className="col-span-2"
+                            >
+                            <div className="mb-4 border border-gray-200 mt-4"
+                            >
+                                <div className="relative"
+                                >
+                                    <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                                        className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                        {       
+                                            pages.map((page, index) => (
+                                                <option key={index} value={page} className='p-2'>
+                                                    {page}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
+                            </div>   
+                            </div>
+                            <div className="col-span-8"
+                            >
+                                <input
+                                    type="text"
+                                    required
+                                    // ref={inputRef}
+                                    name="search"
+                                    autoComplete="off"
+                                    aria-label="Search ..."
+                                    // value={query}
+                                    className="md:w-12/12 sm:w-full h-[65px] w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
+                                    placeholder="Search name, middlename, lastname"
+                                    onKeyUp={tellThePost}
+                                />    
+                            </div>
+                        </div>
                         
                         <div className='grid grid-cols-12 gap-3 pb-5 mb-5 mt-10'>                                
                             {
@@ -36,7 +108,12 @@ export default function Markings()
                                 </div>
                             }
                             {
-                                !isLoading && data?.map((student, index) => {
+                                !isLoading && isRefetching && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                    <BeatLoader color="#1c9236" />
+                                </div>
+                            }
+                            {
+                                !isLoading && !isRefetching && markings?.data?.students?.map((student, index) => {
                                     return (
                                             <div className="relative d-flex col-span-12 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md" key={index}>   
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
@@ -62,6 +139,25 @@ export default function Markings()
                                     }) 
                             }
                         </div>
+                        <div className="p-6 mt-20"></div>
+                        { 
+                                !isLoading && !isRefetching && (markings?.data?.students?.length > 0) && 
+                                            <Pagination onClick={(data) => {
+                                                    setCurrentPage(data)
+                                                    // setPerPage(data.perPage)
+                                                    setTimeout(() => {
+                                                        refetch()   
+                                                    }, 1000)
+                                                } 
+                                            } 
+                                            perPageNo={perPage} 
+                                            currentPageNo={currentPage} 
+                                            noOfPages={markings?.data?.noOfPages} 
+                                            hasNextPage={markings?.data?.hasNextPage} 
+                                            hasPreviousPage={markings?.data?.hasPreviousPage} 
+                                            from={''}
+                                        />    
+                        }
 
                         {
                             openAddTestTheoryMark && <AddTestTheoryMark openAddTestTheoryMark={openAddTestTheoryMark} student={student} onClick={() => {
@@ -74,6 +170,6 @@ export default function Markings()
                                     setOpenAddExamTheoryMark(false)
                             }} />
                         }
-            </>
+            </div>
     )
 }

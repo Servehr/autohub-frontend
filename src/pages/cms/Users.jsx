@@ -25,7 +25,8 @@ export default function Users()
     { field: 'name' },
     { field: 'lastname' },
     { field: 'email' },
-    { field: 'type' },
+    { field: 'status' },
+    { field: 'admin_role' },
   ]
 
   return ( 
@@ -45,12 +46,12 @@ export default function Users()
                             </div>
                         )}
                         {
-                            !isLoading && (data.length > 0) &&  <DynamicTable 
-                                                                                header={['Firstname', 'Surname',  'email',  'permission', 'Actions']} 
+                            !isLoading && (data?.length > 0) &&  <DynamicTable 
+                                                                                header={['Firstname', 'Surname',  'Email', 'Status', 'permission', 'Actions']} 
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    setClickTable(e) 
+                                                                                    refetch()
                                                                                 } } 
                                                                                 page={'users'}
                                                                             />
@@ -59,6 +60,7 @@ export default function Users()
 
             { 
                 openStaff  &&  <AddStaffModal openStaff={openStaff} onClick={() => {
+                    refetch()
                     setAddStaff(false)
                 }} /> 
             }

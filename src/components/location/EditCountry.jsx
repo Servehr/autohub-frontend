@@ -6,11 +6,13 @@ import { appStore } from "@/state/appState";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/axios";
 import { UpdateFaq } from '@/apis/misc';
+import { UpdateCountri } from '@/apis/backend/location';
 
 
-export const EditCountry = ({onClick, openEditCountry, countryId, countryName})  =>
+export const EditCountry = ({onClick, openEditCountry, countryName})  =>
 {
-        const [country, setCountry] = useState("")
+        const [countryId, setCountryId] = useState(countryName.id)
+        const [countryNamee, setCountryName] = useState(countryName.name)
 
         const cancelModal = () => 
         {
@@ -19,10 +21,10 @@ export const EditCountry = ({onClick, openEditCountry, countryId, countryName}) 
 
         const updateKountry = () => 
         {
-                UpdateFaq({ id: countryName?.id, name: country })
+                UpdateCountri({ id: countryId, name: countryNamee, slug: countryNamee.toLowerCase() })
                 .then((res) => 
                 {
-                        return onClick(productId*Math.random())
+                        onClick()
                 })
                 .catch((err) => 
                 {
@@ -39,11 +41,11 @@ export const EditCountry = ({onClick, openEditCountry, countryId, countryName}) 
                                                         <h1 className='font-bold text-lg mb-10'>Change Country Name</h1>
                                                         <div className="w-full d-flex-row md:flex mt-1 gap-5 mb-5">
                                                                 <input onChange={(e) => {
-                                                                        setCountry(e.target.value)
+                                                                        setCountryName(e.target.value)
                                                                 }} 
                                                                 type="text" 
                                                                 id="title" 
-                                                                defaultValue={countryName?.name}  
+                                                                defaultValue={countryNamee}  
                                                                 name="title"  
                                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 text-sm py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                                         </div>

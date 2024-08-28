@@ -11,9 +11,9 @@ import { AllCourse } from "@/apis/backend/course";
 import { useQuery } from "react-query";
 
 
-export default function StartExamObjectiveExam({ option })
+export default function StartExamObjectiveExam()
 {
-  localStorage.setItem("text-exam-theory-option", option)
+  // localStorage.setItem("text-exam-theory-option", option)
 
   return (
     <>

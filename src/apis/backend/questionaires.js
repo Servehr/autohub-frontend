@@ -86,11 +86,12 @@ export async function AddTestQuestionaireTheory(data)
 {
    const name = data.name
    const description = data.description
+   const current_session = data.current_session
 
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .post("create-test-theory-questionire", {name, description})
+          .post("create-test-theory-questionire", {name, description, current_session})
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);

@@ -10,12 +10,13 @@ import { BeatLoader } from "react-spinners";
 import { Modal } from '@/components/Modal';
 
 
-export const AddTestQuestionaireTheoryModal = ({onClick, openTestQuestionaireTheory})  =>
+export const AddTestQuestionaireTheoryModal = ({onClick, openTestQuestionaireTheory, AllSessions})  =>
 {
         const advertState = appStore((state) => state)
         const [loading, setIsLoading] = useState(false)
         const [theTitle, setTitle] = useState("")
         const [theContent, setTheContent] = useState("")
+        const [currentAcademic, setCurrentAcademic] = useState(AllSessions)
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
         const [theIsOpened, setTheIsOpened] = useState(-1)
@@ -29,7 +30,7 @@ export const AddTestQuestionaireTheoryModal = ({onClick, openTestQuestionaireThe
         const addQuestion = async () => 
         {            
                 setIsLoading(true)
-                const data = { name: theTitle, description: theContent }
+                const data = { name: theTitle, description: theContent, current_session: currentAcademic }
                 AddTestQuestionaireTheory(data)
                 .then((res) => 
                 {

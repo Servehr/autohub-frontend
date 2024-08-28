@@ -68,6 +68,16 @@ const createExamTheorySlice  = (set, get) => (
         {
             return get().defaultExamTheoryAnswer
         },
+
+        examTheoryIdentifier: '',
+        setExamTheoryIdentifier(examTheoryIdentifier)
+        {
+            set((state) => ({examTheoryIdentifier: examTheoryIdentifier}))
+        },
+        getExamTheoryIdentifier()
+        {
+            return get().examTheoryIdentifier
+        }
     }
 )
 

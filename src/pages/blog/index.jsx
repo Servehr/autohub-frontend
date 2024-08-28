@@ -103,7 +103,7 @@ export default function Blogs()
                                                 <div className="w-10/12 pt-3" style={{ backgroundColor: '#95afc6' }}>
                                                     <h1 class="mb-2 text-gray-600 px-3 text-white" style={{ fontSize: '28px' }}>{post?.title}</h1>
                                                     <div className="flex justify-between px-3 -mt-2 text-white mb-1">
-                                                        <h2>{post?.user} - {post?.id}</h2>
+                                                        <h2>{post?.user}</h2>
                                                         <h2>{post?.created_at}</h2>
                                                     </div>
                                                 </div>

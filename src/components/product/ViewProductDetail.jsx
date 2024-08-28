@@ -15,7 +15,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
         const [minimumPrice, setMinimumPrice] = useState(0)
         const [maximumPrice, setMaximumPrice] = useState(0)
 
-        const { data, isLoading, refetch } = useQuery([`single-product/${productId}`], () => singelProduct(productId), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
+        const { data, isLoading, refetch } = useQuery([`single-product/${productId}`], () => singelProduct(productId), { refetchOnWindowFocus: false, cacheTime: 0, retry: 2 })
 
         const placeAdvert = async (img) => 
         {
@@ -31,7 +31,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
 
         const setSellablePrice = async () => 
         {
-                const prices = { id: data.id, minimumPrice: minimumPrice, maximumPrice: maximumPrice }  
+                const prices = { id: data?.id, minimumPrice: minimumPrice, maximumPrice: maximumPrice }  
                 await SellablePrice(prices)
                 .then((res) => {
                         refetch()
@@ -46,9 +46,9 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
         return (
                 <Modal onClick={onClick} isOpen={viewAdvert} wrapperWidth={1100} margin={'20px auto 0px auto'}>
 
-                        {/* { !isLoading && <h1 className='font-bold text-lg'>{data.title} by {data.user.name} - {data.user.phoneno}</h1> } */}
+                        {/* { !isLoading && <h1 className='font-bold text-lg'>{data?.title} by {data?.user.name} - {data?.user.phoneno}</h1> } */}
                         <div className="items-center gap-5 sm:flex flex justify-between mx-5 mb-10">
-                                { !isLoading && <h1 className='font-bold text-lg'>{data.title} by {data.user.name} - {data.user.phoneno}</h1> }
+                                { !isLoading && <h1 className='font-bold text-lg'>{data?.title} by {data?.user.name} - {data?.user.phoneno}</h1> }
                                 <button  
                                         className="mt-2 px-4 py-2 text-white hover:font-bold text-sm bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2 justify-start"
                                         onClick={() =>
@@ -62,32 +62,32 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                                         <>                                                
                                                 <div className="p-1 mt-1">
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
-                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data.user.name}</div>
-                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data.title}</div>
+                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data?.user.name}</div>
+                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data?.title}</div>
                                                         </div>
                                                 </div>
                                                 <div className="p-1 mt-1">
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
-                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data.state_id}</div>
-                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data.price}</div>
+                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data?.state_id}</div>
+                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data?.price}</div>
                                                         </div>
                                                 </div>
                                                 <div className="p-1 mt-1">
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
-                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data.chasis_no}</div>
-                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data.colour}</div>
+                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data?.chasis_no}</div>
+                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data?.colour}</div>
                                                         </div>
                                                 </div>
                                                 <div className="p-1 mt-1">
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
-                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data.condition_id}</div>
-                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data.seat}</div>
+                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data?.condition_id}</div>
+                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data?.seat}</div>
                                                         </div>
                                                 </div>
                                                 <div className="p-1 mt-1 mb-3">
                                                         <div className="w-full d-flex md:flex mt-1 gap-5">
-                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data.views}</div>
-                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data.year_of_production}</div>
+                                                                <div className='md:w-6/12 w-full p-3 rounded-md border border-2 mt-2'>{data?.views}</div>
+                                                                <div className='md:w-6/12 p-3 w-full rounded-md border border-2 mt-2'>{data?.year_of_production}</div>
                                                         </div>
                                                 </div>
                                                 <div className="p-1 mt-1 mb-10">
@@ -132,7 +132,7 @@ export const ViewProductDetail = ({onClick, viewAdvert, productId})  =>
                                                         </div>
                                                 </div>
                                                 { 
-                                                        data?.images && (data?.images.length > 0) && data.images.map((img, index) => {
+                                                        data?.images && (data?.images.length > 0) && data?.images.map((img, index) => {
                                                                 let cssStyle = (img.as_advert === 1) ? "col-span-3 md:col-span-3 border border-2 mb-5 relative border border-2 border-green-700" : "col-span-3 md:col-span-3 border border-2 mb-5 relative"
                                                                 return (
                                                                         <div className={cssStyle} key={index}>

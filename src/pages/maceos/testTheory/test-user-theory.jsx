@@ -36,6 +36,10 @@ function TestTheory()
 {
   const navigate = useNavigate();
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-questions"], () => TestCourseTheoryQuestions(), { cacheTime: 0 })
+  if(!isLoading)
+  {
+      console.log(data)
+  }
 
   const advertState = appStore((state) => state)
   const [selectedOptions, selectedTestTheoryOptions] = useState([])
@@ -187,7 +191,7 @@ function TestTheory()
                 </div>
               }
               {
-                !isLoading && (data?.message > 0) &&                   
+                !isLoading && (data?.plus > 0) &&                   
                     <div className="d-flex justify-center text-center items-center text-lg h-[300px] pt-52 mb-20">
                         <div className="font-bold text-blue-700 pr-5 text-md mb-5 text-green-700" style={{ fontSize: '26px' }}>You Already Had This Test</div>
                         <Link
@@ -213,21 +217,27 @@ function TestTheory()
 
               { !isLoading && !isRefetching && (data?.data?.length > 0) && (data?.message < 1) &&
                  <div className="w-full mb-5">
-                      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div> 
+                      <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus?.name}</div> 
+                      { 
+                          errorMsg &&  
+                          <div className="w-full text-lg font-md text-white bg-red-600 rounded-md mb-5 p-3">
+                              { errorMsg }
+                          </div>
+                      }
 
                       <div className="d-flex -mb-3 col-span-12 p-3"
                       >
                             <div className="w-full flex justify-between items-center">
                                 <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
                                 <span className="w-fit">
-                                    <CountDownTimerTestTheory type={'test-objective'} seconds={data?.addition} />
+                                    <CountDownTimerTestTheory type={'test-objective'} seconds={data?.plus?.theory_duration} course={data?.plus?.id} question={data?.addition} />
                                 </span>
                                 <button type="sumbit" 
                                   disabled={!isSubmitting}
                                   className={`p-3 text-white text-sm font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900 cursor-pointer'}`}
                                   onClick={() => {
-                                      SubmitObjectiveTest()
-                                  }}
+                                    SubmitObjectiveTest()
+                                }}
                                   >
                                       {   isSubmitting ? ( <BeatLoader size={9} color="#fff" className="" />) : ( "Sumbit" )     }
                               </button>

@@ -22,19 +22,23 @@ const courseYear = () =>
     return years.toReversed();
 }
 
-export default function TestQuestionaireObjective()
+export default function TestQuestionaireObjective({ academicSession })
 {
     const [openTestQuestionaireTheory, setOpenQuestionaireTheory] = useState(false) 
-    const [theYear, setTheYear] = useState('')   
+    const [theYear, setTheYear] = useState('')      
     const currentYear = new Date().getFullYear()
     const [selectedYear, setSelectedYear] = useState(currentYear)
     const years = courseYear()
 
-    const { data, isLoading, isRefetching, refetch } = useQuery([`test-questionaires`], () => AllTestQuestionaires(selectedYear), { cacheTime: 0 })
+    const reversedSession = academicSession.toReversed()
+    const [currentSession, setCurrentSession] = useState(academicSession[academicSession.length-1]['identifier'])
+    const [currentSessionName, setCurrentSessionName] = useState('') 
+    
+    const { data, isLoading, isRefetching, refetch } = useQuery([`test-questionaires`], () => AllTestQuestionaires(currentSession), { cacheTime: 0 })
 
     const byYear = (year) => 
     {
-        setSelectedYear(year)
+        setCurrentSession(year)
         setTimeout(() => {            
             refetch()
         }, 1000)
@@ -64,9 +68,9 @@ export default function TestQuestionaireObjective()
                         <select defaultValue={''} onChange={(e) => byYear(e.target.value)} 
                             className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             {       
-                                years.map((year, index) => (
-                                    <option key={index} value={year} className='p-2'>
-                                        {year}
+                                reversedSession.map((academic, index) => (
+                                    <option key={index} value={academic?.identifier} className='p-2'>
+                                        {academic?.name} - {academic?.identifier}
                                     </option>
                                 ))
                             }
@@ -93,16 +97,26 @@ export default function TestQuestionaireObjective()
                 {
                     !isLoading && !isRefetching && (data?.length === 0) && <div className="col-span-12 h-[300px] flex justify-center -mt-3 items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                         <h1 className="font-bold">
-                            No questionaire created yet for the year {selectedYear}
+                            No questionaire created yet
                         </h1>
                     </div>
                 }
                 <div className='grid grid-cols-12 gap-5 py-2 px-3 mb-2'>
                 {
                     
-                    !isLoading && !isRefetching && (data?.length > 0) && data?.map((data, index) => <Folder type={"test"} toEdit={"editTestFolder"} toDelete={"deleteTestFolder"} id={data?.id} titles={data?.name} description={data?.description} figures={100} icons={'comment'} onClick={(e) => {
-                            refetch()
-                        }
+                    !isLoading && !isRefetching && (data?.length > 0) && data?.map((data, index) => <Folder 
+                                                                                                            type={"test"} 
+                                                                                                            toEdit={"editTestFolder"} 
+                                                                                                            toDelete={"deleteTestFolder"} 
+                                                                                                            id={data?.id} 
+                                                                                                            titles={data?.name} 
+                                                                                                            description={data?.description} 
+                                                                                                            figures={100} 
+                                                                                                            icons={'comment'} 
+                                                                                                            identifier={currentSession} 
+                                                                                                            onClick={(e) => {
+                                                                                                                refetch()
+                                                                                                            }
                     } />)
                 }
                 </div>
@@ -114,6 +128,7 @@ export default function TestQuestionaireObjective()
                                                 // setClickTable(e) 
                                             }
                                         } openQuestionaire={openQuestionaire}  
+                                        AllSessions={currentSession}
                                 /> }
         </div>
   )

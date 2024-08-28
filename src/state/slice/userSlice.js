@@ -68,6 +68,16 @@ const createUsertSlice  = (set, get) => (
         getAssessment()
         {
             return get().assessment
+        },
+
+        academicSession: [],
+        setAcademicSession(academic)
+        {
+            set((state) => ({academic: academic}))
+        },
+        getAcademicSession()
+        {
+            return get().academic
         }
     }
 )

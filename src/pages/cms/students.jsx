@@ -10,22 +10,122 @@ import { AllStudent } from "@/apis/backend/course";
 import { AVATAR } from "@/lib/axios";
 import toast from "react-hot-toast";
 import { ConfirmStudent } from "@/components/marking/ConfirmStudent";
+import Pagination from "@/components/Pagination";
+import { StudentResult } from "@/components/marking/StudentResult";
+import { StudentReceipt } from "@/components/marking/StudentReceipt";
 
 export default function Students()
 {
+    const navigate = useNavigate();
+    const pages = [10, 20, 50, 100, 200]
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(20)  
+    const [perPage, setPerPage] = useState(pages[0])  
     const [searchQuery, setSearchQuery] = useState("")
-    const [refresh, setRefresh] = useState(0)
-    const [student, setStudent] = useState(-1)
-    const [confirmAccess, setConfirmAccess] = useState("")
-
     
-    const { data, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(), { cacheTime: 0 })
+    const [student, setStudent] = useState(-1)
+    const [confirmAccess, setConfirmAccess] = useState(false)
+    const [studentResult, setStudentResult] = useState(false)
+    const [studentReceipt, setStudentReceipt] = useState(false)
+    
+    const { data: allStudent, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true,  cacheTime: 0 })
+
+    if(!isLoading)
+    {
+        console.log(allStudent)
+    }
+
+    const displayByPageNo = (page) => 
+    {   
+        setPerPage(Number(page)) 
+        setTimeout(() => 
+        {          
+            refetch()
+        }, 2000)        
+    }
+
+    const tellThePost = (e) => 
+    {        
+        setSearchQuery(e.target.value)
+        setTimeout(() => 
+        {            
+            callTheSearch(e)
+        }, 2000)
+    }
+
+    const callTheSearch = (e) => 
+    {        
+        if (e.target.value != "") 
+        {
+            refetch()
+        } else {
+            setSearchQuery("")       
+            refetch()                            
+        }
+    }
 
     return ( 
-            <>
-            <span className="font-bold text-xl col-span-12 text-green-600 ml-3 mb-20 font-bold uppercase">Students</span>
+                <div className="pb-5 bg-white"
+                >
+                        <div className="grid grid-cols-12 justify-center items-center px-5 gap-3">
+
+                            <div className="col-span-1"
+                            >
+                                <div className="relative"
+                                >
+                                    <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                                        className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                        {       
+                                            pages.map((page, index) => (
+                                                <option key={index} value={page} className='p-2'>
+                                                    {page}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
+                                {/* <span className="font-bold md:w-2/12 text-2xl sm:w-full items-center">Enrolled Students</span> */}
+                            </div>
+                            <div className="col-span-4"
+                            >
+                            <div className="mb-4 border border-gray-200 mt-4"
+                            >
+                                <div className="relative"
+                                >
+                                    <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                                        className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                        {       
+                                            allStudent?.data?.academic_session?.map((academicSession, index) => (
+                                                <option key={index} value={academicSession.identifier} className='p-2'>
+                                                    {academicSession.identifier}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
+                            </div>   
+                            </div>
+                            <div className="col-span-7"
+                            >
+                                <input
+                                    type="text"
+                                    required
+                                    // ref={inputRef}
+                                    name="search"
+                                    autoComplete="off"
+                                    aria-label="Search ..."
+                                    // value={query}
+                                    className="md:w-12/12 sm:w-full h-[65px] w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
+                                    placeholder="Search name, middlename, lastname"
+                                    onKeyUp={tellThePost}
+                                />    
+                            </div>
+                        </div>
                         
                         <div className='grid grid-cols-12 gap-3 pb-5 mb-5 mt-10'>                                
                             {
@@ -33,8 +133,13 @@ export default function Students()
                                     <BeatLoader color="#1c9236" />
                                 </div>
                             }
+                            {/* {
+                                !isLoading && isRefetching && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                    <BeatLoader color="#1c9236" />
+                                </div>
+                            } */}
                             {
-                                !isLoading && data?.map((student, index) => {
+                                !isLoading && allStudent?.data?.students?.map((student, index) => {
                                     return (
                                             <div className="relative d-flex col-span-12 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md" key={index}>   
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
@@ -42,10 +147,10 @@ export default function Students()
                                                     <p className="font-bold w-2/2 text-lg text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
                                                 </div>
                                                 <div className="w-full flex bg-white">
-                                                    <p className="font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto">{ student?.payment_status }</p>
+                                                <p className="font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto">{ student?.student?.payment_status }</p>
                                                 </div>
-                                                <div className="w-full p-5 flex justify-between mt-1 items-center bg-white">
-                                                    <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
+                                                <div className="w-full p-3 flex justify-between mt-1 items-center bg-white">
+                                                    <span className="font-bold w-fit p-2 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setConfirmAccess(true)
@@ -53,13 +158,21 @@ export default function Students()
                                                     >Cofirm Access
                                                     </span>
                                                     <button 
-                                                        disabled={(student?.payment_status === "paid") ? false : true}
-                                                        className="font-bold w-fit px-5 py-3  md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
+                                                        className="font-bold w-fit p-2  md:col-span-6 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
-                                                            setConfirmAccess(true)
+                                                            setStudentResult(true)
                                                         }}
-                                                    >View Receipt
+                                                    >   View Result
+                                                    </button>
+                                                    <button 
+                                                        disabled={(!student?.student?.receipt) ? true : false}
+                                                        className="font-bold w-fit p-2  md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
+                                                        onClick={() => {
+                                                            setStudent(student)
+                                                            setStudentReceipt(true)
+                                                        }}
+                                                    >   View Receipt
                                                     </button>
                                                 </div>
                                             </div> 
@@ -67,16 +180,59 @@ export default function Students()
                                     }) 
                             }
                         </div>
+                    
+                        <div className="p-6 mt-20"></div>
+                            <div className="col-span-12"
+                            >
+                                { 
+                                        !isLoading && !isRefetching && (allStudent?.data?.students?.length > 0) && 
+                                                    <Pagination onClick={(data) => {
+                                                            setCurrentPage(data)
+                                                            // setPerPage(data.perPage)
+                                                            setTimeout(() => {
+                                                                refetch()   
+                                                            }, 1000)
+                                                        } 
+                                                    } 
+                                                    perPageNo={perPage} 
+                                                    currentPageNo={currentPage} 
+                                                    noOfPages={allStudent?.data?.noOfPages} 
+                                                    hasNextPage={allStudent?.data?.hasNextPage} 
+                                                    hasPreviousPage={allStudent?.data?.hasPreviousPage} 
+                                                    from={''}
+                                                />    
+                                }
+                            </div>
 
                         {
-                            confirmAccess && <ConfirmStudent confirmAccess={confirmAccess} student={student} onClick={() => {
-                                    refetch()                                    
-                                    toast.success(`${student.name} successfully granted access`, {
-                                        position: "top-right",
-                                    });
+                            confirmAccess && <ConfirmStudent confirmAccess={confirmAccess} student={student} onClick={(e) => {
+                                    if(e === "yes")
+                                    {                                                                          
+                                        toast.success(`${student.name} successfully granted access`, {
+                                            position: "top-right",
+                                        });
+                                    }
+                                    refetch()  
                                     setConfirmAccess(false)
                             }} />
                         }
-            </>
+                        {
+                            studentResult && <StudentResult studentResult={studentResult} student={student} onClick={(e) => {
+                                    refetch()  
+                                    if(e === "yes")
+                                    {                                                                          
+                                        toast.success(`${student.name} successfully granted access`, {
+                                            position: "top-right",
+                                        });
+                                    }
+                                    setStudentResult(false)
+                            }} />
+                        }
+                        {
+                            studentReceipt && <StudentReceipt studentReceipt={studentReceipt} student={student} onClick={(e) => {
+                                    setStudentReceipt(false)
+                            }} />
+                        }
+            </div>
     )
 }

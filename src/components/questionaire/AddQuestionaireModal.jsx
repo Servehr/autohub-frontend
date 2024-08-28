@@ -10,12 +10,13 @@ import { AddTestQuestionaire } from '@/apis/backend/questionaires';
 import { BeatLoader } from "react-spinners";
 
 
-export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
+export const AddQuestionaireModal = ({onClick, openQuestionaire, AllSessions})  =>
 {
         const advertState = appStore((state) => state)
         const [loading, setIsLoading] = useState(false)
         const [theTitle, setTitle] = useState("")
         const [theContent, setTheContent] = useState("")
+        const [currentAcademic, setCurrentAcademic] = useState(AllSessions)
         const [errMsg, setErrMsg] = useState("")
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
@@ -36,7 +37,7 @@ export const AddQuestionaireModal = ({onClick, openQuestionaire})  =>
         const addQuestion = async () => 
         {            
                 setIsLoading(true)
-                const data = { name: theTitle, description: theContent }
+                const data = { name: theTitle, description: theContent, current_session: currentAcademic }
                 AddTestQuestionaire(data)
                 .then((res) => 
                 {

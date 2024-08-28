@@ -10,12 +10,13 @@ import { AddExamQuestionaire } from '@/apis/backend/questionaires';
 import { BeatLoader } from "react-spinners";
 
 
-export const AddExamQuestionaireModal = ({onClick, openQuestionaire})  =>
+export const AddExamQuestionaireModal = ({onClick, openQuestionaire, AllSessions})  =>
 {
         const advertState = appStore((state) => state)
         const [loading, setIsLoading] = useState(false)
         const [theTitle, setTitle] = useState("")
         const [theContent, setTheContent] = useState("")
+        const [currentAcademic, setCurrentAcademic] = useState(AllSessions)
         const [errMsg, setErrMsg] = useState("")
         const navigate = useNavigate();
         const [userProductId, setUserProductId] = useState(advertState.getProductId())
@@ -36,11 +37,11 @@ export const AddExamQuestionaireModal = ({onClick, openQuestionaire})  =>
         const addQuestion = async () => 
         {            
                 setIsLoading(true)
-                const data = { name: theTitle, description: theContent }
+                const data = { name: theTitle, description: theContent, current_session: currentAcademic }
                 AddExamQuestionaire(data)
                 .then((res) => 
                 {
-                        return onClick(Math.random())
+                        onClick()
                 })
                 .catch((err) => 
                 {
@@ -56,6 +57,30 @@ export const AddExamQuestionaireModal = ({onClick, openQuestionaire})  =>
                                         <>                                                
                                                 <div className="p-1 mt-1">
                                                         <h1 className='font-bold text-lg mb-5'>Create Questionaire</h1>
+                                                        {/* <div className="relative w-full mb-3">
+                                                                <select onChange={(e) => 
+                                                                   {  
+                                                                        setCurrentAcademic(e.target.value)
+                                                                   } 
+                                                                }
+                                                                defaultValue={''} 
+                                                                className="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                                        <option value={-1}> - Select Session -  </option> 
+                                                                        {       
+                                                                                AllSessions.map((academic, index) => (
+                                                                                        <option key={index} value={academic?.identifier} className='p-2'>
+                                                                                        {academic?.name} - {academic?.identifier}
+                                                                                        </option>
+                                                                                ))
+                                                                        }
+                                                                </select>
+                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 mt-0">
+                                                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                                                        </svg>
+                                                                </div>
+                                                                <div className="text-red-500 font-bold text-sm">{ "" }</div>
+                                                        </div>  */}
                                                         <div className="w-full d-flex md:flex mt-1 gap-5 mb-5">
                                                                 <input onChange={(e) => {
                                                                         setTitle(e.target.value)

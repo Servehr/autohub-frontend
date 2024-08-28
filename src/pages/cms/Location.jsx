@@ -29,7 +29,7 @@ export default function Location()
                 <div className="bg-white mt-5">
                     <h1 className="font-bold text-2xl">Location</h1>
                 </div>
-                <div className="font-bold px-3 py-2 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-800" onClick={() => setOpenAddCountry(true)}>Add Faq</div>
+                <div className="font-bold px-3 py-2 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-800" onClick={() => setOpenAddCountry(true)}>Add Country</div>
             </div>
                     
             <div className="w-full p-3 mb-10" style={{ marginBottom: '100px' }}>
@@ -40,12 +40,12 @@ export default function Location()
                             </div>
                         )}
                         {
-                            !isLoading && (data.length > 0) &&  <DynamicTable 
+                            !isLoading && (data?.length > 0) &&  <DynamicTable 
                                                                                 header={['Country', 'States', 'Actions']} 
                                                                                 columns={columns}
                                                                                 data={data}
                                                                                 onClick={(e) =>  {
-                                                                                    setClickTable(e) 
+                                                                                    refetch()
                                                                                 } } 
                                                                                 page={'countries'}
                                                                             />
@@ -54,6 +54,7 @@ export default function Location()
 
             { 
                 openAddCountry &&  <AddCountry openAddCountry ={openAddCountry } onClick={() => {
+                    refetch()
                     setOpenAddCountry(false)
                 }} /> 
             }

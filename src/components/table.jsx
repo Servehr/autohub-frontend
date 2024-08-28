@@ -28,7 +28,6 @@ import { AssessmentModal } from "./maceos/AssessmentModal";
 import { EditCountry } from "./location/EditCountry";
 import { DeleteCountry } from "./location/DeleteCountry";
 import { ViewStates } from "./location/ViewStates";
-import { AddStateModal } from "./location/state/AddStateModal";
 import { DeleteStateModal } from "./location/state/DeleteStateModal";
 import { EditStateModal } from "./location/state/EditStateModal";
 import { DeleteStaffModal } from "./staffs/DeleteStaffModal";
@@ -46,6 +45,24 @@ import { PlaceTrimLevel } from "./manufacturer/Trim/PlaceTrimLevel";
 import { AddTrim } from "./manufacturer/Trim/AddTrim";
 import { EditTrim } from "./manufacturer/Trim/EditTrim";
 import { DeleteTrim } from "./manufacturer/Trim/DeleteTrim";
+import { PlaceStateLevel } from "./location/state/PlaceStateLevel";
+import { ViewBlog } from "./ViewBlog";
+import { DeleteBlogPost } from "@/pages/cms/blog/delete-post-blog";
+import { ViewCourseModule } from "./course/ViewCourseModule";
+import { EditModule } from "./course/modules/EditModule";
+import { DeleteModule } from "./course/modules/DeleteModule";
+import { ViewCourseSubModule } from "./course/modules/ViewCourseSubModule";
+import { EditSubModule } from "./course/submodule/EditSubModule";
+import { DeleteSubModule } from "./course/submodule/DeleteSubModule";
+import { OpenOrCloseSessionModal } from "./acadamic_session/OpenOrCloseSessionModal";
+import { DeleteSessionModal } from "./acadamic_session/DeleteSessionModal";
+import { EditSessionModal } from "./acadamic_session/EditSessionModal";
+import toast from "react-hot-toast";
+import { AlllowCourseDownload } from "./course/exam/AlllowCourseDownload";
+import { CourseStatus } from "./course/exam/CourseStatus";
+import { TestTheoryDuration } from "./course/TestTheoryDuration";
+import { TestExamDuration } from "./course/TestExamDuration";
+import { downloadPdfFile } from "@/pages/user/allCourses";
 
 
 export default function DynamicTable({header, columns, data, onClick, page})
@@ -58,6 +75,8 @@ export default function DynamicTable({header, columns, data, onClick, page})
     const [editFaqModal, setEditFaqModal] = useState(false)
     const [viewAdvert, setViewAdvert] = useState(false)
     const [productId, setProductId] = useState(false)
+    const [viewBlog, setViewBlog] = useState(false)
+    const [deleteBlog, setDeleteBlog] = useState(false)
     const [verifyProduct, setVerifyProduct] = useState(false)
     const [deleteFaqModal, setDeleteFaqModal] = useState(false)
     const [title, setTitle] = useState("")
@@ -84,6 +103,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
     const [openUserDetail, setOpenUserDetail] = useState(false) 
     const [assessment, setAssessment] = useState(false)
     const [allowDownload, setAllowDownload] = useState(false)
+    const [courseStatus, setCourseStatus] = useState(false)
 
     const [editManufacturer, setEditManfucturer] = useState(false)
     const [editManufacturerId, setEditManfucturerId] = useState(false)
@@ -110,13 +130,29 @@ export default function DynamicTable({header, columns, data, onClick, page})
     const [deleteCountry, setDeleteCountry] = useState(false)
     const [viewStates, setViewStates] = useState(false)
     const [editState, setEditState] = useState(false)
+    const [placeStateLevel, setPlaceStateLevel] = useState(false)
     const [deleteStateModal, setDeleteState] = useState(false)
+
+    const [viewCourseModule, setViewCourseModule] = useState(false)
+    const [viewEditCourseModule, setViewEditCourseModule] = useState(false)
+    const [viewDeleteCourseModule, setViewDeleteCourseModule] = useState(false)
+
+    const [viewSubCourseModule, setViewSubCourseModule] = useState(false)
+    const [viewEditSubCourseModule, setViewEditSubCourseModule] = useState(false)
+    const [viewDeleteSubCourseModule, setViewDeleteSubCourseModule] = useState(false)
+    
+    const [openOrCloseAcademicSession, setViewOpenOrCloseAcademicSession] = useState(false)    
+    const [editAcademicSession, setViewEditAcademicSession] = useState(false)    
+    const [deleteAcademicSession, setViewDeleteAcademicSession] = useState(false)
 
     const [editItem, setEditItem] = useState(false)
     const [deleteItem, setDeleteItem] = useState(false)
 
     const [removeCourseId, setRemoveCourseId] = useState("")
     const [removeUploadCourse, setRemoveUploadCourse] = useState(false)
+
+    const [testTheoryDuration, setTestTheoryDuration] = useState(false)
+    const [testObjectiveDuration, setTestObjectiveDuration] = useState(false)
         
 
     const clicked = (value) => 
@@ -185,7 +221,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setTitle(product.title)
                                                                 setContent(product.content)
                                                                 setIsOpened(product.isOpened)
-                                                                // setViewFaqModal(true) 
+                                                                setViewFaqModalcourse(true) 
                                                             } }>
                                                                 View
                                                         </div>
@@ -216,11 +252,8 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
                                                         <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
-                                                                setProductId(product.id)
-                                                                setTitle(product.title)
-                                                                setContent(product.content)
-                                                                setIsOpened(product.isOpened)
-                                                                // setViewFaqModal(true) 
+                                                                setCountryName(product)
+                                                                setViewBlog(true) 
                                                             } }>
                                                                 View
                                                         </div>
@@ -233,11 +266,8 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                         </div> 
                                                         <div className="bg-red-700 px-3 py-2 rounded-md hover:bg-red-900 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
-                                                                setProductId(product.id)
-                                                                setTitle(product.title)
-                                                                setContent(product.content)
-                                                                setIsOpened(product.isOpened)
-                                                                setDeleteFaqModal(true) 
+                                                                setCountryName(product)
+                                                                setDeleteBlog(true) 
                                                             } }>
                                                                 Delete
                                                         </div> 
@@ -297,13 +327,13 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                 {   (page === 'course') && 
                                                     <>
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
-                                                        <div className={`${(product.assessment === 1) ? 'bg-blue-900' : 'bg-blue-500'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                         {/* <div className={`${(product.downloadable === "yes") ? 'bg-blue-900' : 'bg-blue-500'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
                                                             { 
-                                                                setEditDataCOurse(product)
+                                                                setCountryName(product)
                                                                 setAllowDownload(true)
                                                             } }>
-                                                                Allow Download
-                                                        </div> 
+                                                                Permission To Download ({product.downloadable})
+                                                        </div>  */}
                                                         <div className={`${(product.assessment === 1) ? 'bg-green-900' : 'bg-orange-500'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
                                                             { 
                                                                 setEditDataCOurse(product)
@@ -325,6 +355,20 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                             } }>
                                                                 Delete
                                                         </div>
+                                                        <div className={`bg-pink-500 px-3 py-2 rounded-md hover:bg-pink-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setTestObjectiveDuration(true)
+                                                            } }>
+                                                                Objective Duration
+                                                        </div> 
+                                                        <div className={`bg-purple-500 px-3 py-2 rounded-md hover:bg-purple-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setTestTheoryDuration(true) 
+                                                            } }>
+                                                                Theory Duration
+                                                        </div>
                                                         <div className="bg-red-500 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setUploadCourseid(product)
@@ -337,8 +381,8 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 <>                                                                    
                                                                     <div className="bg-green-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                                         { 
-                                                                            setUploadCourseid(product)
-                                                                            setUploadCourse(true)
+                                                                            downloadPdfFile(product?.id)
+                                                                            // setUploadCourse(true)
                                                                         } }>
                                                                             Download
                                                                     </div> 
@@ -360,23 +404,97 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                         </div> 
                                                     </>
                                                 }
-                                                {   (page === 'dealers') && 
+                                                {   (page === 'modules') && 
                                                     <>
-                                                         {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
-                                                        <div className="bg-green-400 border border-2 border-gray-500 px-3 py-2 rounded-md hover:bg-green-700 hover:text-white cursor-pointer" onClick={() =>
+                                                    <div className={`bg-blue-500 px-3 py-2 rounded-md hover:bg-blue-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                        { 
+                                                            setCountryName(product)
+                                                            setViewCourseModule(true)
+                                                        } }>
+                                                            View Sub Module
+                                                    </div> 
+                                                    </>
+                                                }
+                                                {   (page === 'submodules') && 
+                                                    <>
+                                                        <div className={`bg-blue-500 px-3 py-2 rounded-md hover:bg-blue-900 hover:text-white cursor-pointer`} onClick={() =>
                                                             { 
-                                                                navigate('/dealer-post')
+                                                                setCountryName(product)
+                                                                setViewEditCourseModule(true)
                                                             } }>
-                                                                View Posts
+                                                                Edit
+                                                        </div>
+                                                        <div className={`bg-red-500 px-3 py-2 rounded-md hover:bg-red-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewDeleteCourseModule(true)
+                                                            } }>
+                                                                Delete
+                                                        </div>
+                                                        <div className={`bg-gray-500 px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewSubCourseModule(true)
+                                                            } }>
+                                                                View Sub Module
                                                         </div> 
+                                                    </>
+                                                }
+                                                {   (page === 'sub') && 
+                                                    <>
+                                                        <div className={`bg-blue-500 px-3 py-2 rounded-md hover:bg-blue-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewEditSubCourseModule(true)
+                                                            } }>
+                                                                Edit
+                                                        </div>
+                                                        <div className={`bg-red-500 px-3 py-2 rounded-md hover:bg-red-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewDeleteSubCourseModule(true)
+                                                            } }>
+                                                                Delete
+                                                        </div>
+                                                    </>
+                                                }
+                                                {   (page === 'academic') && 
+                                                    <>
+                                                        <div className={`bg-red-500 px-3 py-2 rounded-md hover:bg-red-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewOpenOrCloseAcademicSession(true)
+                                                            } }>
+                                                                Status
+                                                        </div>
+                                                        <div className={`bg-blue-500 px-3 py-2 rounded-md hover:bg-blue-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewEditAcademicSession(true)
+                                                            } }>
+                                                                Edit
+                                                        </div>
+                                                        <div className={`bg-red-500 px-3 py-2 rounded-md hover:bg-red-900 hover:text-white cursor-pointer`} onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setViewDeleteAcademicSession(true)
+                                                            } }>
+                                                                Delete
+                                                        </div>
+                                                    </>
+                                                }
+                                                {   (page === 'dealers') && 
+                                                    <> 
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
-                                                                setUserDetails(true)
+                                                                setCountryName(product)
+                                                                setOpenUserDetail(true)
                                                             } }>
                                                                 View Detail
                                                         </div> 
                                                         <div className="bg-gray-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
+                                                                setCountryName(product)
                                                                 setSuspendUser(true)
                                                             } }>
                                                                 Suspend
@@ -467,12 +585,12 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                 {   (page === 'countries') && 
                                                     <>
                                                          {/* <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer">Extend</div> */}
-                                                        <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                        <div className="bg-orange-600 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setCountryName(product)
                                                                 setViewStates(true)
                                                             } }>
-                                                                View
+                                                                View States
                                                         </div> 
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
@@ -492,6 +610,13 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                 }
                                                 {   (page === 'states') && 
                                                     <>
+                                                        <div className="bg-orange-400 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setPlaceStateLevel(true)
+                                                            } }>
+                                                                Place Level
+                                                        </div> 
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setCountryName(product)
@@ -529,9 +654,16 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setCountryName(product)
                                                                 setSuspendUser(true)
                                                             } }>
-                                                                Suspend
-                                                        </div>
+                                                                Status
+                                                        </div>                                                        
                                                         <div className="bg-green-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer" onClick={() =>
+                                                            { 
+                                                                setCountryName(product)
+                                                                setGrantPermission(true)
+                                                            } }>
+                                                                Permission
+                                                        </div>
+                                                        {/* <div className="bg-green-800 px-3 py-2 rounded-md hover:bg-green-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setCountryName(product)
                                                                 setGrantPermission(true)
@@ -544,7 +676,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                                 setRevokePermission(true)
                                                             } }>
                                                                 Revoke Permission
-                                                        </div>
+                                                        </div> */}
                                                     </>
                                                 }
                                                 {   (page === 'product-entry') && 
@@ -657,7 +789,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                             } verifyProduct={verifyProduct} productId={productId} /> }
             
             { viewFaqModal && <ViewFaqModal onClick={(e) => { 
-                                                                setViewFaqModal(false)
+                                                                setViewFaqModalcourse(false)
                                                                 onClick(e)
                                                             }
                                             } viewFaqModal={viewFaqModal} title={title} content={content} isOpened={isOpened}  /> }
@@ -697,7 +829,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
                  setRemoveUploadCourse(false)
             }} message={''} /> }
 
-            { editStaff && <EditStaffModal editStaff={editStaff} onClick={() => {
+            { editStaff && <EditStaffModal editStaff={editStaff} user={countryName} onClick={() => {
                     onClick()
                     setEditStaffModal(false)
               }} /> 
@@ -709,7 +841,7 @@ export default function DynamicTable({header, columns, data, onClick, page})
               }} /> 
             }
 
-            { openSuspendUser && <SuspendUser openSuspend={openSuspendUser} userId={''} onClick={() => {
+            { openSuspendUser && <SuspendUser openSuspend={openSuspendUser} user={countryName} onClick={() => {
                     onClick()
                     setSuspendUser(false)
               }} /> 
@@ -759,9 +891,16 @@ export default function DynamicTable({header, columns, data, onClick, page})
             }
 
             { 
-                allowDownload && <AllowDownloadDocument allowDcument ={allowDcument } editDataCourse={theDocument} onClick={() => {
-                    onClick(false)
+                allowDownload && <AlllowCourseDownload openCourseDownloadStatus={allowDownload} course={countryName} onClick={() => {
                     setAllowDownload(false)
+                    onClick(false)
+                }} />
+            }
+
+            { 
+                courseStatus && <CourseStatus openCourseStatus={courseStatus} course={countryName} onClick={() => {
+                    setCourseStatus(false)
+                    onClick(false)
                 }} />
             }
 
@@ -787,9 +926,14 @@ export default function DynamicTable({header, columns, data, onClick, page})
                     setViewStates(false)
             }} /> }
 
-            { editState &&<EditStateModal editCountryModal={editState} countryId={countryName} onClick={() => {
+            { editState &&<EditStateModal editCountryModal={editState} country={countryName} onClick={() => {
                     onClick()
                     setEditState(false)
+            }} /> }
+
+            { placeStateLevel && <PlaceStateLevel placeStateLevel={placeStateLevel} stateLevel={countryName} onClick={() => {
+                    onClick()
+                    setPlaceStateLevel(false)
             }} /> }
 
             { deleteStateModal &&<DeleteStateModal deleteStateModal={deleteStateModal} stateId={countryName} onClick={() => {
@@ -797,12 +941,12 @@ export default function DynamicTable({header, columns, data, onClick, page})
                     setDeleteState(false)
             }} /> }
 
-            { openUserDetail &&<UserDetail openUserDetail={openUserDetail} userId ={''} onClick={() => {
+            { openUserDetail &&<UserDetail openUserDetail={openUserDetail} user={countryName} onClick={() => {
                     onClick()
                     setOpenUserDetail(false)
             }} /> }
 
-            { grantPermission &&<ChangeRole openChangeRole={grantPermission} userId ={''} onClick={() => {
+            { grantPermission &&<ChangeRole openChangeRole={grantPermission} user ={countryName} onClick={() => {
                     onClick()
                     setGrantPermission(false)
             }} /> }
@@ -861,8 +1005,74 @@ export default function DynamicTable({header, columns, data, onClick, page})
                     onClick()
                     setRemoveTrim(false)    
             }} /> }  
- 
 
+            { viewBlog &&<ViewBlog openViewBlog={viewBlog} blogs={countryName} onClick={() => {
+                    onClick()
+                    setViewBlog(false)    
+            }} /> }  
+
+            { deleteBlog &&<DeleteBlogPost openDeleteBlog={deleteBlog} blogs={countryName} onClick={() => {
+                    setDeleteBlog(false)    
+                    onClick()
+            }} /> }  
+
+            { viewCourseModule &&<ViewCourseModule oopenCourseModule={viewCourseModule} module={countryName} onClick={() => {
+                    setViewCourseModule(false)    
+                    onClick()
+            }} /> }   
+
+            { viewEditCourseModule &&<EditModule openEditModule={viewEditCourseModule} modulez={countryName} onClick={() => {
+                    setViewEditCourseModule(false)    
+                    onClick()
+            }} /> }    
+
+            { viewDeleteCourseModule &&<DeleteModule openDeleteModule={viewDeleteCourseModule} modulez={countryName} onClick={() => {
+                    setViewDeleteCourseModule(false)    
+                    onClick()
+            }} /> }  
+
+            { viewSubCourseModule &&<ViewCourseSubModule oopenCourseModule={viewSubCourseModule} subModulez={countryName} onClick={() => {
+                    setViewSubCourseModule(false)    
+                    onClick()
+            }} /> }
+            
+            { viewEditSubCourseModule &&<EditSubModule openEditSubModule={viewEditSubCourseModule} subModulez={countryName} onClick={() => {
+                    setViewEditSubCourseModule(false)    
+                    onClick()
+            }} /> }   
+            
+            { viewDeleteSubCourseModule &&<DeleteSubModule openDeleteSubModule={viewDeleteSubCourseModule} subModulez={countryName} onClick={() => {
+                    setViewDeleteSubCourseModule(false)    
+                    onClick()
+            }} /> }    
+            
+            { openOrCloseAcademicSession &&<OpenOrCloseSessionModal openOrCloseAcademicSession={openOrCloseAcademicSession} sessionId ={countryName} onClick={(e) => {
+                    setViewOpenOrCloseAcademicSession(false) 
+                    toast.success(e, {
+                        position: "top-center",
+                    });
+                    onClick()
+            }} /> }     
+            
+            { editAcademicSession &&<EditSessionModal openEditAcademicSession={editAcademicSession} sessionId={countryName} onClick={() => {
+                    setViewEditAcademicSession(false)    
+                    onClick()
+            }} /> }   
+            
+            { deleteAcademicSession &&<DeleteSessionModal openDeleteSession={deleteAcademicSession} sessionId={countryName} onClick={() => {
+                    setViewDeleteAcademicSession(false)    
+                    onClick()
+            }} /> }  
+            
+            { testTheoryDuration &&<TestTheoryDuration openExamStatus={testTheoryDuration} exam ={countryName} onClick={() => {
+                    setTestTheoryDuration(false)    
+                    onClick()
+            }} /> } 
+            
+            { testObjectiveDuration &&<TestExamDuration openExamStatus={testObjectiveDuration} exam ={countryName} onClick={() => {
+                    setTestObjectiveDuration(false)    
+                    onClick()
+            }} /> }
 
         </>
   )

@@ -130,11 +130,11 @@ function ExamTheory()
       });      
       if(checkIfPresent === -1)
       {          
-          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: studentValue, position: currentPage }
+          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: localStorage.getItem("exam-obj-code"), exam_theory_id: questionId, answer: studentValue, position: currentPage }
           advertState.setSelectedExamTheoryOption(answerz)     
       } else {        
           advertState.getSelectedExamTheoryOption().splice(checkIfPresent, 1);
-          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_theory_id: questionId, answer: studentValue, position: currentPage }
+          let answerz = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: localStorage.getItem("exam-obj-code"), exam_theory_id: questionId, answer: studentValue, position: currentPage }
           advertState.setSelectedExamTheoryOption(answerz)             
       }
       setSuccess('Saved')
@@ -186,13 +186,6 @@ function ExamTheory()
                 </div>
               }
               {
-                !isLoading && (data?.data?.plus === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
-                    <h1 className="font-bold">
-                        Exam Theory Question Not Yet Prepared
-                    </h1>
-                </div>
-              }
-              {
                 !isLoading && isRefetching && (data?.data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
                     <h1 className="font-bold">
                         Exam Theory Question Not Yet Prepared
@@ -211,15 +204,15 @@ function ExamTheory()
                         </Link>
                     </div>
               }
-
-              { !isLoading && (data?.data?.length > 0) && (data?.message === 'closed') &&
+              
+              { !isLoading && (data?.data?.length === 0) && (data?.message?.theory === 'open') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
-                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Paper Not yet available</span>
                   </div>
               }
 
-              { !isLoading && (data?.data?.length === 0) && (data?.message === 'closed') &&
+              { !isLoading && (data?.data?.length === 0) && (data?.message?.theory === 'closed') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
@@ -233,7 +226,7 @@ function ExamTheory()
                   </div>
               }
 
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message === 'open') && 
+              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.theory === 'open') && 
                  <div className="w-full mb-5">
                       {/* <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100">{data?.plus}</div>  */}
 
@@ -242,7 +235,7 @@ function ExamTheory()
                             <div className="w-full flex justify-between items-center">
                                 <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentPage+1} of {data?.data?.length}</span> 
                                 <span className="w-fit">
-                                    <CountDownTimerExamTheory seconds={data?.addition} />
+                                    <CountDownTimerExamTheory seconds={data?.message?.theory_duration} question={data?.addition} />
                                 </span>
                                 <button type="sumbit" 
                                   disabled={!isSubmitting}
@@ -311,7 +304,7 @@ function ExamTheory()
                 <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination"
                 >
                   {
-                    data?.data &&  (data?.plus < 1) && (data?.message === 'open') &&              
+                    data?.data &&  (data?.plus < 1) && (data?.message?.theory === 'open') &&              
                       data?.data.map((num, index) => {
                         const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                         const currentAnswer = (currentPage === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
@@ -328,7 +321,7 @@ function ExamTheory()
 
               
           {  
-            data?.data &&  (data?.plus < 1) && (data?.message === 'open') &&  
+            data?.data && (data?.data.length > 0) &&  (data?.plus < 1) && (data?.message?.theory === 'open') &&  
             <div className="col-span-12 flex justify-center items-center mx-auto px-4 md:mt-3 mt-10">
                 <button type="sumbit" 
                         disabled={isSubmitting}

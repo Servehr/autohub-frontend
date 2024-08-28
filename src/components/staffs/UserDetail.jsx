@@ -4,48 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteAdProduct } from '@/apis/ads';
 import { appStore } from "@/state/appState";
 import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
+import { AVATAR, BASE_URL } from "@/lib/axios";
 import { CreateFaq } from '@/apis/misc';
 
 
-export const UserDetail = ({onClick, openUserDetail, userId})  =>
+export const UserDetail = ({onClick, openUserDetail, user})  =>
 {
-        // const advertState = appStore((state) => state)
-        // const navigate = useNavigate();
-        // const [userProductId, setUserProductId] = useState(advertState.getProductId())
-        // const [theTitle, setTitle] = useState("")
-        // const [theContent, setTheContent] = useState("")
-        // const [theIsOpened, setTheIsOpened] = useState(-1)
-        // const options = [
-        //         { key: -1, value: "- Select whether you want it published immediately or not -" },
-        //         { key: "opened", value: "Yes" },
-        //         { key: "closed", value: "No" },
-        // ]
-
-        // const cancelModal = () => 
-        // {
-        //         onClick(true)
-        // }
-        
-
-        // const addFaq = async () => 
-        // {
-            
-        //         const data = { title: theTitle, content: theContent, isOpened: theIsOpened }
-        //         if(theIsOpened === -1)
-        //         {
-        //              alert("Select whether you want it published immediately or not")   
-        //         }
-        //         CreateFaq(data)
-        //         .then((res) => 
-        //         {
-        //                 return onClick(Math.random())
-        //         })
-        //         .catch((err) => 
-        //         {
-        
-        //         })    
-        // }
 
         return (
                 <Modal onClick={onClick} isOpen={openUserDetail} wrapperWidth={800} margin={'80px auto 0px auto'}>
@@ -54,13 +18,23 @@ export const UserDetail = ({onClick, openUserDetail, userId})  =>
                         <div className='col-span-12 pb-2 justify-center h-fit py-2 item-center -mt-5'>
                                 <>                                                
                                         <div className="p-1 mt-1">
-                                                <h1 className='font-bold text-lg mb-5 p-3 bg-blue-100 rounded-lg'>User Detail</h1>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>
-                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-5 border p-3">Kingsley</div>                                                
+                                                <div className="w-full d-flex justify-center items-center md:flex mt-1 gap-5 mb-5 border p-3">
+                                                        <img src={`${AVATAR}/${user.avatar}`} width={100} />        
+                                                </div>                                               
+                                                <div className='w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3'>Firstname: <span className='font-bold text-green-800 text-xl'>{user.name}</span></div>
+                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Middlename:  <span className='font-bold text-green-800 text-xl'>{user.middlename}</span></div>
+                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Surname:  <span className='font-bold text-green-800 text-xl'>{user.lastname}</span></div>
+                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Email:  <span className='font-bold text-green-800 text-xl'>{user.email}</span></div>
+                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Phone Number:  <span className='font-bold text-green-800 text-xl'>{user.email}</span></div>
+                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Status:  <span className='font-bold text-green-800 text-xl'>{user.status}</span></div>
+                                                {
+                                                        (user?.company) && <>
+                                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3 bg-green-700 text-white font-bold">Company Info</div>
+                                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Company:  <span className='font-bold text-green-800 text-xl'>{user.company?.name}</span></div>  
+                                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">CAC:  <span className='font-bold text-green-800 text-xl'>{user.company?.cac_number}</span></div>  
+                                                                <div className="w-full d-flex md:flex mt-1 gap-5 mb-1 border p-3">Address:  <span className='font-bold text-green-800 text-xl'>{user.company?.address}</span></div>                                                                
+                                                        </>
+                                                }
                                         </div>
                                 </>
                         </div>

@@ -14,8 +14,8 @@ import { appStore } from "@/state/appState";
 
 export default function StartPage({ course, option }) 
 { 
-  localStorage.setItem("text-courze", course)
-  localStorage.setItem("text-option", option)
+  // localStorage.setItem("text-courze", course)
+  // localStorage.setItem("text-option", option)
 
   const navigate = useNavigate();
 

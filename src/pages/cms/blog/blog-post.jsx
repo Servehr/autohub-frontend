@@ -3,38 +3,28 @@ import { useState, useRef, useEffect } from "react";
 import { BeatLoader, BounceLoader } from "react-spinners";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";   
 import { useQuery } from "react-query";
-import Sidebar  from "../../shared/sidebar";
-import AdminHeader from "@/layouts/AdminHeader";
 import '../../css/ad.css'
 import '../../css/dragAndDrop.css'
-import { appStore } from "@/state/appState";
 import DynamicTable from "@/components/table"
-import { GetSearchedProduct, allProduct, viewPosts } from "@/apis/ads";
-import axios from 'axios';
-import { BASE_URL } from "@/lib/axios";
+import { viewPosts } from "@/apis/ads";
+import Pagination from "@/components/Pagination";
+
 
 export default function BlogPost()
 {
-    // const advertState = appStore((state) => state)
+    const navigate = useNavigate();
+    const pages = [10, 20, 50, 100, 200]
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(10)  
+    const [perPage, setPerPage] = useState(pages[0])  
     const [searchQuery, setSearchQuery] = useState("")
     
-    const { data: blogPost, isLoading, refetch } = useQuery(["get-all-product"], () => viewPosts(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true, staleTime: Infinity, retry: 2 })
-    const [dataTable, setDatable] = useState("")
-    const [refresh, setRefresh] = useState(0)
-      
-    const [totalRow, setTotalRow] = useState(0)  
-    const [pages, setPages] = useState(0)    
-    const [theData, setData] = useState([]) 
-    const [dataState, setDataState] = useState(false)
-    const [hasNextPage, setHasNextPage] = useState() 
-    const [hasPreviousPage, setHasPreviousPage] = useState() 
-    const [isLoadingData, setIsLoading] = useState(false)
+    const { data: blogPost, isLoading, isRefetching, refetch } = useQuery(["get-all-product"], () => viewPosts(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true, cacheTime: 0 })
 
+    if(!isLoading)
+    {
+        console.log(blogPost)
+    }
     
-  const navigate = useNavigate();
-
     const columns = [
         { field: 'title' },
         { field: 'user' },
@@ -45,119 +35,28 @@ export default function BlogPost()
         { field: 'updated_at' },
     ]
 
-    useEffect(() => {
-        refetch()
-    }, [refresh])
-
-    const fetchRoles = (theCurrentPage, thePerPage) =>
-    {
-        setCurrentPage(theCurrentPage)
-        setPerPage(thePerPage)
-        // refetch()
-        roleData(theCurrentPage, thePerPage)
-    }
-
-    const roleData = async (theCurrentPage, thePerPage) => 
-    {
-        // setIsLoading(true)
-        // setDataState(false)
-        getAdverts(theCurrentPage, thePerPage)
-            .then((res) => 
-            {
-                // refetch()
-                // setIsLoading(true)
-                // setTimeout(() => {
-                    setCurrentPage(res?.product_advert?.currentPage)
-                    setTotalRow(res?.product_advert?.totalPage)
-                    setPages(res?.product_advert?.noOfPages)
-                    setHasPreviousPage(res?.product_advert?.hasPreviousPage)
-                    setHasNextPage(res?.product_advert?.hasNextPage)
-                    // localStorage.setItem('noOfPages', res?.product_advert?.noOfPages)
-                    // localStorage.setItem('totalPage', res?.product_advert?.totalPages)
-                    // localStorage.setItem('currentPage', res?.product_advert?.currentPage)
-                    setData(res?.product_advert?.roles)
-                    setIsLoading(false)
-                    refetch()
-                // }, 2000)
-            })
-            .catch((err) => 
-            {
-                 setDataState(true)
-            })
-    }
-    let decrease = [];
-    let increase = [];
-    // const totaly = localStorage.getItem('currentPage')
-    const totaly = currentPage
-    // const showOnlySomeLinks: number = parseInt(totaly) - (parseInt(totaly) - 6)
-    const showOnlySomeLinks = 2
-    const y = parseInt(totaly)
-  
-    for (let index = 1; index <= showOnlySomeLinks; index++) 
-    {
-        if((y-index) >= 1)
-        {
-          decrease.push(y-index) 
-        }
-    }
-  
-    for (let index = 1; index <= showOnlySomeLinks; index++) 
-    {
-        if((y+index) > y)
-        {
-          increase.push(y+index) 
-        }
-    }
-  
-    const sorting = decrease.reverse()
-    const before= sorting.map((num, index) => 
-    {
-          if(num !== y && y >= 1)
-          {
-              return <button className="rounded-lg border border-teal-500 px-3 py-1 hover:border-5 hover:border-green-500 text-white cursor-pointer bg-brandDarkGray hover:bg-brandGreen" onClick={() => fetchRoles(num, perPage)}>{(num)}</button> 
-          }
-    })
-  
-    // const total = localStorage.getItem('noOfPages')
-    const total = pages
-    const viewingPage = currentPage //localStorage.getItem('currentPage')
-    const after= increase.map((num, index) => 
-    {
-          if(num !== y && y >= 1)
-          {
-              if(parseInt(total) >= num)
-              {
-                  return <button className="rounded-lg border border-teal-500 px-3 py-1 hover:border-5 hover:border-green-500 text-white cursor-pointer bg-brandDarkGray hover:bg-brandGreen" onClick={() => fetchRoles(num, perPage)}>{(num)}</button> 
-              }
-          }
-    })
-
-    const searchedProduct = (queryParameter) => 
-    {
-        GetSearchedProduct(queryParameter)
-        .then((res) => {
-            // setError(false)
-            // setLoading(false);
+    const displayByPageNo = (page) => 
+    {   
+        setPerPage(Number(page)) 
+        setTimeout(() => 
+        {          
             refetch()
-            // setIsSuccess(res.message)
-            // setSuccessModal(true)
-        })
-        .catch((err) => {
-            // setIsSuccess("")
-            // setLoading(false);
-            // setError(`${err}`);
-        }
-      )
+        }, 2000)        
+    }
+
+    const tellThePost = (e) => 
+    {        
+        setSearchQuery(e.target.value)
+        setTimeout(() => 
+        {            
+            callTheSearch(e)
+        }, 2000)
     }
 
     const callTheSearch = (e) => 
     {        
-        setCurrentPage(1)
-        setPerPage(11)
         if (e.target.value != "") 
         {
-            // searchedProduct(value)
-            // setShowSuggestions(false)
             refetch()
         } else {
             setSearchQuery("")       
@@ -167,36 +66,62 @@ export default function BlogPost()
 
     const goTo = () => 
     {
-        navigate('/create-post')
+        navigate('/a/create-post')
     }
     
   return ( 
-        <div className="pb-5 bg-white">
-            <div className="bg-white p-3 mt-5 -mb-2 text-xl font-bold flex">
-                <span className="font-bold md:w-2/12 text-md sm:w-full items-center">
-                    All Post
-                </span>
-                <input
-                    type="text"
-                    required
-                    // ref={inputRef}
-                    name="search"
-                    autoComplete="off"
-                    aria-label="Search name, brand or year"
-                    // value={query}
-                    className="md:w-8/12 sm:w-full w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
-                    placeholder="Search titile, content, author"
-                    onKeyUp ={(e) => {
-                        setSearchQuery(e.target.value)
-                        callTheSearch(e)
-                    }}
-                />
-                <div className="flex justify-center items-center md:w-2/12 sm:w-full">                            
-                    <div onClick={goTo} className="font-bold text-md w-full text-sm rounded-md text-white bg-green-800 py-4 mx-4 text-center hover:text-black hover:bg-green-600 px-2 cursor-pointer">
-                        Create Post
+        <div className="pb-5 bg-white"
+        >
+            <div className="grid grid-cols-12 justify-center items-center px-5 gap-3">
+                <div className="col-span-1"
+                >
+                    <span className="font-bold md:w-2/12 text-2xl sm:w-full items-center">All Post</span>
+                </div>
+                <div className="col-span-2"
+                >
+                <div className="mb-4 border border-gray-200 mt-4"
+                >
+                    <div className="relative"
+                    >
+                        <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                            className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            {       
+                                pages.map((page, index) => (
+                                    <option key={index} value={page} className='p-2'>
+                                        {page}
+                                    </option>
+                                ))
+                            }
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
                     </div>
+                </div>   
+                </div>
+                <div className="col-span-7"
+                >
+                    <input
+                        type="text"
+                        required
+                        // ref={inputRef}
+                        name="search"
+                        autoComplete="off"
+                        aria-label="Search name, brand or year"
+                        // value={query}
+                        className="md:w-12/12 sm:w-full h-[65px] w-full bg-gray-100 bg-opacity-50 py-2 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out"
+                        placeholder="Search by title"
+                        onKeyUp={tellThePost}
+                    />    
+                </div>
+                <div className="col-span-2"
+                >                           
+                    <div onClick={goTo} className="font-bold h-[65px] text-md w-full text-sm rounded-md text-white bg-green-800 py-4 mx-4 text-center hover:text-black hover:bg-green-600 px-2 cursor-pointer">
+                        Create Post
+                    </div> 
                 </div>
             </div>
+
             <div className="w-full p-3 mb-3 mt-3 flex justify-center items-center">
                 {
                     isLoading && <div className="h-[300px]" style={{ marginTop: '50px', paddingTop: '100px' }}>
@@ -205,59 +130,39 @@ export default function BlogPost()
                 }
             </div>
             
-            <div className="w-full p-3 mb-3 mt-3 flex items-center">
-                
+            <div className="w-full p-3 mb-3 mt-3 flex items-center"
+            >                
                 {
-                    // !isLoading &&  <DynamicTable 
-                    //                             header={['Title', 'Manufacturer', 'Model', 'Price', 'State', 'Condition', 'Actions']} 
-                    //                             data={data} 
-                    //                         />
                     !isLoading && (blogPost?.data?.posts.length > 0) &&  <DynamicTable 
                                                                 header={['Title', 'Author', 'Point', 'Views', 'Comment', 'Created', 'Updated', 'Actions']} 
                                                                 columns={columns}
                                                                 data={blogPost?.data?.posts}
-                                                                onClick={(e) =>  {
-                                                                    setRefresh(e)
+                                                                onClick={() =>  {
+                                                                    refetch()
                                                                 } }
                                                                 page={'blog'}
                                                             />
                 }
-            </div>
-            { !isLoading && 
-                <nav className="w-full items-center mb-2 flex justify-center bg-brandDarkGray space-x-1 -mt-10" aria-label="Pagination">
-                    { 
-                        // blogPost?.product_advert?.hasPreviousPage && 
-                        //     <button onClick={() => fetchRoles(parseInt(viewingPage)-1, perPage)} className="rounded-lg border bg-green-800 px-3 py-1 hover:bg-red-700" disabled={!blogPost?.product_advert?.hasPreviousPage}>
-                            
-                        //         <span className="sr-only">Previous</span>
-                        //         <svg className="mt-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        //             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd">
-                        //             </path>
-                        //         </svg>
-                        //     </button>
-                    }
-                    { 
-                        // before
-                    }
-                    {
-                        // (currentPage > 1) && 
-                        // <button className="rounded-lg border border-blue-900 bg-blue-900 px-3 py-1 text-white cursor-default">{currentPage} </button> 
-                    }
-                    { 
-                        // after
-                    }
-                    {
-                        // blogPost?.product_advert?.hasNextPage &&
-                        //     <button onClick={() => fetchRoles(parseInt(viewingPage)+1, perPage)} className="rounded-lg border bg-green-800 px-3 py-1 hover:bg-red-700"  disabled={!blogPost?.product_advert?.hasNextPage}>
-                        //         <span className="sr-only">Next</span>
-                        //         <svg className="mt-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        //                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
-                        //         </path>
-                        //         </svg>
-                        //     </button>
-                    }
-                </nav>
+            </div>    
+            { 
+                    !isLoading && !isRefetching && (blogPost?.data?.posts?.length > 0) && 
+                                <Pagination onClick={(data) => {
+                                        setCurrentPage(data)
+                                        // setPerPage(data.perPage)
+                                        setTimeout(() => {
+                                            refetch()   
+                                        }, 1000)
+                                    } 
+                                } 
+                                perPageNo={perPage} 
+                                currentPageNo={currentPage} 
+                                noOfPages={blogPost?.data?.noOfPages} 
+                                hasNextPage={blogPost?.data?.hasNextPage} 
+                                hasPreviousPage={blogPost?.data?.hasPreviousPage} 
+                                from={''}
+                            />    
             }
+            <span className="p-20"></span>
         </div>
   )
 }

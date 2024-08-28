@@ -24,7 +24,8 @@ export const ViewStates = ({onClick, openViewState, countryId })  =>
 
       
         const columns = [
-          { field: 'name' }
+                { field: 'name' },
+                { field: 'rate' }
         ]
 
         const advertState = appStore((state) => state)
@@ -56,13 +57,21 @@ export const ViewStates = ({onClick, openViewState, countryId })  =>
                                                 </div>
                                                 )
                                         }
+                                        
                                         {
-                                        !isLoading && (data.length > 0) &&  <DynamicTable 
-                                                                                                header={['Name', 'Actions']} 
+                                                !isLoading && (data?.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center border border-3 border-shadow border-green-200 bg-[#f5fbf7]" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                                <h1 className="font-bold">
+                                                        No State Created Yet
+                                                </h1>
+                                                </div>
+                                        }
+                                        {
+                                        !isLoading && (data?.length > 0) &&  <DynamicTable 
+                                                                                                header={['Name', 'Rate', 'Actions']} 
                                                                                                 columns={columns}
                                                                                                 data={data}
                                                                                                 onClick={(e) =>  {
-                                                                                                setClickTable(e) 
+                                                                                                        refetch()
                                                                                                 } } 
                                                                                                 page={'states'}
                                                                                         />
@@ -79,7 +88,8 @@ export const ViewStates = ({onClick, openViewState, countryId })  =>
                                         </div>
                                 </div>
                         </Modal>  
-                        { addState && <AddStateModal addState={addState} onClick={() => {
+                        { addState && <AddStateModal addState={addState} country={countryId} onClick={() => {
+                                refetch()
                                 setAddState(false)
                         }} /> }
                 </>

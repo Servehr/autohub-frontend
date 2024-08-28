@@ -17,8 +17,11 @@ const DisplayTime = () => {
 
 }
 
-export default function CountDownTimerTestTheory({ seconds, type })
+export default function CountDownTimerTestTheory({ seconds, type, course, question })
 {
+    localStorage.setItem("text-theori-courze", course)
+    localStorage.setItem("text-theori-option", question)
+
     const advertState = appStore((state) => state)
     const [countdown, setCountDown] = useState(seconds)
     const [theTime, setTheTime] = useState(0)

@@ -18,8 +18,7 @@ export const VerifyProduct = ({onClick, verifyProduct, productId})  =>
                 ActivateProduct(productId)
                 .then((res) => 
                 {
-                        refetch()
-                        return onClick(productId*333)
+                        onClick()
                 })
                 .catch((err) => 
                 {
@@ -33,8 +32,7 @@ export const VerifyProduct = ({onClick, verifyProduct, productId})  =>
                 DeActivateProduct(productId)
                 .then((res) => 
                 {
-                        refetch()
-                        return onClick(productId*3337)
+                        onClick()
                 })
                 .catch((err) => 
                 {

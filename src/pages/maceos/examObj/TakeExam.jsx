@@ -17,6 +17,10 @@ export default function TakeExam()
   const advertState = appStore((state) => state)
   const navigate = useNavigate()
   const { data, isLoading, refetch, isRefetching } = useQuery(["get-all-exam-objective-question"], () => ExamCourseObjectiveQuestions(), { cacheTime: 0 })
+  if(!isLoading)
+  {
+      console.log(data)
+  }
 
   const [selectedOptions, setSelectedExamObjectiveOptions] = useState([])
   const [courseId, setCourseId] = useState('')
@@ -33,7 +37,7 @@ export default function TakeExam()
 
   useEffect(() => {
     const checkIfForcedToSubmit = advertState.getForceExamObj()
-    if(checkIfForcedToSubmit === "no")
+    if(checkIfForcedToSubmit === "yes")
     {
         navigate('/dashboard/force-submit-exam-obj', { replace: true })
     }
@@ -106,11 +110,11 @@ export default function TakeExam()
       if(checkIfPresent === -1)
       {          
           // id, user_id, course_id, option_id, selected
-          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), selected: option, option_id: question, position: position }
+          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: localStorage.getItem("exam-obj-code"), selected: option, option_id: question, position: position }
           advertState.setSelectedExamObjectiveOption(answer)     
       } else {        
           advertState.getSelectedExamObjectiveOption().splice(checkIfPresent, 1);
-          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), selected: option, option_id: question, position: position }
+          let answer = { user_id: Number(localStorage.getItem("authenticatedId")), exam_code: localStorage.getItem("exam-obj-code"), selected: option, option_id: question, position: position }
           advertState.setSelectedExamObjectiveOption(answer)        
       }
       setCurrentQuestion(position)
@@ -198,14 +202,14 @@ export default function TakeExam()
                 </div>
               }
 
-              { !isLoading && (data?.data?.length > 0) && (data?.message === 'closed') &&
+              { !isLoading && (data?.data?.length === 0) && (data?.message?.objective === 'open') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
-                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
+                      <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Questions not yet avaiable</span>
                   </div>
               }
 
-              { !isLoading && (data?.data?.length === 0) && (data?.message === 'closed') &&
+              { !isLoading && (data?.data?.length === 0) && (data?.message?.objective === 'closed') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
@@ -218,7 +222,7 @@ export default function TakeExam()
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
                   </div>
               }
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message === 'open') &&
+              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') &&
                  <div className="w-full mb-1">
                       <div className="mb-2 text-white cursor-pointer grid grid-cols-12 justify-between rounded-lg"
                       >          
@@ -235,7 +239,7 @@ export default function TakeExam()
                       <div className="w-full flex justify-between items-center">
                           <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.data?.length}</span> 
                           <span className="w-fit">
-                              <CountDownTimerExamObjective seconds={data?.addition} />
+                              <CountDownTimerExamObjective seconds={data?.message?.objective_duration} question={data?.addition} code={data?.message?.exam_code} />
                           </span>
                           <button type="sumbit" 
                               disabled={isSubmitting}
@@ -315,44 +319,42 @@ export default function TakeExam()
                       </div>          
                 </div>
               }
-          {  data?.data && (data?.message === 'open') &&             
-            <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-1">
-              <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination">
-                 
-                {
-                  
-                  data?.data &&  (data?.plus < 1) && (data?.message === 'open') &&           
-                    data?.data.map((num, index) => {
-                      const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
-                      const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
-                      const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 
-                      return (
-                        <a className={style} title="Page 1" onClick={() => showQuestion(index)}>
-                          {index+1}
-                        </a>  
-                      )
-                    })
-                }
-            
-              </nav>
-            </div>
-          }
-          {  
-            data?.data && (data?.data.length > 0) && (data?.plus < 1) && (data?.message === 'open') &&
-            <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-3">
-                <button type="sumbit" 
-                disabled={isSubmitting}
-                className={`p-3  text-white text-md font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900'}`}
-                onClick={SubmitObjectiveTest}
-                >
-                    SUBMIT
-                </button>
-            </div>
-          }
+              {  (data?.data?.length > 0) && (data?.message?.objective === 'open') &&             
+                <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-1">
+                  <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination">
+                    
+                    {
+                      
+                      data?.data &&  (data?.plus < 1) && (data?.message?.objective === 'open') &&           
+                        data?.data.map((num, index) => {
+                          const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
+                          const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
+                          const style = `${currentAnswer} md:flex py-1 px-3 mx-1 justify-center items-center rounded-full font-bold text-black` 
+                          return (
+                            <a className={style} title="Page 1" onClick={() => showQuestion(index)}>
+                              {index+1}
+                            </a>  
+                          )
+                        })
+                    }
+                
+                  </nav>
+                </div>
+              }
+              {  
+                data?.data && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') &&
+                <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-3">
+                    <button type="sumbit" 
+                    disabled={isSubmitting}
+                    className={`p-3  text-white text-md font-bold rounded-md  ${(isSubmitting === true) ? 'bg-gray-600' : 'bg-red-600 hover:text-red-600 hover:bg-red-900'}`}
+                    onClick={SubmitObjectiveTest}
+                    >
+                        SUBMIT
+                    </button>
+                </div>
+              }
 
-
-
-          <div className="p-5"></div>
+              <div className="p-5"></div>
 
         </div>
     </>

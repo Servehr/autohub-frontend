@@ -513,7 +513,8 @@ export async function getAdverts(currentPage, PerPage, searchQuery)
 
 export async function viewPosts(currentPage, PerPage, searchQuery)
 {
-    if(searchQuery === "" | searchQuery === undefined | searchQuery === null)
+    let theQuery = searchQuery.trim()
+    if(theQuery.length === 0)
     {        
         return new Promise((resolve, reject) => {
           axios_instance
@@ -534,12 +535,12 @@ export async function viewPosts(currentPage, PerPage, searchQuery)
         return new Promise((resolve, reject) => {
       
           axios_instance
-            .get(`ad/product-search/${currentPage}/${PerPage}/${searchQuery}`)
+            .get(`view-blog/${currentPage}/${PerPage}/${theQuery}`)
             .then((res) => {
               if (res.data.success === 0) {
                 reject(res.data.message);
               } else {
-                resolve(res.data.data);
+                resolve(res.data.response);
               }
             })
             .catch(() => {
