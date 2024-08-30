@@ -478,14 +478,14 @@ export async function UserCourses(currentPage, PerPage, searchQuery)
     }
 }
 
-export async function AllStudent(currentPage, perPage, searchQuery) 
+export async function AllStudent(currentPage, perPage, searchQuery, academicSession) 
 {
     let theQuery = searchQuery.trim()
     if(theQuery.length === 0)
     {        
         return new Promise((resolve, reject) => {
           axios_instance
-            .get(`all-student/${currentPage}/${perPage}`)
+            .get(`all-student/${currentPage}/${perPage}/${academicSession}`)
             .then((res) => {
               if (res.data.success === 0) {
                 reject(res.data.message);
@@ -502,7 +502,7 @@ export async function AllStudent(currentPage, perPage, searchQuery)
         return new Promise((resolve, reject) => {
       
           axios_instance
-            .get(`all-student/${currentPage}/${perPage}/${theQuery}`)
+            .get(`all-student/${currentPage}/${perPage}/${theQuery}/${academicSession}`)
             .then((res) => {
               if (res.data.success === 0) {
                 reject(res.data.message);

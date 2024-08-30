@@ -100,9 +100,9 @@ export default function AllCourses()
                                               downloadPdfFile(x.id) 
                                           }}
                                           className={`text-md text-left md:col-span-4 col-span-12 px-2 py-2 mb-1 justify-center w-full font-bold  
-                                                    text-black gap-2 bg-white ${hasFile}
+                                                    text-black gap-2 ${hasFile}
                                                     ring-2 ring-blue-100 hover:bg-green-100 rounded-lg px-1 border border-solid 
-                                                    border-blue-400 flex justify-between px-5`}
+                                                    border-blue-400 flex justify-between px-5 ${(x.downloadable === 'yes') ? 'bg-green-500 text-white hover:bg-green-800' : ''}`}
                                         >
                                             {x.name}
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" className="w-4 h-4">

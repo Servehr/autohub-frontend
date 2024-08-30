@@ -26,21 +26,20 @@ export default function Students()
     const [confirmAccess, setConfirmAccess] = useState(false)
     const [studentResult, setStudentResult] = useState(false)
     const [studentReceipt, setStudentReceipt] = useState(false)
+    const [academicSession, setAcademicSession] = useState('xxx')
     
-    const { data: allStudent, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(currentPage, perPage, searchQuery), { refetchOnWindowFocus: true,  cacheTime: 0 })
-
+    const { data: allStudent, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(currentPage, perPage, searchQuery, academicSession), { refetchOnWindowFocus: true,  cacheTime: 0 })
     if(!isLoading)
     {
         console.log(allStudent)
     }
-
     const displayByPageNo = (page) => 
     {   
         setPerPage(Number(page)) 
         setTimeout(() => 
         {          
             refetch()
-        }, 2000)        
+        }, 1000)        
     }
 
     const tellThePost = (e) => 
@@ -49,7 +48,7 @@ export default function Students()
         setTimeout(() => 
         {            
             callTheSearch(e)
-        }, 2000)
+        }, 1000)
     }
 
     const callTheSearch = (e) => 
@@ -61,6 +60,15 @@ export default function Students()
             setSearchQuery("")       
             refetch()                            
         }
+    }
+    
+    const AcademicSession = (x) => 
+    {
+        console.log(x)
+        setAcademicSession(x)
+        setTimeout(() => {
+            refetch()
+        }, 1000)
     }
 
     return ( 
@@ -94,12 +102,12 @@ export default function Students()
                             >
                                 <div className="relative"
                                 >
-                                    <select defaultValue={''} onChange={(e) => displayByPageNo(e.target.value)} 
+                                    <select defaultValue={''} onChange={(e) => AcademicSession(e.target.value)} 
                                         className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                         {       
                                             allStudent?.data?.academic_session?.map((academicSession, index) => (
                                                 <option key={index} value={academicSession.identifier} className='p-2'>
-                                                    {academicSession.identifier}
+                                                    {academicSession.name}
                                                 </option>
                                             ))
                                         }
@@ -127,29 +135,36 @@ export default function Students()
                             </div>
                         </div>
                         
-                        <div className='grid grid-cols-12 gap-3 pb-5 mb-5 mt-10'>                                
+                        <div className='grid grid-cols-12 gap-3 pb-5 mt-1'>                                
                             {
                                 isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                                     <BeatLoader color="#1c9236" />
                                 </div>
                             }
-                            {/* {
-                                !isLoading && isRefetching && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                            {
+                                !isLoading && isRefetching && <div className="col-span-12 h-[50px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
                                     <BeatLoader color="#1c9236" />
                                 </div>
-                            } */}
+                            }
                             {
-                                !isLoading && allStudent?.data?.students?.map((student, index) => {
+                                !!isLoading && (allStudent?.data?.students.length === 0) && <div className="col-span-12 h-[50px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
+                                    <span className="p-10 mt-20 font-bold text-green-600">No Record Found</span>
+                                </div>
+                            }
+                            {
+                                !isLoading && !isRefetching && (allStudent?.data?.students.length > 0) && allStudent?.data?.students?.map((student, index) => {
                                     return (
-                                            <div className="relative d-flex col-span-12 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md" key={index}>   
+                                            <div className="relative d-flex col-span-6 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md mt-7" key={index}>   
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
-                                                <div className="w-full p-2 flex bg-white">
+                                                <div className="w-full p-2 flex bg-white shadow-md">
                                                     <p className="font-bold w-2/2 text-lg text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
                                                 </div>
-                                                <div className="w-full flex bg-white">
-                                                <p className="font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto">{ student?.student?.payment_status }</p>
+                                                <div className="w-full flex bg-white shadow-md"
+                                                >
+                                                    <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.payment_status }</span>
+                                                    <span className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.student?.payment_status }</span>
                                                 </div>
-                                                <div className="w-full p-3 flex justify-between mt-1 items-center bg-white">
+                                                <div className="w-full p-3 flex justify-between mt-1 items-center gap-1 bg-white shadow-md border-green-300">
                                                     <span className="font-bold w-fit p-2 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
@@ -175,6 +190,15 @@ export default function Students()
                                                     >   View Receipt
                                                     </button>
                                                 </div>
+                                                {/* { 
+                                                    (student?.student?.academic_code === student?.student?.session_code) ? (
+                                                            <></>
+                                                    ) : (
+                                                        <span className={`col-span-12 flex justify-center items-center font-bold text-sm mb-1 mt-2 p-3 bg-green-700 rounded-md mt-1 text-white cursor-pointer hover:bg-green-600 text-center mx-auto`}>
+                                                            Enrol
+                                                        </span>
+                                                    )
+                                                } */}
                                             </div> 
                                         )
                                     }) 
@@ -209,7 +233,7 @@ export default function Students()
                                     if(e === "yes")
                                     {                                                                          
                                         toast.success(`${student.name} successfully granted access`, {
-                                            position: "top-right",
+                                            position: "top-center",
                                         });
                                     }
                                     refetch()  
@@ -222,7 +246,7 @@ export default function Students()
                                     if(e === "yes")
                                     {                                                                          
                                         toast.success(`${student.name} successfully granted access`, {
-                                            position: "top-right",
+                                            position: "top-center",
                                         });
                                     }
                                     setStudentResult(false)
