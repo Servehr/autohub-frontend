@@ -5,11 +5,11 @@ import '../css/ad.css'
 import '../css/dragAndDrop.css'
 import DynamicTable from "@/components/table"
 import { BeatLoader, BounceLoader } from "react-spinners";
-import { GetAllCourse } from "@/apis/backend/course";
+import { GetAllCourseWithModules } from "@/apis/backend/course";
 
 export default function Modules()
 {
-    const { data, isLoading, refetch, isRefetching } = useQuery([`get-all-courses`], () => GetAllCourse())
+    const { data, isLoading, refetch, isRefetching } = useQuery([`get-all-courses-with-modules-submodules`], () => GetAllCourseWithModules())
 
     const [loading, setIsLoading] = useState(false)
 

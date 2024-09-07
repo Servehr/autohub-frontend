@@ -8,6 +8,7 @@ import { BASE_URL } from "@/lib/axios";
 import Accordion from './Accordion';
 import ModuleAccordion from './ModuleAccordion';
 
+
 export const CourseModule = ({modules, subCourseId}) => 
 {
         return (
@@ -26,26 +27,29 @@ export const CourseModule = ({modules, subCourseId}) =>
             )
 }
 
-export const CoursesPreview = ({onClick, subCourses, modules, courseName, courseId})  =>
+export const CoursesPreview = ({onClick, theModule, theModuleId, theModuleName})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
         const [courseIds, setCourseIds] = useState(0)
         const [moduleList, setModuleList] = useState([])
+        const [theSubModule, setTheModule] = useState(theModule?.modules.filter((x) => x.course_id === theModuleId))
 
         return (
-                <Modal onClick={onClick} isOpen={true} wrapperWidth={800} margin={'178px auto 0px auto'}>
+                <Modal onClick={onClick} isOpen={true} wrapperWidth={800} margin={'88px auto 0px auto'}>
                         <div className='mt-5 px-2 overflow-y-auto xm:overflow-y-scroll' style={{ maxHeight: '32rem' }}>
-                                <h1 className='font-bold text-md mb-4 -mt-5'>{courseName} Sub-Courses</h1>
-                                { subCourses.length > 0 && subCourses &&
+                                <h1 className='font-bold text-md mb-4 -mt-5'>{theModuleName} Sub-Courses</h1>
+                                { theSubModule.length > 0 && theSubModule &&
                                         
                                         <>                                            
                                                 { 
-                                                        subCourses.map((x) => {
+                                                        theSubModule.map((x, index) => {
                                                                 return  (
-                                                                        <>
-                                                                                <ModuleAccordion key={x} title={x.module} id={x.id} content={modules} />
-                                                                        </>
+                                                                        <div key={index}
+                                                                        >
+                                                                                <ModuleAccordion title={x.name} id={x.id} content={x?.submodule} />
+                                                                                
+                                                                        </div>
                                                                 )
                                                         })
                                                 }

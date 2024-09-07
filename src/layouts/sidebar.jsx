@@ -134,7 +134,7 @@ export default function DashSidebar()
                       </NavLink>
                     </li>
                     <li key={2} className="cursor-pointer">
-                      <NavLink end to={'/dashboard/courses'}>
+                      <NavLink end to={'/dashboard/course'}>
                         {({ isActive }) => (
                           <div
                             className={`${
@@ -148,71 +148,33 @@ export default function DashSidebar()
                         )}
                       </NavLink>
                     </li>
-                    <li key={3} className="cursor-pointer" onClick={() => {
-                        testControl(!testObj)
-                    }}>
-                      <NavLink>
+                    <li key={3} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/start-obj-test'}>
                         {({ isActive }) => (
-                            <div className="w-full">                                  
-                              <div
-                                className="bg-blue-200 text-black font-bold px-6 py-1 rounded-[10px] font-semibold text-sm flex justify-between items-center"
-                              >
-                                <span className="text-md">Test</span>
-                                <Icons width={7} height={7} color="black" iconName={'openArrow'} />
-                              </div>
-                              <ul className={`p-2 ${(testObj === true) ? 'block d-flex justify-center items-center w-full': 'hidden'}`}>
-                                  <NavLink end to={'/dashboard/start-obj-test'} className={`${
-                                      isActive
-                                        ? "bg-blue-500 text-white font-bold hover:bg-green-300"
-                                        : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
-                                    } px-6 py-3 rounded-[10px] font-semibold text-sm flex justify-between items-center`}
-                                    >
-                                      Objective
-                                  </NavLink>
-                                  <NavLink end to={'/dashboard/start-theory-test'} className={`${
-                                      isActive
-                                        ? "bg-blue-500 text-white font-bold hover:bg-green-300"
-                                        : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
-                                    } px-6 py-3 rounded-[10px] mt-1 font-semibold text-sm flex justify-between items-center`}
-                                    >
-                                    Theory
-                                  </NavLink>
-                              </ul>
-                            </div>
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white py-2 font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            Test
+                          </div>
                         )}
                       </NavLink>
                     </li>
-                    <li key={4} className="cursor-pointer" onClick={() => {
-                        examControl(!testExam)
-                    }}>
-                      <NavLink>
+                    <li key={4} className="cursor-pointer">
+                      <NavLink end to={'/dashboard/start-exam-obj'}>
                         {({ isActive }) => (
-                            <div className="w-full">                                  
-                              <div
-                                className="bg-blue-200 text-black font-bold px-6 py-1 rounded-[10px] font-semibold text-sm flex justify-between items-center"
-                              >
-                                <span className="text-md">Exam</span>
-                                <Icons width={7} height={7} color="black" iconName={'openArrow'} />
-                              </div>
-                              <ul className={`p-2 ${(testExam === true) ? 'block d-flex justify-center items-center w-full': 'hidden'}`}>
-                                  <NavLink end to={'/dashboard/start-exam-obj'} className={`${
-                                      isActive
-                                        ? "bg-green-500 text-white font-bold hover:bg-green-300"
-                                        : "hover:bg-green-800 hover:text-white text-black font-semibold bg-green-200"
-                                    } px-6 py-3 rounded-[10px] font-semibold text-sm flex justify-between items-center`}
-                                    >
-                                      Objective
-                                  </NavLink>
-                                  <NavLink end to={'/dashboard/start-exam-theory'} className={`${
-                                      isActive
-                                        ? "bg-green-500 text-white font-bold hover:bg-green-300"
-                                        : "hover:bg-green-800 hover:text-white text-black font-semibold bg-green-200"
-                                    } px-6 py-3 rounded-[10px] mt-1 font-semibold text-sm flex justify-between items-center`}
-                                    >
-                                    Theory
-                                  </NavLink>
-                              </ul>
-                            </div>
+                          <div
+                            className={`${
+                              isActive
+                                ? "bg-blue-500 text-white py-2 font-bold"
+                                : "hover:bg-blue-800 hover:text-white text-black font-semibold bg-blue-200"
+                            } px-6 py-3 rounded-[10px] font-semibold text-sm`}
+                          >
+                            Exam
+                          </div>
                         )}
                       </NavLink>
                     </li>

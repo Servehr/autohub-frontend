@@ -37,11 +37,11 @@ export const menu_items = [
   },
   {
     name: "MACEOS Academy",
-    route: "/maceos-welcome",
+    route: "/courses",
   },
   {
     name: "Business Loan",
-    route: "/maceos-welcome",
+    route: "/courses",
   },
   {
     name: "Affiliate Dealers",

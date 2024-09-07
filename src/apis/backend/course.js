@@ -79,6 +79,26 @@ export async function GetAllCourse()
     });
 }
 
+export async function GetAllCourseWithModules()
+{
+    return new Promise((resolve, reject) => 
+    {
+        axios_instance
+          .get('course-with-modules-submodules')
+          .then((res) => {
+            if (res.data.success === false) {
+              reject(res.data.message);
+            } else {
+              resolve(res.data);
+            }
+          })
+          .catch(() => {
+            let message = "Something went wrong!";
+            reject(new Error(message));
+          });
+    });    
+}
+
 export async function UpdateCourse(data) 
 {
     return new Promise((resolve, reject) => 

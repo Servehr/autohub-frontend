@@ -27,152 +27,135 @@ import { BASE_URL } from "@/lib/axios";
 
 export default function CreateAd() 
 {
-  const navigate = useNavigate();
-  const { id } = useParams();
+    const navigate = useNavigate();
+    const { id } = useParams();
 
-  const advertState = appStore((state) => state)
-  const years = getYearsArray()
+    const advertState = appStore((state) => state)
+    const years = getYearsArray()
 
-  const [selectedMaker, setSelectedMaker] = useState(0);
-  const [selectedModel, setSelectedModel] = useState(advertState.getTheMakerModels());
-  const [selectedStates, setSelectedStates] = useState(advertState.getStateModel());
-  const [selectedTrim, setSelectedTrim] = useState(advertState.getTheModelTrim());
-  const [noMakerOption, setNoMakerOption] = useState(false);
-  const [msg, setMsg] = useState("")
+    const [selectedMaker, setSelectedMaker] = useState(0);
+    const [selectedModel, setSelectedModel] = useState(advertState.getTheMakerModels());
+    const [selectedStates, setSelectedStates] = useState(advertState.getStateModel());
+    const [selectedTrim, setSelectedTrim] = useState(advertState.getTheModelTrim());
+    const [noMakerOption, setNoMakerOption] = useState(false);
+    const [msg, setMsg] = useState("")
 
+    
+    const [deleteOpenModal, setDeleteModal] = useState(false)
+    const [ deleteUrl, setDeleteUrl] = useState("") 
+    const [ productToDeleteMessage, setProductToDeleteMessage] = useState("")
+    const [ mainImage, setMainImage] = useState(-1)
+    const [ mainImagePosition, setMainImagePosition] = useState(-1)
+    const [ saveDraft, setSaveDraft] = useState(false)
+
+    const [theCountry, setTheCountry] = useState(advertState.getCountry())
+    const [theState, setTheState] = useState(advertState.getStates())
+    const [theCategory, setTheCategory] = useState(advertState.getCateg())
+    const [theManufacturer, setTheManufacturer] = useState(advertState.getMaker())
+    const [theModel, setTheModel] = useState(advertState.getModel())
+    const [theProductionYear, setTheProductionYear] = useState(advertState.getYearOfPoduction())
+    const [theColour, setTheColour] = useState(advertState.getColour())
+    const [theFuelType, setFuelType] = useState(advertState.getFuelType())
+    const [theMileAge, setTheMileAge] = useState(advertState.getMileAge())
+    const [theTransmission, setTheTransmission] = useState(advertState.getTransmission())
+    const [theCondition, setTheCondition] = useState(advertState.getCondition())
+    const [theTrim, setTheTrim] = useState(advertState.getTrim())
+    const [theDescription, setTheDescription] = useState(advertState.getDescription())
+    const [theChasisNo, setTheChasisNo] = useState(advertState.getChasisNumber())
+    const [thePrice, setThePrice] = useState(advertState.getPrice())
+    const [theLocation, setTheLocation] = useState(advertState.getLocation())
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    const [success, setIsSuccess] = useState("")
+    const [theOthers, setTheOthers] = useState(advertState.getOthers())
+    const [theManufacturerName, setTheManufacturerName] = useState(advertState.getTheManufacturerName())
+    const [theModelName, setTheModelName] = useState(advertState.getTheModelName())
+    const [selectManufacturer, setTheSelectManufacturer] = useState(false)
+    const [successModal, setSuccessModal] = useState(false)
+
+
+    const [countryErrorMsg, setCountryErrorMsg] = useState("")
+    const [stateErrorMsg, setStateErrorMsg] = useState("")
+    const [categoryErrorMsg, setCategoryErrorMsg] = useState("")
+    const [makerErrorMsg, setMakerErrorMsg] = useState("")
+    const [modelErrorMsg, setModelErrorMsg] = useState("")
+    const [productionYearErrorMsg, setProductionYearErrorMsg] = useState("")
+    const [colorErrorMsg, setColorErrorMsg] = useState("")
+    const [fuelTypeErrorMsg, setFuelTypeErrorMsg] = useState("")
+    const [mileAgeError, setTheMileAgeError] = useState("")
+    const [transmissionErrorMsg, setTransmissionErrorMsg] = useState("")
+    const [conditionErrorMsg, setConditionErrorMsg] = useState("")
+    const [trimErrorMsg, setTrimErrorMsg] = useState("")
+    const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
+    const [priceErrorMsg, setPriceErrorMsg] = useState("")
+    const [entryErrorMsg, setEntryErrorMsg] = useState("")
+    const [mainImageErrorMsg, setMainImageErrorMsg] = useState("")
+    const [locationErrorMsg, setLocationErrorMsg] = useState("")
+    const [formValid, setFormValid] = useState("no")
+    const [fillForm, setFillForm] = useState("")
+    const [postStatus, setPostStatus] = useState("")
+
+    const [theUserState, setTheUserStates] = useState("")
+    const [thumbnail, setImages] = useState(advertState.getProductImages())
+    const [isDragging, setIsDragging] = useState(false)
+    const [images, setProductImages] = useState([]);    
+    const [previewUrls, setPreviewUrls] = useState([]);
+    const [selectedOptionOne, setSelectedOptionOne] = useState('');
+    const [selectedOptionTwo, setSelectedOptionTwo] = useState('');
+    const [processAdvert, setProcessAdvert] = useState(advertState.getProcessAdvert());
+    const [processAdvertAsDetail, setProcessAdvertAsDraft] = useState(advertState.getProcessAdvertAsDraft());
+
+    const [selectedCarModelOption, setCarSelectedModelGroupOption] = useState(false)
+    
+    const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data", id], () => fetchAllRequiredData(id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
+
+    let submitForm = true
+    let processData = false
+    let isDraft = ""
+
+    useEffect(() => {
+        advertState.setProcessAdvertAsDraft(false)
+        advertState.setProcessAdvert(false)
+        const onEdit = advertState.getOnEdit()
+        if(onEdit === "yes")
+        {
+            clearProductStore()
+            window.location.href = '/dashboard/create-advert'
+            setProcessAdvert(false)
+            setProcessAdvertAsDraft(false)
+        }
+    }, []) 
   
-  const [deleteOpenModal, setDeleteModal] = useState(false)
-  const [ deleteUrl, setDeleteUrl] = useState("") 
-  const [ productToDeleteMessage, setProductToDeleteMessage] = useState("")
-  const [ mainImage, setMainImage] = useState(-1)
-  const [ mainImagePosition, setMainImagePosition] = useState(-1)
-  const [ saveDraft, setSaveDraft] = useState(false)
+    const [value, setValue] = useState(advertState.getDescription())
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ font: [] }],
+            [{ size: [] }],
+            [ "bold", "italic", "underline" ],
+            [ "link"]
+        ],
+    }
 
-  const [theCountry, setTheCountry] = useState(advertState.getCountry())
-  const [theState, setTheState] = useState(advertState.getStates())
-  const [theCategory, setTheCategory] = useState(advertState.getCateg())
-  const [theManufacturer, setTheManufacturer] = useState(advertState.getMaker())
-  const [theModel, setTheModel] = useState(advertState.getModel())
-  const [theProductionYear, setTheProductionYear] = useState(advertState.getYearOfPoduction())
-  const [theColour, setTheColour] = useState(advertState.getColour())
-  const [theFuelType, setFuelType] = useState(advertState.getFuelType())
-  const [theMileAge, setTheMileAge] = useState(advertState.getMileAge())
-  const [theTransmission, setTheTransmission] = useState(advertState.getTransmission())
-  const [theCondition, setTheCondition] = useState(advertState.getCondition())
-  const [theTrim, setTheTrim] = useState(advertState.getTrim())
-  const [theDescription, setTheDescription] = useState(advertState.getDescription())
-  const [theChasisNo, setTheChasisNo] = useState(advertState.getChasisNumber())
-  const [thePrice, setThePrice] = useState(advertState.getPrice())
-  const [theLocation, setTheLocation] = useState(advertState.getLocation())
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [success, setIsSuccess] = useState("")
-  const [theOthers, setTheOthers] = useState(advertState.getOthers())
-  const [theManufacturerName, setTheManufacturerName] = useState(advertState.getTheManufacturerName())
-  const [theModelName, setTheModelName] = useState(advertState.getTheModelName())
-  const [selectManufacturer, setTheSelectManufacturer] = useState(false)
-  const [successModal, setSuccessModal] = useState(false)
+    useEffect(() => {
+            setTheDescription(value)   
+            advertState.setDescription(value)
+    }, [value])
 
+    useEffect(() => {
 
-  const [countryErrorMsg, setCountryErrorMsg] = useState("")
-  const [stateErrorMsg, setStateErrorMsg] = useState("")
-  const [categoryErrorMsg, setCategoryErrorMsg] = useState("")
-  const [makerErrorMsg, setMakerErrorMsg] = useState("")
-  const [modelErrorMsg, setModelErrorMsg] = useState("")
-  const [productionYearErrorMsg, setProductionYearErrorMsg] = useState("")
-  const [colorErrorMsg, setColorErrorMsg] = useState("")
-  const [fuelTypeErrorMsg, setFuelTypeErrorMsg] = useState("")
-  const [mileAgeError, setTheMileAgeError] = useState("")
-  const [transmissionErrorMsg, setTransmissionErrorMsg] = useState("")
-  const [conditionErrorMsg, setConditionErrorMsg] = useState("")
-  const [trimErrorMsg, setTrimErrorMsg] = useState("")
-  const [descriptionErrorMsg, setDescriptionErrorMsg] = useState("")
-  const [priceErrorMsg, setPriceErrorMsg] = useState("")
-  const [entryErrorMsg, setEntryErrorMsg] = useState("")
-  const [mainImageErrorMsg, setMainImageErrorMsg] = useState("")
-  const [locationErrorMsg, setLocationErrorMsg] = useState("")
-  const [formValid, setFormValid] = useState("no")
-  const [fillForm, setFillForm] = useState("")
-  const [postStatus, setPostStatus] = useState("")
+    }, [processAdvert])
 
-  const [theUserState, setTheUserStates] = useState("")
-  const [thumbnail, setImages] = useState(advertState.getProductImages())
-  const [isDragging, setIsDragging] = useState(false)
-  const [images, setProductImages] = useState([]);    
-  const [previewUrls, setPreviewUrls] = useState([]);
-  const [selectedOptionOne, setSelectedOptionOne] = useState('');
-  const [selectedOptionTwo, setSelectedOptionTwo] = useState('');
-  const [processAdvert, setProcessAdvert] = useState(advertState.getProcessAdvert());
-  const [processAdvertAsDetail, setProcessAdvertAsDraft] = useState(advertState.getProcessAdvertAsDraft());
-
-  const [selectedCarModelOption, setCarSelectedModelGroupOption] = useState(false)
-  
-  const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data", id], () => fetchAllRequiredData(id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
-
-  let submitForm = true
-  let processData = false
-  let isDraft = ""
-
-  useEffect(() => {
-    advertState.setProcessAdvertAsDraft(false)
-    advertState.setProcessAdvert(false)
-    const onEdit = advertState.getOnEdit()
-    if(onEdit === "yes")
-    {
-        clearProductStore()
-        window.location.href = '/dashboard/create-advert'
+    useEffect(() => {
         setProcessAdvert(false)
         setProcessAdvertAsDraft(false)
-    }
-  }, []) 
-  
-  const [value, setValue] = useState(advertState.getDescription())
-  const modules = {
-      toolbar: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ font: [] }],
-          [{ size: [] }],
-          [ "bold", "italic", "underline" ],
-          [ "link"]
-        //   [ 
-        //       { list: "ordered" },
-        //       { list: "bullet" },
-        //       { list: "-1" },
-        //       { list: "+1" },
-        //   ],
-      ],
-  }
-    //   [ "bold", "italic", "underline", "strike", "blockquote" ],
+    }, [])
 
-  useEffect(() => {
-        setTheDescription(value)   
-        advertState.setDescription(value)
-  }, [value])
-
-  useEffect(() => {
-
-  }, [processAdvert])
-
-  useEffect(() => {
-    setProcessAdvert(false)
-    setProcessAdvertAsDraft(false)
-  }, [])
-
-//   useEffect(() => {
-
-//   }, [theCountry, theFuelType, theMileAge, theManufacturerName, theModelName, theTrim, theState, theCategory, theModel, theProductionYear, theColour, theTransmission, theCondition, theOthers, theLocation])
-
-  
-  useEffect(() => {
-        advertState.setTheModelTrim([])
-  }, [theManufacturer])
-
-
-  useEffect(() => {
+    useEffect(() => {
     }, [mainImagePosition])
 
     useEffect(() => {
-        
+            
     }, [saveDraft])    
 
     useEffect(() => {
@@ -188,35 +171,36 @@ export default function CreateAd()
         setTheUserStates(advertState.getStates())
     }, [selectedOptionOne, selectedOptionTwo])
 
-    // model
-  const callTellData = (x) => 
-  {
-        const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
-        advertState.setTheModelTrim(filteredTrim)
-  }
-  // country
-  const callData = (x) => 
-  {
-      const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
-      // sorting
-      let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      setSelectedStates(sortedProducts)
-      advertState.setStateModel(sortedProducts)
-      setSelectedTrim([])
-  }
+        // model
+    const callTellData = (x) => 
+    {
+            const filteredTrim = allRequiredData?.trim && allRequiredData?.trim?.filter((model) => Number(model.model_id) === Number(x))
+            let sortedTrim = filteredTrim.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0)
+            advertState.setTheModelTrim(sortedTrim)
+    }
+    // country
+    const callData = (x) => 
+    {
+        const filteredModel = allRequiredData?.state && allRequiredData?.state?.filter((state) => Number(state.country_id) === Number(x))
+        // sorting
+        let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0)
+        setSelectedStates(sortedProducts)
+        advertState.setStateModel(sortedProducts)
+        setSelectedTrim([])
+    }
 
-  // manufacturer
-  const tellData = (x) => 
-  {
-    //   alert(x)
-      const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
-      // sorting
-      let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0);
-      setSelectedModel(sortedProducts)
-      advertState.setTheMakerModels(sortedProducts)
-  }
+    // manufacturer
+    const tellData = (x) => 
+    {
+        //   alert(x)
+        const filteredModel = allRequiredData?.model && allRequiredData?.model?.filter((item) => Number(item.make_id) === Number(x))
+        // sorting
+        let sortedProducts = filteredModel.sort((p1, p2) => (p1.rate < p2.rate) ? 1 : (p1.rate > p2.rate) ? -1 : 0)
+        setSelectedModel(sortedProducts)
+        advertState.setTheMakerModels(sortedProducts)
+    }
 
-  const [selectedCarModel, setCarSelectedModelGroup] = useState("")
+    const [selectedCarModel, setCarSelectedModelGroup] = useState("")
 
     const savePost = (x) => 
     {
@@ -501,9 +485,7 @@ export default function CreateAd()
             }        
             
             if(adProcessing === "successful")
-            {
-                // populateProductStore()
-    
+            {    
                 if(isDraft === "yes")
                 {
                     setMsg('Advert Successfully Drafted to unposted advert section')
@@ -514,6 +496,7 @@ export default function CreateAd()
                 setPreviewUrls([])
                 setSuccessModal(true)
                 setTimeout(() => {
+                    populateProductStore()
                     setSuccessModal(false)
                     navigate('/dashboard/store')
                 }, 2000)
@@ -551,6 +534,11 @@ export default function CreateAd()
         const byteArray = new Uint8Array(byteArrays);
         return new Blob([byteArray], { type: contentType })
     }
+
+    // function compressImage(image)
+    // {
+    //     return image + 1
+    // }
     
     // const fileInputRef = useRef(null)
     const formData = new FormData();
@@ -563,6 +551,13 @@ export default function CreateAd()
             setProductImages([...images, ...files]);
             Promise.all(
             files.map((file) => {
+
+                // compress image(s)
+                // let imageToCompress = 0
+                // let compressedImage = compressImage(imageToCompress)
+                // imageToCompress = compressedImage
+                // console.log(imageToCompress)
+
                 return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -708,6 +703,7 @@ export default function CreateAd()
         advertState.setCountry(-1)
         advertState.setMileAge("")
         advertState.setFuelType("")
+        advertState.setLocation("")        
     }
 
 
@@ -753,6 +749,7 @@ export default function CreateAd()
                                                                         submitForm = false
                                                                         setCountryErrorMsg("Kindly Select Country")
                                                                     } else {
+                                                                        // advertState.setStateModel([])
                                                                         advertState.setCountry(Number(e.target.value))
                                                                         setTheCountry(Number(e.target.value))
                                                                         callData(e.target.value)
@@ -805,11 +802,11 @@ export default function CreateAd()
                                                                         {  (Number(theCountry) === -1) && <option value={-1}> - First Select Country - </option> }
                                                                         {  (Number(theCountry) != -1) && <option value={-1}> - Select State -  </option> }
                                                                         {   
-                                                                            advertState.getStateModel() && (theCountry != -1) &&
-                                                                            advertState.getStateModel().length !== 0 &&
+                                                                            // advertState.getStateModel() && (theCountry != -1) &&
+                                                                            // advertState.getStateModel().length !== 0 &&
                                                                             advertState.getStateModel().map((state) =>  {
                                                                                 return (
-                                                                                    <option key={state.id} value={state.id} selected={state.country_id === theState ? theState : ""}>
+                                                                                    <option key={state.id} value={state.id} selected={state.id === theState ? theState : ""}>
                                                                                         {state.name}
                                                                                     </option>
                                                                                 )
@@ -1296,7 +1293,7 @@ export default function CreateAd()
                                                         <div className="p-2 md:w-1/2 w-full">
                                                             <span className="w-full font-bold text-sm">MileAge</span>
                                                             <input onChange={(e) => {    
-                                                                advertState.getMileAge(e.target.value)
+                                                                advertState.setMileAge(e.target.value)
                                                                 setTheMileAge(e.target.value)} 
                                                             } type="number" id="price" defaultValue={theMileAge} name="price" placeholder="Distance covered so far (optional)" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 text-sm leading-8 transition-colors duration-200 ease-in-out" />
                                                             <div className="text-red-500 font-bold text-sm">{ (theMileAge === "") ?  mileAgeError : "" }</div>

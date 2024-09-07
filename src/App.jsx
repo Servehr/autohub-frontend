@@ -185,7 +185,7 @@ export default function App()
 
             <Route path="/maceos-registration" element={<MACEOS />} />
             <Route path="/maceos-upload-receipt" element={<UploadReciept />} />
-            <Route path="/maceos-welcome" element={<MaceoWelcome />} />
+            <Route path="/courses" element={<MaceoWelcome />} />
 
             {/* Authentication Required Routes */}
             <Route
@@ -234,7 +234,7 @@ export default function App()
               <Route path="/dashboard/store/:id/edit/:country_id/:make_id/:model_id" element={<EditProduct />} />
               <Route path="/dashboard/chat" element={<Chat />} />
               <Route path="/dashboard/summary" element={<DashboardSummary />} />
-              <Route path="/dashboard/courses" element={<Courses />} />
+              <Route path="/dashboard/course" element={<Courses />} />
               <Route path="/dashboard/exam-user" element={<ExamUser />} />
               <Route path="/dashboard/curriculum" element={<Curriculum />} />
               <Route path="/dashboard/course-faq" element={<CourseFaq />} />

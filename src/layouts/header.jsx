@@ -227,7 +227,7 @@ function TopHeader()
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Car Loan</li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">Build Your Money</li>
                 <li className="text-sm text-green-500 hover:text-red-900 hover:font-bold hover:text-md">
-                    {/* <NavLink to='/maceos-welcome' activeClassName="selected">MACEOS</NavLink> */}
+                    {/* <NavLink to='/courses' activeClassName="selected">MACEOS</NavLink> */}
                     <div className="dropdown inline-block relative">
                       <button onMouseOver={() => {
                           setOpenIt(true)
@@ -241,7 +241,7 @@ function TopHeader()
                               setOpenIt(false)
                           }}  className="dropdown-menu absolute w-[200px] z-[60] text-gray-700 pt-1 bg-green-400 pb-2">
                           <li className="">
-                            <Link to={'/maceos-welcome'} className="rounded-t cursor-pointer hover:text-white font-bold bg-white border border-gray-100 border-2 hover:bg-blue-800 py-4 px-4 block whitespace-no-wrap" onClick={() => setOpenIt(false) }
+                            <Link to={'/courses'} className="rounded-t cursor-pointer hover:text-white font-bold bg-white border border-gray-100 border-2 hover:bg-blue-800 py-4 px-4 block whitespace-no-wrap" onClick={() => setOpenIt(false) }
                               >
                                 MACEOS Academy
                             </Link>
