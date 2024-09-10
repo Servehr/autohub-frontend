@@ -324,6 +324,7 @@ export default function CreateAd()
         }
 
         //   if(theDescription === ""){ setDescriptionErrorMsg("Kindly Give details regards product"); submitForm = false; }
+
         if(thePrice === ""){ setPriceErrorMsg("Kindly Specify price for your product"); submitForm = false; }
         if(previewUrls.length === 0)
         {
@@ -420,6 +421,7 @@ export default function CreateAd()
                         adProcessing = response.data.status
                         // onClick(true)
                 }).catch((error) => {   
+                        console.log(error)
                         setPostStatus("First Stage of Processing")  
                         setProcessAdvert(false)                   
                         return false
@@ -450,6 +452,7 @@ export default function CreateAd()
                     adProcessing = response.data.status
                     // return
                 }).catch((error) => { 
+                        console.log(error)
                         setPostStatus("Second Stage of Processing")     
                         setProcessAdvert(false)            
                         return false
@@ -479,6 +482,7 @@ export default function CreateAd()
                 {  
                     adProcessing = response.data.status
                 }).catch((error) => { 
+                    console.log(error)
                     setPostStatus("Third Stage of Processing")   
                     setProcessAdvert(false)
                 })
@@ -501,7 +505,7 @@ export default function CreateAd()
                     navigate('/dashboard/store')
                 }, 2000)
             } else {
-                setMsg(`Posting Failed on ${postStatus}` )
+                setMsg(`Posting Failed on ${postStatus}. Attend to all fields` )
                 setSuccessModal(true)
                 setProcessAdvert(false)
                 setTimeout(() => {
@@ -511,34 +515,85 @@ export default function CreateAd()
         }
     }
 
-    function fixBinary (bin) 
+    function calc_image_size(image)
     {
-        var length = bin.length;
-        var buf = new ArrayBuffer(length);
-        var arr = new Uint8Array(buf);
-        for (var i = 0; i < length; i++) {
-          arr[i] = bin.charCodeAt(i);
+        let base64Image = image.split(",")[1];
+        let img = RetrieveBase64ImageSize(atob(base64Image));
+        let imgSize = new Blob([img], {type: 'image/jpeg'})
+        let imgConvertedSize = imgSize.size
+
+        let y = 1
+        // if(image.endswith('=='))
+        // {
+        //     y = 2
+        // }
+        const x_size = (imgConvertedSize * (3 / 4)) - y
+        let imageSize = Math.round(x_size / 1024)
+        return imageSize
+    }
+
+    function RetrieveBase64ImageSize(base64Image) 
+    {
+        let length = base64Image.length;
+        let buf = new ArrayBuffer(length);
+        let arr = new Uint8Array(buf);
+        for (let i = 0; i < length; i++) {
+            arr[i] = base64Image.charCodeAt(i);
         }
         return buf;
     }
 
-    function base64ToBlob(toConvert, contentType = '')
+    async function reduceImageSize(base64String, oldImageSize, MAX_WIDTH = 630, MAX_HEIGHT = 630)
     {
-        const byteCharacters = atob(toConvert)
-        const byteArrays  = []
-
-        for (let index = 0; index < byteCharacters.length; index++) 
+        let reducedImage = await new Promise((resolve) => 
         {
-            byteArrays.push(byteCharacters.charCodeAt(index))            
-        }
-        const byteArray = new Uint8Array(byteArrays);
-        return new Blob([byteArray], { type: contentType })
+            let img = new Image()
+            img.src = base64String
+            img.onload = () => 
+            {
+                let canvas = document.createElement('canvas')
+                let width = img.width
+                let height = img.height
+                if(width > height)
+                {
+                    if(width > MAX_WIDTH)
+                    {
+                        height *= MAX_WIDTH / width
+                        width = MAX_WIDTH
+                    }
+                } else {
+                    if(height > MAX_HEIGHT)
+                    {
+                        width *= MAX_HEIGHT / height
+                        height = MAX_HEIGHT
+                    }
+                }
+                canvas.width = width
+                canvas.height = height
+                let workedImage = canvas.getContext('2d')
+                workedImage.drawImage(img, 0, 0, width, height)
+                resolve(canvas.toDataURL())
+            }
+        })
+        return reducedImage
     }
 
-    // function compressImage(image)
-    // {
-    //     return image + 1
-    // }
+    async function compressImage(advertImage)
+    {
+        let oldImageSize = calc_image_size(advertImage)
+        console.log({'oldImageSize': oldImageSize})
+  
+        // if(oldImageSize < 450)
+        // {
+            let workedOnImage = await reduceImageSize(advertImage, oldImageSize)
+      
+            let newImageSize = calc_image_size(workedOnImage)
+            console.log({'newImageSize': newImageSize})
+            return workedOnImage
+        // } else {
+        //     return advertImage
+        // }
+    }
     
     // const fileInputRef = useRef(null)
     const formData = new FormData();
@@ -548,23 +603,22 @@ export default function CreateAd()
 
         if (files.length > 0) 
         {
-            setProductImages([...images, ...files]);
+            setProductImages([...images, ...files])            
+
             Promise.all(
-            files.map((file) => {
-
-                // compress image(s)
-                // let imageToCompress = 0
-                // let compressedImage = compressImage(imageToCompress)
-                // imageToCompress = compressedImage
-                // console.log(imageToCompress)
-
-                return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = (error) => reject(error);
-                });
-            })
+                files.map((file, index) => 
+                {
+                    return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => 
+                    {                        
+                        let compressed = compressImage(reader.result)
+                        resolve(compressed)
+                    }
+                    reader.onerror = (error) => reject(error);
+                    });
+                })
             ).then((results) => {
                 setPreviewUrls([...previewUrls, ...results]);
             });

@@ -75,12 +75,12 @@ const SlideShow = () => {
           <div className="z-40 carousel h-[300px] md:h-[450px] lg:h-[450px] w-full m-auto overflow-hidden relative cursor-pointer"
            >
 
-              {
+              {/* {
                   (!isLoading && (data?.length > 0)) && <img
                                                                 src={`${IMAGE_SLIDER}${data[slide]?.slider?.url?.image_url}`} 
                                                                 className="slide absolute w-full h-full object-fit" 
                                                             />
-              }
+              } */}
 
               {
                     !isLoading && (data?.length === 0) && <>

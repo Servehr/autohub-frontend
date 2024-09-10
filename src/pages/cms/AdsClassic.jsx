@@ -19,7 +19,7 @@ import { SoldProducts } from "@/components/product/SoldProduct";
 
 export default function AdsClassic()
 {
-    const pages = [20, 25, 30, 50, 100, 200]
+    const pages = [50, 100, 200, 500, 1000]
     const [currentPage, setCurrentPage] = useState(1)  
     const [perPage, setPerPage] = useState(pages[0])  
     const [searchQuery, setSearchQuery] = useState("")

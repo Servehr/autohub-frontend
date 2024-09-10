@@ -1,0 +1,68 @@
+import React, { useEffect, useState } from 'react';
+import { Modal } from './Modal';
+import { Link, useNavigate } from "react-router-dom";
+import { deleteAdProduct } from '@/apis/ads';
+import { appStore } from "@/state/appState";
+import { BeatLoader } from "react-spinners";
+import axios from 'axios';
+import { BASE_URL, PRODUCT_FACE } from "@/lib/axios";
+
+
+export const ProductSold = ({onClick, productSold, isProductSold, returnTo, message, imageProductUrl, type })  =>
+{
+        const advertState = appStore((state) => state)
+        const navigate = useNavigate();
+        const [userProductId, setUserProductId] = useState(isProductSold)
+        const [loading, setIsLoading] = useState(false)
+
+        const SoldProduct = async () => 
+        {
+                setIsLoading(true)
+                let url = `ad/sold-product`
+                let token = localStorage.getItem("token")   
+                await axios.put(`${BASE_URL}${url}`, { id: userProductId, status: type}, {
+                        headers: {
+                                'Authorization': token ? `Bearer ${token}` : "",
+                        }
+                }).then((response) => 
+                {  
+                        setIsLoading(false)
+                        onClick()
+                }).catch((error) => {                     
+                        return false
+                })
+        }
+
+        return (
+                <Modal onClick={onClick} isOpen={productSold} wrapperWidth={800} margin={'100px auto 0px auto'}>
+                        <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll justify-center item-center'>
+                                <h1 className='mb-5 font-bold mt-3 w-full text-center text-xl'>{message}</h1>                               
+                                {
+                                        imageProductUrl && imageProductUrl !="" && <div className="max-w-sm rounded overflow-hidden shadow-lg m-auto">
+                                                <img className="w-full" src={`${PRODUCT_FACE}${imageProductUrl}`} alt="Sunset in the mountains" />
+                                        </div>
+                                }
+                                <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-5 mt-5">                                       
+                                        {
+                                                <button 
+                                                        className="py-3 px-4 bg-red-600 text-white font-semibold text-sm rounded-xl w-max"
+                                                        onClick={() => {
+                                                                onClick()
+                                                        } }
+                                                >
+                                                                No
+                                                </button>
+                                        }
+                                        {
+                                               <button 
+                                                        className="py-3 px-4 bg-brandGreen text-white font-semibold text-sm rounded-xl w-max"
+                                                        onClick={() => SoldProduct()}
+                                                                >
+                                                        {       loading ? ( <BeatLoader size={9} color="#fff" />) : ( "Yes" )          }
+                                              </button>
+                                        }
+                                </div>
+                        </div>
+                </Modal>  
+        );
+}

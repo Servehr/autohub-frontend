@@ -17,7 +17,7 @@ import { StudentReceipt } from "@/components/marking/StudentReceipt";
 export default function Students()
 {
     const navigate = useNavigate();
-    const pages = [10, 20, 50, 100, 200]
+    const pages = [50, 100, 200, 500, 1000]
     const [currentPage, setCurrentPage] = useState(1)  
     const [perPage, setPerPage] = useState(pages[0])  
     const [searchQuery, setSearchQuery] = useState("")

@@ -13,7 +13,7 @@ import Pagination from "@/components/Pagination";
 export default function Markings()
 {
     const navigate = useNavigate();
-    const pages = [10, 20, 50, 100, 200]
+    const pages = [50, 100, 200, 500, 1000]
     const [currentPage, setCurrentPage] = useState(1)  
     const [perPage, setPerPage] = useState(pages[1])  
     const [searchQuery, setSearchQuery] = useState("")

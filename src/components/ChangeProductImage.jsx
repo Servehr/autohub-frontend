@@ -83,7 +83,7 @@ export const ChangeProductImage = ({onClick, imageModal, imageId, imageUrl, mode
                                         }
                                 </div>
                              
-                                        <div className="grid md:grid-cols-12 grid-cols-12 gap-5 mt-5 overflow-auto overflow-y-scroll justify-center item-center h-[550px]">
+                                        <div className="grid md:grid-cols-12 grid-cols-12 gap-5 mt-5 overflow-auto overflow-y-scroll justify-center item-center h-fit">
                                                 {
                                                         imageToDisplay &&
                                                         imageToDisplay.length > 0 &&

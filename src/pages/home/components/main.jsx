@@ -60,9 +60,7 @@ export default function Main()
                     </>
                   )}
 
-                  {
-                    data && data?.length !== 0 && <SlideShow />
-                  }
+                  <SlideShow />
              </div>
 
             <div className="hidden order-3 w-fit object-cover col-span-3 bg-gray-100 p-1 shrink-0 h-fit lg:flex justify-center">
