@@ -93,8 +93,8 @@ import ExamObjective from "./pages/maceos/examObj/exam-user";
 import Markings from "./pages/cms/Markings";
 import AdsClassic from "./pages/cms/AdsClassic";
 import NotAllowed from "./components/notAllowed";
-import AdminRoute from "./components/AdminRoute";
 import Board from "./pages/cms/board";
+import AdminRoutee from "./components/AdminRoutee";
 
 export const Loader = ({ full }) => {
   return (
@@ -249,9 +249,9 @@ export default function App()
               exact
               path="/a"
               element={
-                <AdminRoute>
-                  <Dashboard />
-                </AdminRoute>
+                  <AdminRoutee>
+                      <Dashboard />                    
+                  </AdminRoutee>
               }
             >
                 {/* <Route index element={<Dashboard />} /> */}
