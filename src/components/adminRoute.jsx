@@ -14,9 +14,9 @@ const AdminRoute = ({ children }) =>
     function HandleUnauthenticated() {
 
       return (
-        <>
-          <NotAllowed />
-        </>
+          <>
+            <NotAllowed />
+          </>
       );
     }
 
