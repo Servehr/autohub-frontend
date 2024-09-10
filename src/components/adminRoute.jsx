@@ -8,7 +8,6 @@ import NotAllowed from "./notAllowed";
 
 const AdminRoute = ({ children }) => 
 {
-
     const { data, isLoading, isError } = useUser();
     const { isMobile } = browserType();
 
