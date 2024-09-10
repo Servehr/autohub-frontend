@@ -580,15 +580,12 @@ export default function CreateAd()
 
     async function compressImage(advertImage)
     {
-        let oldImageSize = calc_image_size(advertImage)
-        console.log({'oldImageSize': oldImageSize})
-  
+        let oldImageSize = calc_image_size(advertImage)  
         // if(oldImageSize < 450)
         // {
             let workedOnImage = await reduceImageSize(advertImage, oldImageSize)
       
             let newImageSize = calc_image_size(workedOnImage)
-            console.log({'newImageSize': newImageSize})
             return workedOnImage
         // } else {
         //     return advertImage
