@@ -93,7 +93,7 @@ import ExamObjective from "./pages/maceos/examObj/ExamObjectives_";
 import Markings from "./pages/cms/Markings";
 import AdsClassic from "./pages/cms/AdsClassic";
 import NotAllowed from "./components/notAllowed";
-import AdminRoute from "./components/AdminRoute";
+import AdminRoutee from "./components/AdminRoutee";
 import Board from "./pages/cms/board";
 import UserExamTheory from "./pages/maceos/examTheory/user-exam-theory";
 import ForceSubmitTestTheory from "./pages/maceos/testTheory/ForceSubmitTestTheory";
@@ -267,9 +267,9 @@ export default function App()
               exact
               path="/a"
               element={
-                <AdminRoute>
+                <AdminRoutee>
                   <Dashboard />
-                </AdminRoute>
+                </AdminRoutee>
               }
             >
                 {/* <Route index element={<Dashboard />} /> */}
