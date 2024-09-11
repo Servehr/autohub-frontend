@@ -93,7 +93,6 @@ import ExamObjective from "./pages/maceos/examObj/ExamObjectives_";
 import Markings from "./pages/cms/Markings";
 import AdsClassic from "./pages/cms/AdsClassic";
 import NotAllowed from "./components/notAllowed";
-import AdminRoute from "./components/AdminRoute";
 import Board from "./pages/cms/board";
 import UserExamTheory from "./pages/maceos/examTheory/user-exam-theory";
 import ForceSubmitTestTheory from "./pages/maceos/testTheory/ForceSubmitTestTheory";
@@ -106,6 +105,7 @@ import ProductEntry from "./pages/cms/productEntry";
 import { appStore } from "./state/appState";
 import Modules from "./pages/cms/Modules";
 import AcademicSession from "./pages/cms/AcademicSession";
+import AdminRoutee from "./components/AdminRoutee";
 
 export const Loader = ({ full }) => {
   return (
@@ -267,9 +267,9 @@ export default function App()
               exact
               path="/a"
               element={
-                <AdminRoute>
-                  <Dashboard />
-                </AdminRoute>
+                  <AdminRoutee>
+                      <Dashboard />                    
+                  </AdminRoutee>
               }
             >
                 {/* <Route index element={<Dashboard />} /> */}

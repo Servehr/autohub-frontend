@@ -6,7 +6,7 @@ import { browserType } from "@/store";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import NotAllowed from "./notAllowed";
 
-const AdminRoute = ({ children }) => 
+const AdminRoutee = ({ children }) => 
 {
 
     const { data, isLoading, isError } = useUser();
@@ -42,4 +42,4 @@ const AdminRoute = ({ children }) =>
     children: PropTypes.node.isRequired,
   };
 
-export default AdminRoute
+export default AdminRoutee
