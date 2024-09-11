@@ -64,7 +64,7 @@ const AdminRoutee = ({ children }) =>
     // );
   };
 
-  AdminRoute.propTypes = {
+  AdminRoutee.propTypes = {
     children: PropTypes.node.isRequired,
   };
 

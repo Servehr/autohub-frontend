@@ -12,6 +12,7 @@ export const PRODUCT_FACE = `${DESTINATION}product/`;
 export const AVATAR = `${DESTINATION}avatar/`;
 export const WATER_MARK = `${DESTINATION}water/`;
 export const BLOG_POST = `${DESTINATION}posts/`;
+export const RECEIPT = `${DESTINATION}receipt/`;
 
 export const axios_instance_no = axios.create({
   baseURL: BASE_URL,
@@ -59,7 +60,6 @@ export const sendDataWithForm = axios.create({
 //       (err.response.status === 403 || err.response.status === 401) &&
 //       !originalRequest._retry
 //     ) {
-//       console.log("Error occurred with token");
 //       window.location.href = "/login";
 
 //       // logoutAndRedirect();
@@ -79,7 +79,6 @@ export const sendDataWithForm = axios.create({
 //       } catch (_error) {
 //         // localStorage.clear();
 //         // sessionStorage.clear();
-//         // console.log("refresh token not found");
 //         // window.location.href = "/login";
 
 //         logoutAndRedirect();
@@ -93,7 +92,6 @@ export const sendDataWithForm = axios.create({
 // const logoutAndRedirect = () => {
 //   localStorage.clear();
 //   sessionStorage.clear();
-//   console.log("Token error occurred. Logging out and redirecting to login.");
 //   window.location.href = "/login";
 // };
 
