@@ -334,13 +334,13 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                             } }>
                                                                 Permission To Download ({product.downloadable})
                                                         </div>  */}
-                                                        <div className={`${(product.assessment === 1) ? 'bg-green-900' : 'bg-orange-500'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                        {/* <div className={`${(product.assessment === 1) ? 'bg-green-900' : 'bg-orange-500'} px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer`} onClick={() =>
                                                             { 
                                                                 setEditDataCOurse(product)
                                                                 setAssessment(true)
                                                             } }>
                                                                 Assessment
-                                                        </div> 
+                                                        </div>  */}
                                                         <div className="bg-blue-800 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setEditDataCOurse(product)
@@ -362,13 +362,13 @@ export default function DynamicTable({header, columns, data, onClick, page})
                                                             } }>
                                                                 Objective Duration
                                                         </div> 
-                                                        <div className={`bg-purple-500 px-3 py-2 rounded-md hover:bg-purple-500 hover:text-white cursor-pointer`} onClick={() =>
+                                                        {/* <div className={`bg-purple-500 px-3 py-2 rounded-md hover:bg-purple-500 hover:text-white cursor-pointer`} onClick={() =>
                                                             { 
                                                                 setCountryName(product)
                                                                 setTestTheoryDuration(true) 
                                                             } }>
                                                                 Theory Duration
-                                                        </div>
+                                                        </div> */}
                                                         <div className="bg-red-500 px-3 py-2 rounded-md hover:bg-gray-500 hover:text-white cursor-pointer" onClick={() =>
                                                             { 
                                                                 setUploadCourseid(product)

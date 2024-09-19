@@ -57,33 +57,33 @@ export default function ExamQuestionaireTheory({ academicSession })
                         <h1 className="font-bold text-blue-500">Exam Questionaires (Theory)</h1>
                     </div>
                     {/* { !isLoading && (data?.length < 1) && <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenExamTheoryQuestionaire(true)}>Add Theory Questionaire</div> } */}
-                    <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenExamTheoryQuestionaire(true)}>Add Theory Questionaire</div>
+                    {  (data?.length < 1) && <div className="font-bold px-3 py-2 bg-green-900 text-white rounded-md cursor-pointer" onClick={() => setOpenExamTheoryQuestionaire(true)}>Add Theory Questionaire</div> }
                 </div>
             }
         
-            <div className="flex flex-wrap mt-1 px-5">
+            {/* <div className="flex flex-wrap mt-1 px-5">
                 <div className="py-2 w-full"
                 >
-                <div className="mb-4 border border-gray-200">
-                    <div className="relative"
-                    >
-                        <select defaultValue={''} onChange={(e) => byYear(e.target.value)}
-                            className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            {       
-                                reversedSession.map((academic, index) => (
-                                    <option key={index} value={academic?.identifier} className='p-2'>
-                                        {academic?.name} - {academic?.identifier}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    <div className="mb-4 border border-gray-200">
+                        <div className="relative"
+                        >
+                            <select defaultValue={''} onChange={(e) => byYear(e.target.value)}
+                                className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                {       
+                                    reversedSession.map((academic, index) => (
+                                        <option key={index} value={academic?.identifier} className='p-2'>
+                                            {academic?.name} - {academic?.identifier}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
                         </div>
                     </div>
-                    </div>
                 </div>
-            </div>
+            </div> */}
             
             <div className="w-full p-1 mb-10 rounded-lg" style={{ marginBottom: '100px' }}>
                 {
@@ -113,7 +113,7 @@ export default function ExamQuestionaireTheory({ academicSession })
                 </div>
 
                 {
-                    openExamTheoryQuestionaire && <AddExamTheoryQuestionaireModal AllSessions={currentSession} openExamTheoryQuestionaire={openExamTheoryQuestionaire} onClick={() => {
+                    openExamTheoryQuestionaire && (data?.length < 1) && <AddExamTheoryQuestionaireModal AllSessions={currentSession} openExamTheoryQuestionaire={openExamTheoryQuestionaire} onClick={() => {
                         refetch()
                         setOpenExamTheoryQuestionaire(false)
                     }} />

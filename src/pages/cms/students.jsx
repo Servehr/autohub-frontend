@@ -44,16 +44,24 @@ export default function Students()
 
     const tellThePost = (e) => 
     {        
-        setSearchQuery(e.target.value)
-        setTimeout(() => 
-        {            
-            callTheSearch(e)
-        }, 1000)
+        let val = e.target.value
+        let keyword
+        if(val.length === 1)
+        {
+            keyword = ''
+        } else {
+            keyword = val            
+            setSearchQuery(val)
+            setTimeout(() => 
+            {            
+                callTheSearch(val)
+            }, 1000)
+        }
     }
 
     const callTheSearch = (e) => 
     {        
-        if (e.target.value != "") 
+        if (e != "") 
         {
             refetch()
         } else {
@@ -76,7 +84,7 @@ export default function Students()
                 >
                         <div className="grid grid-cols-12 justify-center items-center px-5 gap-3">
 
-                            <div className="col-span-1"
+                            <div className="col-span-2"
                             >
                                 <div className="relative"
                                 >
@@ -94,31 +102,30 @@ export default function Students()
                                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                     </div>
                                 </div>
-                                {/* <span className="font-bold md:w-2/12 text-2xl sm:w-full items-center">Enrolled Students</span> */}
                             </div>
-                            <div className="col-span-4"
+                            {/* <div className="col-span-3"
                             >
-                            <div className="mb-4 border border-gray-200 mt-4"
-                            >
-                                <div className="relative"
+                                <div className="mb-4 border border-gray-200 mt-4"
                                 >
-                                    <select defaultValue={''} onChange={(e) => AcademicSession(e.target.value)} 
-                                        className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                        {       
-                                            allStudent?.data?.academic_session?.map((academicSession, index) => (
-                                                <option key={index} value={academicSession.identifier} className='p-2'>
-                                                    {academicSession.name}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    <div className="relative"
+                                    >
+                                        <select defaultValue={''} onChange={(e) => AcademicSession(e.target.value)} 
+                                            className="block appearance-none w-full bg-gray-100 border h-[65px] text-2xl border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                            {       
+                                                allStudent?.data?.academic_session?.map((academicSession, index) => (
+                                                    <option key={index} value={academicSession.identifier} className='p-2'>
+                                                        {academicSession.name}
+                                                    </option>
+                                                ))
+                                            }
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>   
-                            </div>
-                            <div className="col-span-7"
+                                </div>   
+                            </div> */}
+                            <div className="col-span-10"
                             >
                                 <input
                                     type="text"
@@ -161,6 +168,8 @@ export default function Students()
                                                 </div>
                                                 <div className="w-full flex bg-white shadow-md"
                                                 >
+                                                    {/* <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.type }</span>
+                                                    <h1 className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.student?.type }</h1> */}
                                                     <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.payment_status }</span>
                                                     <span className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.student?.payment_status }</span>
                                                 </div>

@@ -6,7 +6,11 @@ import Sidebar from "../shared/sidebar";
 import AdminHeader from "@/layouts/AdminHeader";
 import Pulsate from "@/components/Pulsate";
 import { useQuery } from "react-query";
+import useUser from "@/hooks/useUser";
 import { dashboardOverview } from "@/apis/backend/dashboard";
+import Supervisor from "../shared/Supervisor";
+import Blogger from "../shared/Blogger";
+import Manager from "../shared/Manager";
 
 
 const pulsates = [
@@ -27,13 +31,20 @@ const pulsates = [
 export default function Dashboard()
 {
     const x = Math.round()
+    const { data, isLoading  } = useUser();
     // const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
 
+    if(!isLoading)
+    {
+        console.log(data)
+    }
+    
     const [sideBarToggle, setSideBarToggle] = useState(true)
 
     return ( 
         <>
-            <div className="h-screen flex item-end justify-end pb-6 relative scrollbar-thin scrollbar-thumb-indigo-300 overflow-y-auto scrollbar-track-pink "
+            {
+                !isLoading && <div className="h-screen flex item-end justify-end pb-6 relative scrollbar-thin scrollbar-thumb-indigo-300 overflow-y-auto scrollbar-track-pink "
                 >                    
                     {/* <div className='w-2/12 lg:w-2/12 lg:visible md:block hidden h-full bg-pink-600' style={{ zIndex: 999 }}>  */}
                         <button 
@@ -50,7 +61,26 @@ export default function Dashboard()
                         </button>
                         <div className="z-20 w-2/12 lg:w-2/12 lg:visible w-9/12 fixed top-0 -left-96 lg:left-0 bg-white shadow-2xl peer-focus:left-0 peer:transition ease-out delay-150 duration-200"
                             >
-                                <Sidebar sideBarState={sideBarToggle} />
+                                { 
+                                    data?.data?.admin_role === "super-admin" && <>
+                                            <Sidebar sideBarState={sideBarToggle} data={data} />
+                                    </> 
+                                }
+                                { 
+                                    data?.data?.admin_role === "supervisor" && <>
+                                            <Supervisor sideBarState={sideBarToggle} data={data} />
+                                    </> 
+                                }
+                                { 
+                                    data?.data?.admin_role === "blogger" && <>
+                                            <Blogger sideBarState={sideBarToggle} data={data} />
+                                    </> 
+                                }
+                                { 
+                                    data?.data?.admin_role === "manager" && <>
+                                            <Manager sideBarState={sideBarToggle} data={data} />
+                                    </> 
+                                }
                         </div>
                     {/* </div> */}
                     <div className='bg-white md:w-10/12 lg:10/12 w-full lg:flex-row px-5 bg-blue-500'
@@ -61,6 +91,7 @@ export default function Dashboard()
                         <Outlet />
                     </div>
                 </div>
+            }
         </>
   )
 }

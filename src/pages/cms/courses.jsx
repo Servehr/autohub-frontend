@@ -32,7 +32,7 @@ export default function Courses()
     const columns = [
         { field: 'name' },
         { field: 'objective_duration' },
-        { field: 'theory_duration' },
+        // { field: 'theory_duration' },
         { field: 'description' }
     ]
     
@@ -67,7 +67,7 @@ export default function Courses()
                             // !isLoading && (data?.data?.length > 0) &&  <DynamicTable 
                             !isLoading && (data?.data?.length > 0) && <>  
                                                         <DynamicTable 
-                                                                header={['Course', 'Objective Duration', 'Theory Duration', 'Description', 'Actions']} 
+                                                                header={['Course', 'Objective Duration', 'Description', 'Actions']} 
                                                                 columns={columns}
                                                                 data={data?.data}
                                                                 onClick={(e) =>  {

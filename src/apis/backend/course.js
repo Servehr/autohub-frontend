@@ -527,6 +527,7 @@ export async function AllStudent(currentPage, perPage, searchQuery, academicSess
               if (res.data.success === 0) {
                 reject(res.data.message);
               } else {
+                  console.log(res.data.data)
                 resolve(res.data.response);
               }
             })

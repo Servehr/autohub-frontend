@@ -91,7 +91,7 @@ export default function Questions()
                                                             <div className="p-1 text-lg">{question['option_d']}</div>
                                                         </div>
                                                     </div>                                                
-                                                    <div className="flex border border-2 p-1 mt-2 justify-between">
+                                                    <div className="flex border border-2 p-1 mt-2 justify-between bg-green-100">
                                                             <div className="p-2 text-red-700 font-bold">Answer</div>
                                                             <div className="p-2 font-bold text-lg text-blue-700">{question['answer']}</div>
                                                             <div className="flex space-x-5">

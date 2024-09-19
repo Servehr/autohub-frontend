@@ -13,7 +13,7 @@ import Pagination from "@/components/Pagination";
 export default function Markings()
 {
     const navigate = useNavigate();
-    const pages = [50, 100, 200, 500, 1000]
+    const pages = [2, 50, 100, 200, 500, 1000]
     const [currentPage, setCurrentPage] = useState(1)  
     const [perPage, setPerPage] = useState(pages[1])  
     const [searchQuery, setSearchQuery] = useState("")
@@ -121,13 +121,13 @@ export default function Markings()
                                                     <p className="font-bold w-2/2 text-lg text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
                                                 </div>
                                                 <div className="w-full p-5 flex justify-between mt-1 items-center bg-white">
-                                                    <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
+                                                    {/* <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setOpenAddTestTheoryMark(true)
                                                         }}
-                                                    > Test Theory </span>
-                                                    <span className="font-bold w-fit px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
+                                                    > Test Theory </span> */}
+                                                    <span className="font-bold w-full px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 text-center rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setOpenAddExamTheoryMark(true)

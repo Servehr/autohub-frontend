@@ -39,7 +39,15 @@ export const ExamStatus = ({onClick, openExamStatus, exam})  =>
         return (
                 <Modal onClick={onClick} isOpen={openExamStatus} wrapperWidth={800} margin={'100px auto 0px auto'}>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll d-flex justify-center item-center'>
-                                <div className='flex w-full justify-center items-center font-bold text-md uppercase text-red-600 mx-auto in-line'><span className='text-black mr-1'>You are about to remove the course material for </span> ({''})</div>
+                                <div className='flex w-full justify-center items-center font-bold text-md uppercase text-red-600 mx-auto in-line'
+                                   >
+                                        <span 
+                                                className='text-black mr-1'
+                                        >
+                                                You are about to change exam Status
+                                        </span> 
+                                        {/* ({''}) */}
+                                </div>
                                 {/* <span className='flex w-full justify-center items-center font-bold text-lg mb-10 mx-auto text-blue-600'>Material Under<span className='text-red-600 mr-1 ml-1'> ({removeCourse.name})</span> will also be deleted</span> */}
                                 
                                 <div className="items-center gap-5 mt-2 sm:flex flex justify-between mb-2 mx-2 mt-5">

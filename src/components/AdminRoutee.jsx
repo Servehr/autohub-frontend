@@ -8,11 +8,25 @@ import NotAllowed from "./notAllowed";
 
 const AdminRoutee = ({ children }) => 
 {
+  // Admin route restriction
+  
+  // const { data, isLoading, isError } = useUser();
+  // const { isMobile } = browserType();
+  // const navigate = useNavigate()
+
+  // const userType = localStorage.getItem("typeOfUser")
+  // if(userType === 'admin')
+  // {
+  //     navigate('/overview')
+  // } else {
+  //    navigate('/home')
+  // }
 
     const { data, isLoading, isError } = useUser();
     const { isMobile } = browserType();
 
     function HandleUnauthenticated() {
+      // localStorage.clear();
 
       return (
         <>
@@ -29,6 +43,7 @@ const AdminRoutee = ({ children }) =>
         return <HandleUnauthenticated />;
       }
     }
+    // alert(localStorage.getItem("typeOfUser"))
     let userTheType = localStorage.getItem("typeOfUser")
     if(userTheType === "admin")
     {
@@ -36,6 +51,18 @@ const AdminRoutee = ({ children }) =>
     } else {
         return <HandleUnauthenticated />;
     }
+
+    // return data ? (
+    //   <>{children}</>
+    // ) : (
+    //   <div className="top-0 left-0 absolute z-[100] bg-white h-screen w-screen flex justify-center items-center text-brandGreen">
+    //     {isMobile ? (
+    //       <BeatLoader color="#1c9236" />
+    //     ) : (
+    //       <BounceLoader color="#1c9236" />
+    //     )}
+    //   </div>
+    // );
   };
 
   AdminRoutee.propTypes = {

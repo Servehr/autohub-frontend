@@ -51,7 +51,7 @@ export default function TestQuestionaire()
                 !isLoading && <>
                     <TestQuestionaireObjective academicSession={data} />
         
-                    <TestQuestionaireTheory academicSession={data}  />                        
+                    {/* <TestQuestionaireTheory academicSession={data}  />                         */}
                 </>
             }
         </>

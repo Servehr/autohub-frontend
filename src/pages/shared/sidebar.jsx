@@ -5,15 +5,13 @@ import { BeatLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
 import { Brand } from "@/layouts/header";
 import { appStore } from "@/state/appState";
-import useUser from "@/hooks/useUser";
 import { AVATAR } from "@/lib/axios";
 
 
 
-export default function Sidebar({ sideBarStatus })
+export default function Sidebar({ sideBarStatus, data })
 {
     const advertState = appStore((state) => state)
-    const { data } = useUser();
     const [openSidebar, setOpenSideBar] = useState(advertState.getSideBar())
     // const [openSidebar, setOpenSideBar] = useState(false)
     let sideBarState = (sideBarStatus === true) ? 'block' : 'hidden'
