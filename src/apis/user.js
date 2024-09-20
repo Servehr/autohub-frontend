@@ -418,4 +418,22 @@ export async function GetUserResult(id)
   });
 }
 
+export async function CourseMaterial(id) 
+{
+  return new Promise((resolve, reject) => {
+    axios_instance
+      .get(`student-course-material/${id}`)
+      .then((res) => {
+        if (res.data.success === 0) {
+          reject(new Error(res.data.message));
+        } else {
+          resolve(res.data);
+        }
+      })
+      .catch(() => {
+        reject(new Error("Something went wrong"));
+      });
+  });
+}
+
 

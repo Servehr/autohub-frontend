@@ -45,7 +45,7 @@ export default function ProductImageCarousel({ data = productImages, waterMark }
                   <ProgressiveImage key={idx} src={`${PRODUCT_FACE}${image}`}>
                     {(src) => (
                       <img
-                        className={`rounded-md p-1 bg-red-200 ${
+                        className={`rounded-md p-1 ${
                           idx + 1 === slideIndex ? "block" : "hidden"
                         }`}
                         src={src}

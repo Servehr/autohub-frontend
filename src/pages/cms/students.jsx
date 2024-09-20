@@ -13,6 +13,7 @@ import { ConfirmStudent } from "@/components/marking/ConfirmStudent";
 import Pagination from "@/components/Pagination";
 import { StudentResult } from "@/components/marking/StudentResult";
 import { StudentReceipt } from "@/components/marking/StudentReceipt";
+import { Material } from "@/components/marking/Material";
 
 export default function Students()
 {
@@ -26,13 +27,11 @@ export default function Students()
     const [confirmAccess, setConfirmAccess] = useState(false)
     const [studentResult, setStudentResult] = useState(false)
     const [studentReceipt, setStudentReceipt] = useState(false)
+    const [studentMaterial, setStudentMaterial] = useState(false)
     const [academicSession, setAcademicSession] = useState('xxx')
     
     const { data: allStudent, isLoading, isRefetching, refetch } = useQuery(["all-student"], () => AllStudent(currentPage, perPage, searchQuery, academicSession), { refetchOnWindowFocus: true,  cacheTime: 0 })
-    if(!isLoading)
-    {
-        console.log(allStudent)
-    }
+    
     const displayByPageNo = (page) => 
     {   
         setPerPage(Number(page)) 
@@ -142,47 +141,49 @@ export default function Students()
                             </div>
                         </div>
                         
-                        <div className='grid grid-cols-12 gap-3 pb-5 mt-1'>                                
+                        <div className='grid grid-cols-12 gap-3 pb-5 mt-1'>                  
                             {
                                 isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
                                     <BeatLoader color="#1c9236" />
                                 </div>
-                            }
+                            }   
                             {
-                                !isLoading && isRefetching && <div className="col-span-12 h-[50px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
+                                !isLoading && isRefetching && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
                                     <BeatLoader color="#1c9236" />
                                 </div>
                             }
                             {
-                                !!isLoading && (allStudent?.data?.students.length === 0) && <div className="col-span-12 h-[50px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
+                                !!isLoading && (allStudent?.data?.students.length === 0) && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '3px', paddingTop: '2px' }}>
                                     <span className="p-10 mt-20 font-bold text-green-600">No Record Found</span>
                                 </div>
                             }
                             {
                                 !isLoading && !isRefetching && (allStudent?.data?.students.length > 0) && allStudent?.data?.students?.map((student, index) => {
+                                    let isPaid = (student?.student?.payment_status === 'paid') ? 'bg-violet-500 hover:bg-violet-800' : 'bg-red-500 hover:bg-red-800'
                                     return (
-                                            <div className="relative d-flex col-span-6 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md mt-7" key={index}>   
+                                            <div className="relative d-flex col-span-6 md:col-span-3 border rounded-lg p-4 bg-gray-200 shadow-md mt-7" key={index}>   
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
                                                 <div className="w-full p-2 flex bg-white shadow-md">
-                                                    <p className="font-bold w-2/2 text-lg text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
+                                                    <p className="font-bold w-2/2 text-lg mb-1 text-green-600 text-center mx-auto">{ student?.name } { student?.middlename } { student?.lastname }</p>
                                                 </div>
                                                 <div className="w-full flex bg-white shadow-md"
                                                 >
                                                     {/* <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.type }</span>
                                                     <h1 className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.student?.type }</h1> */}
-                                                    <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.payment_status }</span>
-                                                    <span className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-1 text-blue-600 text-center mx-auto`}>{ student?.student?.payment_status }</span>
+                                                    <span className={`${student?.student === undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-3 -mt-3 text-blue-600 text-center mx-auto`}>{ student?.payment_status }</span>
+                                                    <span className={`${student?.student != undefined ? 'block' : 'hidden'} font-bold w-2/2 text-sm mb-3 -mt-3 text-blue-600 text-center mx-auto`}>{ student?.student?.payment_status }</span>
                                                 </div>
-                                                <div className="w-full p-3 flex justify-between mt-1 items-center gap-1 bg-white shadow-md border-green-300">
-                                                    <span className="font-bold w-fit p-2 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-violet-500 hover:bg-violet-800 rounded-md text-xs"
+                                                <div className="w-12/12 px-2 py-1 mt-2 flex justify-between items-center gap-1 border-green-300">
+                                                    <span className={`font-bold p-2 cursor-pointer md:col-span-12 col-span-12 right-0 text-white ${isPaid} rounded-md text-xs`}
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setConfirmAccess(true)
                                                         }}
-                                                    >Cofirm Access
+                                                    >
+                                                        { student?.student?.payment_status === 'paid' ? 'Paid' : 'Cofirm Access' }
                                                     </span>
                                                     <button 
-                                                        className="font-bold w-fit p-2  md:col-span-6 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 rounded-md text-xs"
+                                                        className="font-bold p-2  md:col-span-12 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setStudentResult(true)
@@ -191,7 +192,7 @@ export default function Students()
                                                     </button>
                                                     <button 
                                                         disabled={(!student?.student?.receipt) ? true : false}
-                                                        className="font-bold w-fit p-2  md:col-span-6 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
+                                                        className="font-bold p-2  md:col-span-12 col-span-12 right-0 text-white bg-orange-500 hover:bg-orange-800 rounded-md text-xs"
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setStudentReceipt(true)
@@ -199,6 +200,24 @@ export default function Students()
                                                     >   View Receipt
                                                     </button>
                                                 </div>
+                                                <button 
+                                                        disabled={(!student?.student?.receipt) ? true : false}
+                                                        className="font-bold py-2 py-1 mt-1 w-full text-white bg-green-700 hover:bg-green-500 rounded-md text-[15px]"
+                                                        onClick={() => {
+                                                            setStudent(student)
+                                                            setStudentMaterial(true)
+                                                        }}
+                                                >   Course Material Permission
+                                                </button>
+                                                {/* <span 
+                                                        disabled={(!student?.student?.receipt) ? true : false}
+                                                        className="font-bold mx-auto mt-1 w-full text-black cursor-pointer mt-2 -mb-2 hover:text-green-500 flex justify-center itemx-center rounded-md text-[15px]"
+                                                        onClick={() => {
+                                                            setStudent(student)
+                                                            setStudentReceipt(true)
+                                                        }}
+                                                >   Course Material Permission
+                                                </span> */}
                                                 {/* { 
                                                     (student?.student?.academic_code === student?.student?.session_code) ? (
                                                             <></>
@@ -244,8 +263,12 @@ export default function Students()
                                         toast.success(`${student.name} successfully granted access`, {
                                             position: "top-center",
                                         });
-                                    }
-                                    refetch()  
+                                        refetch() 
+                                    } else {                                                                     
+                                        toast.success(`${student.name} ${e}`, {
+                                            position: "top-center",
+                                        });                                        
+                                    } 
                                     setConfirmAccess(false)
                             }} />
                         }
@@ -259,6 +282,11 @@ export default function Students()
                                         });
                                     }
                                     setStudentResult(false)
+                            }} />
+                        }
+                        {
+                            studentMaterial && <Material studentMaterial={studentMaterial} student={student} onClick={(e) => {
+                                    setStudentMaterial(false)
                             }} />
                         }
                         {

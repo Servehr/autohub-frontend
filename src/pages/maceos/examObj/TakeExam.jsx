@@ -209,21 +209,47 @@ export default function TakeExam()
                   </div>
               }
 
-              { !isLoading && (data?.data?.length === 0) && (data?.message?.objective === 'closed') &&
+              {/* { !isLoading && (data?.data?.length === 0) && (data?.message?.objective === 'closed') &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
                   </div>
-              }
+              } */}
 
-              { !isLoading && (data?.data === undefined) &&
+              {/* { !isLoading && (data?.data === undefined) &&
                   
                   <div className="col-span-12 flex justify-center items-center text-lg h-[500px]">
                       <span className="font-bold text-blue-700 pr-5 text-md" style={{ fontSize: '25px' }}>Exam Date will be communiated</span>
                   </div>
-              }
-              { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') &&
-                 <div className="w-full mb-1">
+              } */}
+              {/* { !isLoading && !isRefetching && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') && */}
+              { !isLoading && !isRefetching && (data?.data.length > 0) &&
+                 <div className="w-full mb-1 md:mt-3 mt-28">
+                      <div className="grid grid-cols-12 p-3 bg-green-100 text-green-600 rounded-lg md:mb-2 mb-5"
+                      >
+                          <div className="col-span-4 uppercase flex items-center text-black font-bold items-center"
+                          >
+                              <span className="hover:bg-green-700 cursor-pointer px-3 py-2 text-md hover:text-white rounded-lg"
+                              >
+                                  Objective
+                              </span>
+                          </div>
+                          <div className="col-span-4 uppercase flex justify-center items-center"
+                          >                              
+                            <div className=""
+                            >
+                                
+                              <CountDownTimerExamObjective seconds={data?.message?.objective_duration} question={data?.addition} code={data?.message?.exam_code} /> 
+                            </div>                           
+                          </div>
+                          <div className="col-span-4 uppercase flex text-black font-bold justify-end"
+                          >
+                              <span className="hover:bg-green-700 flex justify-end items-center cursor-pointer px-3 py-2 text-md hover:text-white rounded-lg"
+                              >
+                                  Theory
+                              </span>
+                          </div>
+                      </div>
                       <div className="mb-2 text-white cursor-pointer grid grid-cols-12 justify-between rounded-lg"
                       >          
                           {/* <div className="font-bold text-xl mb-4 text-green-700 mt-28 md:mt-0 p-3 bg-green-100 col-span-12">Course:  Artificial Intelligence</div> */}
@@ -239,7 +265,7 @@ export default function TakeExam()
                       <div className="w-full flex justify-between items-center">
                           <span className="font-bold text-blue-700 pr-5 text-lg" style={{ fontSize: '15px' }}>Question {currentQuestion+1} of {data?.data?.length}</span> 
                           <span className="w-fit">
-                              <CountDownTimerExamObjective seconds={data?.message?.objective_duration} question={data?.addition} code={data?.message?.exam_code} />
+                              {/* <CountDownTimerExamObjective seconds={data?.message?.objective_duration} question={data?.addition} code={data?.message?.exam_code} /> */}
                           </span>
                           <button type="sumbit" 
                               disabled={isSubmitting}
@@ -319,13 +345,16 @@ export default function TakeExam()
                       </div>          
                 </div>
               }
-              {  (data?.data?.length > 0) && (data?.message?.objective === 'open') &&             
+              {  
+                // (data?.data?.length > 0) && (data?.message?.objective === 'open') &&             
+                (data?.data?.length > 0) && 
                 <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-1">
                   <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center overflow-auto overflow-y-scroll py-10" aria-label="Pagination">
                     
                     {
                       
-                      data?.data &&  (data?.plus < 1) && (data?.message?.objective === 'open') &&           
+                      // data?.data &&  (data?.plus < 1) && (data?.message?.objective === 'open') &&
+                      data?.data &&          
                         data?.data.map((num, index) => {
                           const isAnswered = (isSelected(index) === "yes") ? "bg-green-700 border border-solid border-green-700" : "bg-white-600"
                           const currentAnswer = (currentQuestion === index) ? "bg-blue-600 text-white text-green-500 disabled" : `${isAnswered} border border-gray-700 cursor-pointer hover:border-gray-300 hover:bg-green-800 hover:text-white`
@@ -342,7 +371,8 @@ export default function TakeExam()
                 </div>
               }
               {  
-                data?.data && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') &&
+                // data?.data && (data?.data.length > 0) && (data?.plus < 1) && (data?.message?.objective === 'open') &&
+                data?.data && (data?.data.length > 0) &&
                 <div className="col-span-12 flex justify-center items-center mx-auto px-4 mt-3">
                     <button type="sumbit" 
                     disabled={isSubmitting}

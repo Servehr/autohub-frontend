@@ -105,6 +105,8 @@ export default function CreateAd()
     const [processAdvert, setProcessAdvert] = useState(advertState.getProcessAdvert());
     const [processAdvertAsDetail, setProcessAdvertAsDraft] = useState(advertState.getProcessAdvertAsDraft());
 
+    const [imageSizes, setImageSizes] = useState([])
+
     const [selectedCarModelOption, setCarSelectedModelGroupOption] = useState(false)
     
     const { data: allRequiredData, isLoading: isRequiredDataLoading } = useQuery(["required-data", id], () => fetchAllRequiredData(id), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 });
@@ -521,15 +523,19 @@ export default function CreateAd()
         let img = RetrieveBase64ImageSize(atob(base64Image));
         let imgSize = new Blob([img], {type: 'image/jpeg'})
         let imgConvertedSize = imgSize.size
+        // console.log(imgConvertedSize)
+        console.log({ imageSize: readableFileSize(imgConvertedSize) })
+        // return imgConvertedSize
+        return readableFileSize(imgConvertedSize)
 
         let y = 1
         // if(image.endswith('=='))
         // {
         //     y = 2
         // }
-        const x_size = (imgConvertedSize * (3 / 4)) - y
-        let imageSize = Math.round(x_size / 1024)
-        return imageSize
+        // const x_size = (imgConvertedSize * (3 / 4)) - 2
+        // let imageSize = Math.round(x_size / 1024)
+        // return imageSize
     }
 
     function RetrieveBase64ImageSize(base64Image) 
@@ -543,7 +549,7 @@ export default function CreateAd()
         return buf;
     }
 
-    async function reduceImageSize(base64String, oldImageSize, MAX_WIDTH = 630, MAX_HEIGHT = 630)
+    async function reduceImageSize(base64String, oldImageSize, MAX_WIDTH = 400, MAX_HEIGHT = 400)
     {
         let reducedImage = await new Promise((resolve) => 
         {
@@ -581,16 +587,37 @@ export default function CreateAd()
     async function compressImage(advertImage)
     {
         let oldImageSize = calc_image_size(advertImage)  
+        console.log({ oldSize: readableFileSize(oldImageSize) })
         // if(oldImageSize < 450)
         // {
             let workedOnImage = await reduceImageSize(advertImage, oldImageSize)
       
             let newImageSize = calc_image_size(workedOnImage)
+            setImageSizes([...imageSizes, newImageSize]);
+            console.log({ newSize: readableFileSize(newImageSize) })
             return workedOnImage
         // } else {
         //     return advertImage
         // }
     }
+
+    function readableFileSize(attachmentSize) 
+    {
+        const DEFAULT_SIZE = 0;
+        const fileSize = attachmentSize ?? DEFAULT_SIZE;
+      
+        if (!fileSize) {
+          return `${DEFAULT_SIZE} kb`;
+        }
+      
+        const sizeInKb = fileSize / 1024;
+      
+        if (sizeInKb > 1024) {
+          return `${(sizeInKb / 1024).toFixed(2)} mb`;
+        } else {
+          return `${sizeInKb.toFixed(2)} kb`;
+        }
+      }
     
     // const fileInputRef = useRef(null)
     const formData = new FormData();
@@ -611,6 +638,7 @@ export default function CreateAd()
                     reader.onload = () => 
                     {                        
                         let compressed = compressImage(reader.result)
+                        // console.log(compressed.width)
                         resolve(compressed)
                     }
                     reader.onerror = (error) => reject(error);
@@ -630,6 +658,7 @@ export default function CreateAd()
         setImages(newImages);
       
         const newPreviewUrls = [...previewUrls];
+        imageSizes.splice(index, 1);
         newPreviewUrls.splice(index, 1);
         setPreviewUrls(newPreviewUrls);
         if(mainImagePosition === index)
@@ -1433,7 +1462,13 @@ export default function CreateAd()
                                                                 previewUrls && previewUrls.map((image, index) => {
                                                                     let whenSet = (index === mainImagePosition) ? `col-span-3 z-30 border border-4 h-23 relative border-green p-1 bg-green-400` : `col-span-3  z-30 border border-2 h-23 relative`
                                                                     return (
-                                                                        <div className={whenSet} key={index}>
+                                                                        <div className={whenSet} key={index}
+                                                                        >
+                                                                            {/* <span 
+                                                                                className="w-fit p-1 text-black font-bold text-sm"
+                                                                            >
+                                                                                {imageSizes[index]}
+                                                                            </span> */}
                                                                             <img src={image} alt="upload" />
                                                                             {/* <span className="delete cursor-pointer pt-2 pl-3" onClick={() => setImages((e) => e !== image)}> */}
                                                                             <div className="absolute flex justify-between bottom-0 w-full">

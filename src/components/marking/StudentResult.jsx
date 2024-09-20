@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from '../Modal';
 import { useQuery } from 'react-query';
 import { GetUserResult } from '@/apis/user';
+import { BeatLoader } from 'react-spinners';
 
 
 export const StudentResult = ({onClick, studentResult, student})  =>
@@ -9,7 +10,7 @@ export const StudentResult = ({onClick, studentResult, student})  =>
         const [userId, setUserId] = useState(student?.id)
         const [loading, setIsLoading] = useState(false)
 
-        const { data, isLoading } = useQuery(['get-student-result'], () => GetUserResult(userId), { cacheTime: 0 })
+        const { data, isLoading, refetch, isRefetching } = useQuery(['get-student-result'], () => GetUserResult(userId), { cacheTime: 0 })
 
         const cancelModal = () => 
         {
@@ -22,8 +23,20 @@ export const StudentResult = ({onClick, studentResult, student})  =>
                         <div className='col-span-12 pt-1 pb-5 overflow-y-auto xm:overflow-y-scroll d-flex justify-center item-center'>
                                 <span className='flex w-full justify-center items-center font-bold text-lg mb-1 mx-auto text-2xl uppercase'>{student?.name} {student?.middename} {student?.lastname}</span>
 
+                                       
                                 {
-                                       !isLoading && < div className='overflow-auto p-5 overflow-y-scroll justify-center h-[650px] item-center'> 
+                                        !isLoading && isRefetching && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                                <BeatLoader color="#1c9236" />
+                                        </div>
+                                }        
+                                {
+                                        isLoading && <div className="col-span-12 h-[500px] flex justify-center items-center" style={{ marginTop: '30px', paddingTop: '20px' }}>
+                                        <       BeatLoader color="#1c9236" />
+                                        </div>
+                                }          
+
+                                {
+                                       !isLoading && < div className='overflow-auto p-5 overflow-y-scroll justify-center h-[650px] item-center'>  
                                         
                                         <div className="grid grid-cols-12 gap-3 border border-solid border-green-900 col-span-12 p-3 rounded-lg"
                                         >                    
@@ -46,24 +59,33 @@ export const StudentResult = ({onClick, studentResult, student})  =>
                                         </div>
 
                                         
-                                        <div className="font-bold text-md -mb-3 md:col-span-12 col-span-12 text-green-900 mt-5 p-5 mb-2 bg-gray-400 text-white rounded-md">Test Results</div> 
-                                                <div className="font-bold col-span-12 -mb-2 mt-1 uppercase text-blue-600 mb-5">Objective</div>
+                                        {/* <div className="font-bold text-md -mb-3 md:col-span-12 col-span-12 text-green-900 mt-5 p-5 mb-2 bg-gray-400 text-white rounded-md">Test Results</div>  */}
                                                 {
-                                                !isLoading && data?.objective && (data?.objective?.length > 0) && data?.objective?.map((result, index) =>
-                                                {                                  
-                                                        return (
-                                                        <div className="flex justify-between p-2 mb-5 bg-white md:col-span-4 col-span-12 text-black font-bold text-sm ring-2 ring-green-100 rounded-lg space-between px-3 border border-solid border-green-900">
-                                                                <span className="px-3 text-md">{result.name}</span>
-                                                                <span className="hidden md:block px-3"> -- </span>
-                                                                <span className={`${(result.taken === "yes" ? 'text-lg block' : 'hidden')} px-3`}>{ result.score }</span>
-                                                                <span className={`${(result.taken != "yes" ? 'text-xs text- block' : 'hidden')} px-3`}>{ "Not Taken" }</span>
-                                                        </div>
-                                                        )
-                                                })  
+                                                        (data?.objective.length === 0) && <>
+                                                                <div className="font-bold col-span-12 flex justify-center items-center mb-10 mt-20 uppercase mb-5 text-2xl">No Test Taken Yet</div>
+                                                        </>
+                                                }
+                                                {
+                                                        (data?.objective.length > 0) && <>
+                                                                <div className="font-bold col-span-12 -mb-2 mt-10 uppercase text-blue-600 mb-5">Test Result(s)</div>
+                                                                {
+                                                                        !isLoading && data?.objective && (data?.objective?.length > 0) && data?.objective?.map((result, index) =>
+                                                                        {                                  
+                                                                                return (
+                                                                                <div className="flex justify-between p-2 mb-5 bg-white md:col-span-4 col-span-12 text-black font-bold text-sm ring-2 ring-green-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                                                                        <span className="px-3 text-md">{result.name}</span>
+                                                                                        <span className="hidden md:block px-3"> -- </span>
+                                                                                        <span className={`${(result.taken === "yes" ? 'text-lg block' : 'hidden')} px-3`}>{ result.score }</span>
+                                                                                        <span className={`${(result.taken != "yes" ? 'text-xs text- block' : 'hidden')} px-3`}>{ "Not Taken" }</span>
+                                                                                </div>
+                                                                                )
+                                                                        })  
+                                                                }
+                                                        </>
                                                 }
 
                                                 
-                                                <div className="font-bold col-span-12 -mb-2 mt-5 uppercase mb-5 text-green-700">Theory</div>
+                                                {/* <div className="font-bold col-span-12 -mb-2 mt-5 uppercase mb-5 text-green-700">Theory</div>
                                                 {
                                                         !isLoading && data?.theory && (data?.theory?.length > 0) && data?.theory?.map((result, index) =>
                                                         {                                  
@@ -77,10 +99,10 @@ export const StudentResult = ({onClick, studentResult, student})  =>
                                                                 </div>
                                                         )
                                                         })  
-                                                }
+                                                } */}
 
 
-                                                <div className="font-bold text-md -mb-3 md:col-span-12 col-span-12 text-green-900 mt-5 p-5 bg-gray-400 text-white rounded-md mb-2">Exam Results</div>
+                                                <div className="font-bold text-md -mb-3 md:col-span-12 col-span-12 text-green-900 mt-10 p-5 bg-gray-400 text-white rounded-md mb-2">Exam Results</div>
                                                         {/* objective  */}
                                                         {
                                                         !isLoading && (Number(data?.exam_objective) === 0) && 
@@ -104,11 +126,11 @@ export const StudentResult = ({onClick, studentResult, student})  =>
                                                         </div> 
                                                         }
                                                         {
-                                                        !isLoading && (Number(data?.exam_objective) > 0) && (data?.exam_objective != "not-taken") && 
-                                                        <div className="flex justify-between p-2 bg-white md:col-span-6 mb-5 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
-                                                                <span className="px-3 text-md uppercase text-blue-800">Objective</span>
-                                                                <span className="hidden md:block px-3"> { data?.exam_objective } </span>
-                                                        </div> 
+                                                        // !isLoading && (Number(data?.exam_objective) > 0) && (data?.exam_objective != "not-taken") && 
+                                                        // <div className="flex justify-between p-2 bg-white md:col-span-6 mb-5 col-span-6 text-black font-bold text-sm ring-2 ring-blue-100 rounded-lg space-between px-3 border border-solid border-green-900">
+                                                        //         <span className="px-3 text-md uppercase text-blue-800">Objective</span>
+                                                        //         <span className="hidden md:block px-3"> { data?.exam_objective } </span>
+                                                        // </div> 
                                                         }
                                                         {/* theory  */}
                                                         {

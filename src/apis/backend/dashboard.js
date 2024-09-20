@@ -20,12 +20,12 @@ export async function dashboardOverview()
     });
 }
 
-export async function GetStudentOverview() 
+export async function GetStudentOverview(id) 
 {
     return new Promise((resolve, reject) => 
     {
         axios_instance
-          .get("student-overview")
+          .get(`user-result-student/${id}`)
           .then((res) => {
             if (res.data.success === false) {
               reject(res.data.message);

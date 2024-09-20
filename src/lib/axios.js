@@ -2,6 +2,8 @@ import axios from "axios";
 
 let token = localStorage.getItem("token")
 
+// const DESTINATION = "http://127.0.0.1:8000/";
+// const DESTINATION = "https://app.autohub.ng/";
 const DESTINATION = "https://www.scentsbyhoppey.com/";
    
 

@@ -13,9 +13,9 @@ import Pagination from "@/components/Pagination";
 export default function Markings()
 {
     const navigate = useNavigate();
-    const pages = [2, 50, 100, 200, 500, 1000]
+    const pages = [50, 100, 200, 500, 1000]
     const [currentPage, setCurrentPage] = useState(1)  
-    const [perPage, setPerPage] = useState(pages[1])  
+    const [perPage, setPerPage] = useState(pages[0])  
     const [searchQuery, setSearchQuery] = useState("")
 
     const [student, setStudent] = useState(-1)
@@ -114,6 +114,8 @@ export default function Markings()
                             }
                             {
                                 !isLoading && !isRefetching && markings?.data?.students?.map((student, index) => {
+                                    
+                                    let isMarked = (student?.theory === "yes") ? 'bg-green-700' : 'bg-red-400'
                                     return (
                                             <div className="relative d-flex col-span-12 md:col-span-3 border rounded-lg p-4 bg-green-100 shadow-md" key={index}>   
                                                 <img src={`${AVATAR}${student.avatar}`} className="col-span-2 rounded-sm w-fit h-[200px] mb-2 p-1 bg-green-300 flex justify-center m-auto items-center" />
@@ -127,7 +129,7 @@ export default function Markings()
                                                             setOpenAddTestTheoryMark(true)
                                                         }}
                                                     > Test Theory </span> */}
-                                                    <span className="font-bold w-full px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 text-center rounded-md text-xs"
+                                                    <span className={`${isMarked} font-bold w-full px-5 py-3 cursor-pointer md:col-span-6 col-span-12 right-0 text-white bg-blue-500 hover:bg-blue-800 text-center rounded-md text-xs`}
                                                         onClick={() => {
                                                             setStudent(student)
                                                             setOpenAddExamTheoryMark(true)

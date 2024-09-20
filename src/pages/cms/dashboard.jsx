@@ -33,11 +33,6 @@ export default function Dashboard()
     const x = Math.round()
     const { data, isLoading  } = useUser();
     // const { data, isLoading } = useQuery([`${x}/overview`], () => dashboardOverview(), { refetchOnWindowFocus: false, staleTime: Infinity, retry: 2 })
-
-    if(!isLoading)
-    {
-        console.log(data)
-    }
     
     const [sideBarToggle, setSideBarToggle] = useState(true)
 

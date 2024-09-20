@@ -16,8 +16,8 @@ export const AddExamTheoryMark = ({onClick, openAddExamTheoryMark, student})  =>
 {
         const advertState = appStore((state) => state)
         const navigate = useNavigate();
-        const [userId, setScore] = useState(student.id)
-        const [studentScore, setStudentScore] = useState(student.id)
+        const [userId, setScore] = useState(student.user_id)
+        const [studentScore, setStudentScore] = useState(-1)
         const [loading, setIsLoading] = useState(false)
         const [questionId, setQuestionId] = useState(-1)
         const [currentQuestion, setCurrentQuestion] = useState(-1)

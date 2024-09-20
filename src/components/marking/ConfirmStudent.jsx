@@ -20,6 +20,8 @@ export const ConfirmStudent = ({onClick, confirmAccess, student})  =>
         const [userId, setUserId] = useState(student.id)
         const [loading, setIsLoading] = useState(false)
 
+        console.log(student)
+
         const cancelModal = () => 
         {
                 onClick(true)
@@ -27,17 +29,22 @@ export const ConfirmStudent = ({onClick, confirmAccess, student})  =>
 
         const allowStudent = () => 
         {   
-                setIsLoading(true)                
-                ConfirmStudentAccess(userId)
-                .then((res) => 
+                setIsLoading(true)   
+                if(student?.student?.payment_status === "paid")
                 {
-                        setIsLoading(false)
-                        onClick('yes')
-                })
-                .catch((err) => 
-                {
-                        setIsLoading(false)
-                })    
+                        onClick('Already Paid')
+                } else {                                     
+                        ConfirmStudentAccess(userId)
+                        .then((res) => 
+                        {
+                                setIsLoading(false)
+                                onClick('yes')
+                        })
+                        .catch((err) => 
+                        {
+                                setIsLoading(false)
+                        }) 
+                }   
         }
 
         return (
