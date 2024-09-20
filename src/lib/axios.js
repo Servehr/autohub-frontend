@@ -2,7 +2,7 @@ import axios from "axios";
 
 let token = localStorage.getItem("token")
 
-const DESTINATION = "https://app.autohub.ng/";
+const DESTINATION = "https://www.scentsbyhoppey.com/";
    
 
 export const BASE_URL = `${DESTINATION}api/app/`;
